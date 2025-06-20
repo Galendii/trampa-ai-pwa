@@ -1,0 +1,93 @@
+/* stylelint-disable selector-pseudo-class-no-unknown */
+/* stylelint-disable property-no-unknown */
+
+// Color System - Figma
+
+// Gray
+
+$gray5: #f5f5f5;
+$gray7: #edeef6;
+$gray10: #e8e9f1;
+$gray18: #e0e2ea;
+$gray20: #e6e6e6;
+$gray25: #d6d9e2;
+$gray30: #c0c6da;
+$gray36: #584b4b;
+$gray37: #b5b9c6;
+$gray40: #b1b3c1;
+$gray45: #b3b3b3;
+$gray50: #696d81;
+$gray60: #6c7470;
+$gray65: #7b827e;
+$gray70: #757575;
+$gray80: #737682;
+$gray85: #7a7a7a;
+$gray90: #585859;
+$gray95: #4c4e58;
+
+// Red
+
+$red20: #fce0e5;
+$red35: #f02b00;
+$red40: #d9163a;
+$red70: #d20404;
+
+// White
+
+$white: #fff;
+$white20: #fbfcff;
+$white30: #f5f5f5;
+$white40: #f5f6fb;
+
+// Black
+
+$black: #000;
+$black20: #2d3648;
+$black30: #3d3d3d;
+$black40: #1e1e1e;
+$black50: #141414;
+
+// Sea-green
+
+$sea-green5: rgb(49 175 139 / 29%);
+$sea-green10: #e3f7f1;
+$sea-green20: #01c7c1;
+$sea-green30: #00b3a8;
+$sea-green35: #00b2ac;
+$sea-green40: #018b88;
+$sea-green50: #008b85;
+
+// Green
+
+$green30: #31af8b;
+$green40: #009e3f;
+
+// Yellow
+
+$yellow20: #f6bc16;
+$yellow30: #fdb700;
+
+// Orange
+
+$orange5: #fef7e2;
+$orange30: #e48f24;
+$orange40: #ee8700;
+
+// Blue
+
+$blue20: #e7f1fd;
+$blue50: rgb(0 83 240 / 50%);
+$blue52: #3e90f1;
+$blue55: #2464af;
+$blue60: #0a7aa3;
+$blue70: #023dab;
+$blue80: #034f83;
+$blue-main: #0065b4;
+
+// Alert
+$alert-red-opacity: #fae3e7;
+$alert-green-opacity: #e0f7f1;
+$alert-orange-opacity: $orange5;
+$alert-gray-opacity: $gray25;
+$success: $green40;
+$error: $red70;

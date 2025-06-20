@@ -1,41 +1,53 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { LayoutDashboard, Calendar, Users, UserCheck, DollarSign, Menu, X } from "lucide-react"
-import { useState, useEffect } from "react"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard,
+  Calendar,
+  Users,
+  UserCheck,
+  DollarSign,
+  Menu,
+  X,
+  ArchiveIcon,
+} from "lucide-react";
+import { useState, useEffect } from "react";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Agenda", href: "/agenda", icon: Calendar },
   { name: "Clientes", href: "/clientes", icon: Users },
-  { name: "Profissionais", href: "/profissionais", icon: UserCheck },
-  { name: "Financeiro", href: "/financeiro", icon: DollarSign },
-]
+  { name: "Agenda", href: "/agenda", icon: Calendar },
+  { name: "Contratos", href: "/contratos", icon: ArchiveIcon },
+  // { name: "Profissionais", href: "/profissionais", icon: UserCheck },
+  // { name: "Financeiro", href: "/financeiro", icon: DollarSign },
+];
 
 export default function Sidebar() {
-  const pathname = usePathname()
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [windowWidth, setWindowWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 0)
+  const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 0
+  );
 
   // Handle window resize
   useEffect(() => {
     const handleResize = () => {
-      setWindowWidth(window.innerWidth)
+      setWindowWidth(window.innerWidth);
       if (window.innerWidth >= 1024) {
-        setIsMobileMenuOpen(false)
+        setIsMobileMenuOpen(false);
       }
-    }
+    };
 
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const sidebar = document.getElementById("sidebar")
-      const menuButton = document.getElementById("menu-button")
+      const sidebar = document.getElementById("sidebar");
+      const menuButton = document.getElementById("menu-button");
 
       if (
         isMobileMenuOpen &&
@@ -44,26 +56,26 @@ export default function Sidebar() {
         menuButton &&
         !menuButton.contains(event.target as Node)
       ) {
-        setIsMobileMenuOpen(false)
+        setIsMobileMenuOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [isMobileMenuOpen])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMobileMenuOpen]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen && windowWidth < 1024) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = "auto";
     }
 
     return () => {
-      document.body.style.overflow = "auto"
-    }
-  }, [isMobileMenuOpen, windowWidth])
+      document.body.style.overflow = "auto";
+    };
+  }, [isMobileMenuOpen, windowWidth]);
 
   return (
     <>
@@ -97,8 +109,12 @@ export default function Sidebar() {
                 <span className="text-white font-bold text-lg">T</span>
               </div>
               <div>
-                <span className="text-xl font-bold text-slate-800">Trampa AI</span>
-                <p className="text-xs text-slate-500 -mt-0.5">Gestão Inteligente</p>
+                <span className="text-xl font-bold text-slate-800">
+                  Trampa AI
+                </span>
+                <p className="text-xs text-slate-500 -mt-0.5">
+                  Gestão Inteligente
+                </p>
               </div>
             </div>
           </div>
@@ -106,7 +122,7 @@ export default function Sidebar() {
           {/* Navigation */}
           <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
             {navigation.map((item) => {
-              const isActive = pathname === item.href
+              const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.name}
@@ -117,14 +133,16 @@ export default function Sidebar() {
                   <item.icon className="w-5 h-5 mr-3" />
                   {item.name}
                 </Link>
-              )
+              );
             })}
           </nav>
 
           {/* Footer */}
           <div className="p-4 border-t border-slate-200/60">
             <div className="text-center">
-              <p className="text-xs text-slate-500 font-medium">Sua gestão, clara como o dia.</p>
+              <p className="text-xs text-slate-500 font-medium">
+                Sua gestão, clara como o dia.
+              </p>
               <div className="mt-2 flex items-center justify-center space-x-1">
                 <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
                 <span className="text-xs text-slate-400">Online</span>
@@ -143,5 +161,5 @@ export default function Sidebar() {
         />
       )}
     </>
-  )
+  );
 }

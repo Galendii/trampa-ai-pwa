@@ -1,0 +1,106 @@
+@import '@/styles/colors.module.scss';
+
+.pagination-dots {
+  font-size: 18px;
+  font-weight: 500;
+  color: $black20;
+  cursor: default;
+  user-select: none;
+}
+
+.pagination-option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  background: none;
+  border: none;
+  border-radius: none;
+
+  font-size: 18px;
+  font-weight: 500;
+  padding: 0;
+  cursor: pointer;
+  transition: 0.2s linear;
+
+  &[data-active='true'] {
+    background: $sea-green50;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+  }
+
+  &:hover {
+    filter: brightness(0.6);
+  }
+}
+
+.pagination-overlay {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+
+  .pagination-content {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    background: none;
+    width: 100%;
+
+    .numbers-indicator {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      user-select: none;
+
+      .indicator {
+        font-size: 18px;
+        font-weight: 500;
+        color: #4B4D4F;
+      }
+    }
+
+    .chevrons-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+
+      .chevron {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        border-radius: 8px;
+        border: 2px solid #EBEBEB;
+  
+        transition: .2s linear;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+
+        &:hover {
+          filter: opacity(0.8);
+        }
+  
+        .chevron-icon {
+          color: #77797B;
+          width: 16px;
+          height: 16px;
+        }
+
+        &[data-active='false'] {
+          border: none;
+          filter: opacity(0.8);
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+.date-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #5c5c5c;
+  margin-left: 4px;
+}
+
+.date-span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #5c5c5c;
+  border: 1px solid #5a5a5a;
+  border-radius: 4px;
+  padding: 8px;
+
+  svg {
+    margin-right: 8px;
+  }
+}
+
+.date-icon {
+  color: #5a5a5a;
+}
+
+.search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  padding: 10px 12px;
+  border-radius: 5px;
+  border: 0.5px solid #5a5a5a;
+  background: transparent;
+  transition: 0.2s linear;
+
+  .search-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    background: none;
+    padding: 0 10px;
+    color: #1f1f1f;
+
+    &::placeholder {
+      color: #5c5c5c;
+    }
+
+    &:focus,
+    &::selection,
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  .search-icon {
+    color: #5c5c5c;
+  }
+}

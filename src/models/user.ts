@@ -1,3 +1,5 @@
+import { ServiceModel } from "./service";
+
 export type UserModel = {
   id: string;
   email: string;
@@ -17,5 +19,6 @@ export type ProfessionalUserModel = {
 } & UserModel;
 
 export type ClientUserModel = {
-  professionalReferralCode: string;
+  professionalReferralCode?: string;
+  services?: ServiceModel[];
 } & UserModel;
