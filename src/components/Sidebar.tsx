@@ -11,6 +11,7 @@ import {
   Menu,
   X,
   ArchiveIcon,
+  HandshakeIcon,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -19,6 +20,7 @@ const navigation = [
   { name: "Clientes", href: "/clientes", icon: Users },
   { name: "Agenda", href: "/agenda", icon: Calendar },
   { name: "Contratos", href: "/contratos", icon: ArchiveIcon },
+  { name: "Serviços", href: "/servicos", icon: HandshakeIcon },
   // { name: "Profissionais", href: "/profissionais", icon: UserCheck },
   // { name: "Financeiro", href: "/financeiro", icon: DollarSign },
 ];

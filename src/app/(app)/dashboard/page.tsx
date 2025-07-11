@@ -5,7 +5,7 @@ import FaturamentoChart from "../../../components/FaturamentoChart";
 import TransacoesTable from "../../../components/TransacoesTable";
 import { kpis } from "../../../lib/mock-data";
 import PWAInstallBanner from "../../../components/PWAInstallBanner";
-import { useUser } from "@/hooks/useUsers";
+import { useUser } from "@/hooks/api/useUsers";
 
 export default function DashboardPage() {
   const { data: user } = useUser();

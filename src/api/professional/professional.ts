@@ -1,5 +1,5 @@
 import { ClientUserModel, ProfessionalUserModel } from "@/models/user";
-import api from ".";
+import api from "@/api";
 export const getProfessionalDetails = async () => {
   const { data } = await api.get<ProfessionalUserModel>(
     `/professionals/details/`

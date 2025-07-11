@@ -64,3 +64,11 @@ export type ServiceContractFullModel = {
   label: string;
   attendance: WeekdayTimeModel[];
 };
+
+export type ServiceContractPreviewPayloadModel = Omit<
+  ServiceContractModel,
+  "id" | "createdAt" | "updatedAt"
+>;
+export type ServiceContractPreviewModel = {
+  contractUrl: string;
+};

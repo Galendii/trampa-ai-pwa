@@ -6,9 +6,10 @@ import { useState } from "react";
 import { X, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import PWAInstallBanner from "./PWAInstallBanner";
-import { useLogin } from "@/hooks/useAuth";
+import { useLogin } from "@/hooks/api/useAuth";
 import { UserLoginType } from "@/models/authentication";
 import { useAuthContext } from "@/contexts/AuthContext";
+import { useToast } from "@/contexts/ToastContext";
 
 interface LoginModalProps {
   userType: "cliente" | "profissional" | "organizacao";
@@ -23,6 +24,7 @@ export default function LoginModal({ userType, onClose }: LoginModalProps) {
   const router = useRouter();
   const { mutate: login } = useLogin();
   const { login: contextLogin } = useAuthContext();
+  const { addToast } = useToast();
 
   const userTypeLabels = {
     cliente: "Cliente",
@@ -50,10 +52,14 @@ export default function LoginModal({ userType, onClose }: LoginModalProps) {
           contextLogin(response);
           router.push("/dashboard");
         },
+        onSettled: () => {
+          setIsLoading(false);
+        },
+        onError: () => {
+          addToast("deu ruim", "danger");
+        },
       }
     );
-
-    // await new Promise((resolve) => setTimeout(resolve, 1500));
 
     // Redirecionar para dashboard
     // router.push("/dashboard");
@@ -64,6 +70,7 @@ export default function LoginModal({ userType, onClose }: LoginModalProps) {
 
     // Simular login com Google
     await new Promise((resolve) => setTimeout(resolve, 1500));
+    setIsLoading(false);
 
     // Redirecionar para dashboard
     router.push("/dashboard");

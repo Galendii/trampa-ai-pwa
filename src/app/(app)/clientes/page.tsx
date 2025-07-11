@@ -1,6 +1,6 @@
 "use client";
 
-import { useClients } from "@/hooks/useProfessional";
+import { useGetClients } from "@/hooks/api/professional/useProfessional";
 import Header from "../../../components/Header";
 import { Plus, Search, Eye, Edit, Trash2, Users } from "lucide-react";
 import { useState } from "react";
@@ -15,7 +15,7 @@ export default function ClientsPage() {
   const [statusFilter, setStatusFilter] = useState<
     "todos" | "ativo" | "inativo"
   >("todos");
-  const { data: clients } = useClients();
+  const { data: clients } = useGetClients();
 
   const filteredClients: ClientUserModel[] = (clients || []).filter(
     (client) => {
