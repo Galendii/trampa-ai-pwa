@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
 import { Checkbox } from "../../components/ui/Checkbox";
 import { Radio } from "../../components/ui/Radio";
@@ -9,27 +8,29 @@ import { Select } from "../../components/ui/Select";
 import { AutocompleteSelect } from "../../components/ui/AutocompleteSelect";
 import { Accordion, AccordionItem } from "../../components/ui/Accordion";
 import { DatePicker } from "../../components/ui/DatePicker";
-import { DateRangePicker } from "../../components/ui/DateRangePicker";
+import {
+  DateRange,
+  DateRangePicker,
+} from "../../components/ui/DateRangePicker";
 import {
   DateTimePicker,
   EnhancedDateTimePicker,
   type DateTimeRange,
 } from "../../components/ui/DateTimePicker";
 import { Modal, ModalBody, ModalFooter } from "../../components/ui/Modal";
-import { ToastProvider, useToast } from "../../components/ui/Toast";
 import {
   Tabs,
   TabsList,
   TabsTrigger,
   TabsContent,
 } from "../../components/ui/Tabs";
-import {
-  Wizard,
-  WizardHeader,
-  WizardContent,
-  WizardStep,
-  WizardFooter,
-} from "../../components/ui/Wizard";
+// import {
+//   Wizard,
+//   WizardHeader,
+//   WizardContent,
+//   WizardStep,
+//   WizardFooter,
+// } from "../../components/ui/Wizard";
 import {
   Mail,
   Lock,
@@ -37,32 +38,23 @@ import {
   Users,
   Settings,
   CreditCard,
-  Check,
+  // Check,
 } from "lucide-react";
+import { ToastProvider, useToast } from "@/contexts/ToastContext";
+import Button from "@/components/ui/Button";
 
 function ToastDemo() {
   const { addToast } = useToast();
 
-  const showToast = (type: "success" | "error" | "warning" | "info") => {
+  const showToast = (type: "success" | "danger" | "warning" | "info") => {
     const messages = {
       success: "Operação realizada com sucesso!",
-      error: "Ocorreu um erro inesperado.",
+      danger: "Ocorreu um erro inesperado.",
       warning: "Atenção: verifique os dados inseridos.",
       info: "Nova atualização disponível.",
     };
 
-    addToast({
-      type,
-      title: type.charAt(0).toUpperCase() + type.slice(1),
-      message: messages[type],
-      action:
-        type === "info"
-          ? {
-              label: "Atualizar",
-              onClick: () => console.log("Atualizando..."),
-            }
-          : undefined,
-    });
+    addToast(messages[type], type);
   };
 
   return (
@@ -70,7 +62,7 @@ function ToastDemo() {
       <Button onClick={() => showToast("success")} variant="success" fullWidth>
         Success Toast
       </Button>
-      <Button onClick={() => showToast("error")} variant="danger" fullWidth>
+      <Button onClick={() => showToast("danger")} variant="danger" fullWidth>
         Error Toast
       </Button>
       <Button
@@ -93,7 +85,7 @@ function UIDemo() {
   const [selectValue, setSelectValue] = useState("");
   const [autocompleteValue, setAutocompleteValue] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [dateRange, setDateRange] = useState({
+  const [dateRange, setDateRange] = useState<DateRange>({
     startDate: null,
     endDate: null,
   });
@@ -104,12 +96,12 @@ function UIDemo() {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("account");
-  const [wizardStep, setWizardStep] = useState(0);
-  const [wizardData, setWizardData] = useState({
-    name: "",
-    email: "",
-    company: "",
-  });
+  // const [wizardStep, setWizardStep] = useState(0);
+  // const [wizardData, setWizardData] = useState({
+  //   name: "",
+  //   email: "",
+  //   company: "",
+  // });
 
   const selectOptions = [
     { value: "option1", label: "Opção 1" },
@@ -283,14 +275,14 @@ function UIDemo() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <DatePicker
                   label="Single Date"
-                  value={selectedDate}
+                  value={selectedDate ?? undefined}
                   onChange={setSelectedDate}
                   placeholder="Select a date"
                 />
                 <DateRangePicker
                   label="Date Range"
                   value={dateRange}
-                  onChange={setDateRange}
+                  onChange={(val) => setDateRange(val)}
                   placeholder="Select date range"
                 />
               </div>
@@ -403,7 +395,11 @@ function UIDemo() {
               Tabs
             </h2>
             <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6">
-              <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <Tabs
+                defaultValue={activeTab}
+                value={activeTab}
+                onValueChange={setActiveTab}
+              >
                 <TabsList>
                   <TabsTrigger value="account">
                     <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
@@ -500,7 +496,7 @@ function UIDemo() {
           </section>
 
           {/* Wizard */}
-          <section>
+          {/* <section>
             <h2 className="text-lg sm:text-xl font-semibold text-slate-800 mb-3 sm:mb-4">
               Wizard
             </h2>
@@ -512,8 +508,6 @@ function UIDemo() {
                   { id: "company", title: "Empresa", icon: Settings },
                   { id: "review", title: "Revisão", icon: Check },
                 ]}
-                currentStep={wizardStep}
-                onStepChange={setWizardStep}
               >
                 <WizardHeader>
                   <h3 className="text-lg font-semibold text-slate-800 mb-2">
@@ -644,7 +638,7 @@ function UIDemo() {
                 />
               </Wizard>
             </div>
-          </section>
+          </section> */}
 
           {/* Accordion */}
           <section>
@@ -813,7 +807,7 @@ function UIDemo() {
 
 export default function UILibraryDemo() {
   return (
-    <ToastProvider position="top-right">
+    <ToastProvider>
       <UIDemo />
     </ToastProvider>
   );

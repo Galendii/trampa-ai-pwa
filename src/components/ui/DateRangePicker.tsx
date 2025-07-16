@@ -425,7 +425,7 @@ export function DateRangePicker({
                     disabled && "opacity-50 cursor-not-allowed"
                   )}
                   aria-label={date.toLocaleDateString()}
-                  aria-selected={isStart || isEnd}
+                  aria-selected={!!isStart || !!isEnd}
                   aria-disabled={disabled}
                 >
                   {date.getDate()}

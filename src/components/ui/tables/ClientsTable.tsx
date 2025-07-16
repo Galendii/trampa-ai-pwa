@@ -2,7 +2,7 @@ import { ClientUserModel } from "@/models/user";
 import { Table } from "./Table";
 import React, { useCallback } from "react";
 import { StringHelper } from "@/helpers/string-helper";
-import Button from "../button";
+import Button from "../Button";
 import { PlusIcon } from "lucide-react";
 
 const HEADERS = [
@@ -50,7 +50,7 @@ export const ClientsTable = ({ clients }: { clients: ClientUserModel[] }) => {
         case "professionalReferralCode":
           return row[key] ?? "-";
         default:
-          return row[key] ?? "-";
+          return String(row[key as keyof ClientUserModel]) ?? "-";
       }
     },
     [stringHelper]

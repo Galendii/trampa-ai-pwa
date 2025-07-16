@@ -1,0 +1,100 @@
+{
+  "name": "Trampa AI: Gestão Inteligente",
+  "short_name": "Trampa AI",
+  "description": "Cockpit de gestão para profissionais e organizações no Brasil. Controle financeiro, agenda e clientes com inteligência artificial.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/icons/icon-48x48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Acesse seu painel principal",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icons/shortcut-dashboard.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Nova Transação",
+      "short_name": "Transação",
+      "description": "Registre uma nova entrada ou saída",
+      "url": "/financeiro/nova-transacao",
+      "icons": [{ "src": "/icons/shortcut-transaction.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Ver Clientes",
+      "short_name": "Clientes",
+      "description": "Visualize e gerencie seus clientes",
+      "url": "/clientes",
+      "icons": [{ "src": "/icons/shortcut-clients.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot-desktop-1.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Visão geral do Dashboard"
+    }
+  ],
+  "lang": "pt-BR",
+  "dir": "ltr"
+}

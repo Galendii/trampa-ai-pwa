@@ -1,5 +1,5 @@
 import type React from "react";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 import "./globals.css";
@@ -12,14 +12,17 @@ export const metadata: Metadata = {
   title: "Trampa AI - Sua gestão, clara como o dia",
   description: "Cockpit de gestão para negócios de serviço no Brasil",
   manifest: "/manifest.webmanifest",
-  themeColor: "#2563eb",
-  viewport:
-    "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "Trampa AI",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#2563eb",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
