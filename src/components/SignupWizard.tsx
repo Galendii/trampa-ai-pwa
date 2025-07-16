@@ -184,7 +184,7 @@ export default function SignupWizard({ userType, onClose }: SignupWizardProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[95vh] overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl h-[95vh] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200">
           <div>
@@ -204,7 +204,7 @@ export default function SignupWizard({ userType, onClose }: SignupWizardProps) {
         </div>
 
         {/* Wizard Content */}
-        <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(95vh-8rem)]">
+        <div className="p-4 sm:p-6 overflow-y-auto h-full">
           <Wizard steps={SIGNUP_STEPS}>
             <WizardHeader />
 
