@@ -1,8 +1,11 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Header from "../../../components/Header"
-import { Calendar, type CalendarEvent } from "../../../components/ui/Calendar"
+import { useState } from "react";
+import Header from "../../../../components/Header";
+import {
+  Calendar,
+  type CalendarEvent,
+} from "../../../../components/ui/Calendar";
 
 export default function AgendaPage() {
   const [events, setEvents] = useState<CalendarEvent[]>([
@@ -57,27 +60,31 @@ export default function AgendaPage() {
       location: "Auditório",
       category: "Educação",
     },
-  ])
+  ]);
 
   const handleEventCreate = (eventData: Omit<CalendarEvent, "id">) => {
     const newEvent: CalendarEvent = {
       ...eventData,
       id: Math.random().toString(36).substr(2, 9),
-    }
-    setEvents([...events, newEvent])
-  }
+    };
+    setEvents([...events, newEvent]);
+  };
 
   const handleEventUpdate = (updatedEvent: CalendarEvent) => {
-    setEvents(events.map((event) => (event.id === updatedEvent.id ? updatedEvent : event)))
-  }
+    setEvents(
+      events.map((event) =>
+        event.id === updatedEvent.id ? updatedEvent : event
+      )
+    );
+  };
 
   const handleEventDelete = (eventId: string) => {
-    setEvents(events.filter((event) => event.id !== eventId))
-  }
+    setEvents(events.filter((event) => event.id !== eventId));
+  };
 
   const handleDateSelect = (date: Date) => {
-    console.log("Data selecionada:", date)
-  }
+    console.log("Data selecionada:", date);
+  };
 
   return (
     <div className="p-4 sm:p-6 h-screen flex flex-col">
@@ -99,5 +106,5 @@ export default function AgendaPage() {
         />
       </div>
     </div>
-  )
+  );
 }

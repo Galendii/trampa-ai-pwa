@@ -16,7 +16,6 @@ export default function PWAInstallBanner({
   const { isInstalled, isInstallable, installPWA } = usePWA();
   const [isDismissed, setIsDismissed] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  console.log(isInstalled, isMounted);
 
   // Only show after component is mounted to prevent hydration mismatch
   useEffect(() => {

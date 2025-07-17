@@ -58,7 +58,6 @@ export const WizardProvider: React.FC<WizardProviderProps> = ({
   };
   const goToStep = useCallback(
     (step: number) => {
-      console.log(currentStep, step);
       const newStep = Math.max(0, Math.min(step, totalSteps - 1));
       setCurrentStep(newStep);
     },

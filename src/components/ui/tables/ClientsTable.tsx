@@ -28,7 +28,6 @@ export const ClientsTable = ({ clients }: { clients: ClientUserModel[] }) => {
   const stringHelper = new StringHelper();
   const renderCellContent = useCallback(
     (row: ClientUserModel, key: string) => {
-      console.log(key, row);
       switch (key) {
         case "client":
           return (

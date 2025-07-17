@@ -9,7 +9,6 @@ import { useUser } from "@/hooks/api/useUsers";
 
 export default function DashboardPage() {
   const { data: user } = useUser();
-  console.log(user);
   return (
     <div className="p-4 sm:p-6 space-y-6">
       <Header title="Dashboard" />

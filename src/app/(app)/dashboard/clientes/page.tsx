@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetClients } from "@/hooks/api/professional/useProfessional";
-import Header from "../../../components/Header";
+import Header from "../../../../components/Header";
 import { Plus, Search, Eye, Edit, Trash2, Users } from "lucide-react";
 import { useState } from "react";
 import { ClientUserModel } from "@/models/user";

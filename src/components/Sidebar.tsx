@@ -82,7 +82,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile menu button */}
-      <div className="lg:hidden fixed top-4 left-4 z-50">
+      <div className="lg:hidden fixed bottom-4 right-4 z-50">
         <button
           id="menu-button"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
