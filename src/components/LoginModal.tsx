@@ -12,7 +12,7 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
 
 interface LoginModalProps {
-  userType: "cliente" | "profissional" | "organizacao";
+  userType: "client" | "professional" | "organization";
   onClose: () => void;
 }
 

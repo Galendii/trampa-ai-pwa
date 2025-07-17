@@ -1,38 +1,30 @@
-"use client"
+"use client";
 
-import { FileText, Building2 } from "lucide-react"
-import { Input } from "../ui/Input"
-import { Button } from "../ui/Button"
+import { FileText, Building2 } from "lucide-react";
+import { Input } from "../ui/Input";
+import { Button } from "../ui/Button";
+import { useWizard } from "@/contexts/WizardContext";
 
-interface DocumentationStepProps {
-  formData: {
-    documento: string
-    tipoDocumento: "cpf" | "cnpj"
-    nomeEmpresa?: string
-  }
-  updateFormData: (field: string, value: string) => void
-  errors?: Record<string, string>
-}
-
-export default function DocumentationStep({ formData, updateFormData, errors }: DocumentationStepProps) {
+const DocumentationStep = () => {
+  const { updateFormData, formData, errors, setErrors } = useWizard();
   const formatDocument = (value: string, type: "cpf" | "cnpj") => {
-    const numbers = value.replace(/\D/g, "")
+    const numbers = value.replace(/\D/g, "");
 
     if (type === "cpf") {
       return numbers
         .replace(/(\d{3})(\d)/, "$1.$2")
         .replace(/(\d{3})(\d)/, "$1.$2")
         .replace(/(\d{3})(\d{1,2})/, "$1-$2")
-        .replace(/(-\d{2})\d+?$/, "$1")
+        .replace(/(-\d{2})\d+?$/, "$1");
     } else {
       return numbers
         .replace(/(\d{2})(\d)/, "$1.$2")
         .replace(/(\d{3})(\d)/, "$1.$2")
         .replace(/(\d{3})(\d)/, "$1/$2")
         .replace(/(\d{4})(\d{1,2})/, "$1-$2")
-        .replace(/(-\d{2})\d+?$/, "$1")
+        .replace(/(-\d{2})\d+?$/, "$1");
     }
-  }
+  };
 
   return (
     <div className="space-y-4">
@@ -40,12 +32,16 @@ export default function DocumentationStep({ formData, updateFormData, errors }: 
         <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <FileText className="w-8 h-8 text-purple-600" />
         </div>
-        <h3 className="text-xl font-semibold text-slate-800 mb-2">Documentação</h3>
+        <h3 className="text-xl font-semibold text-slate-800 mb-2">
+          Documentação
+        </h3>
         <p className="text-slate-600">Precisamos validar sua identidade</p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-3">Tipo de Documento</label>
+        <label className="block text-sm font-medium text-slate-700 mb-3">
+          Tipo de Documento
+        </label>
         <div className="grid grid-cols-2 gap-4">
           <Button
             type="button"
@@ -70,7 +66,11 @@ export default function DocumentationStep({ formData, updateFormData, errors }: 
         label={formData.tipoDocumento === "cpf" ? "CPF" : "CNPJ"}
         value={formatDocument(formData.documento, formData.tipoDocumento)}
         onChange={(e) => updateFormData("documento", e.target.value)}
-        placeholder={formData.tipoDocumento === "cpf" ? "000.000.000-00" : "00.000.000/0000-00"}
+        placeholder={
+          formData.tipoDocumento === "cpf"
+            ? "000.000.000-00"
+            : "00.000.000/0000-00"
+        }
         error={errors?.documento}
         required
       />
@@ -87,5 +87,6 @@ export default function DocumentationStep({ formData, updateFormData, errors }: 
         />
       )}
     </div>
-  )
-}
+  );
+};
+export default DocumentationStep;

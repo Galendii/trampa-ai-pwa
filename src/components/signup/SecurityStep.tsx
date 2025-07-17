@@ -1,21 +1,15 @@
-"use client"
+"use client";
 
-import { Lock, Eye, EyeOff, Shield } from "lucide-react"
-import { useState } from "react"
-import { Input } from "../ui/Input"
+import { Lock, Eye, EyeOff, Shield } from "lucide-react";
+import { useState } from "react";
+import { Input } from "../ui/Input";
+import { useWizard } from "@/contexts/WizardContext";
 
-interface SecurityStepProps {
-  formData: {
-    senha: string
-    confirmacaoSenha: string
-  }
-  updateFormData: (field: string, value: string) => void
-  errors?: Record<string, string>
-}
+const SecurityStep = () => {
+  const { updateFormData, formData, errors, setErrors } = useWizard();
+  const [showPassword, setShowPassword] = useState(false);
 
-export default function SecurityStep({ formData, updateFormData, errors }: SecurityStepProps) {
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
     <div className="space-y-4">
@@ -24,15 +18,17 @@ export default function SecurityStep({ formData, updateFormData, errors }: Secur
           <Shield className="w-8 h-8 text-emerald-600" />
         </div>
         <h3 className="text-xl font-semibold text-slate-800 mb-2">Segurança</h3>
-        <p className="text-slate-600">Crie uma senha segura para proteger sua conta</p>
+        <p className="text-slate-600">
+          Crie uma senha segura para proteger sua conta
+        </p>
       </div>
 
       <div className="relative">
         <Input
           label="Senha"
           type={showPassword ? "text" : "password"}
-          value={formData.senha}
-          onChange={(e) => updateFormData("senha", e.target.value)}
+          value={formData.password}
+          onChange={(e) => updateFormData("password", e.target.value)}
           placeholder="••••••••"
           leftIcon={<Lock size={18} />}
           rightIcon={
@@ -44,7 +40,7 @@ export default function SecurityStep({ formData, updateFormData, errors }: Secur
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           }
-          error={errors?.senha}
+          error={errors?.password}
           required
         />
         <p className="text-xs text-slate-500 mt-1">Mínimo 8 caracteres</p>
@@ -54,8 +50,10 @@ export default function SecurityStep({ formData, updateFormData, errors }: Secur
         <Input
           label="Confirmar Senha"
           type={showConfirmPassword ? "text" : "password"}
-          value={formData.confirmacaoSenha}
-          onChange={(e) => updateFormData("confirmacaoSenha", e.target.value)}
+          value={formData.passwordConfirmation}
+          onChange={(e) =>
+            updateFormData("passwordConfirmation", e.target.value)
+          }
           placeholder="••••••••"
           leftIcon={<Lock size={18} />}
           rightIcon={
@@ -67,12 +65,13 @@ export default function SecurityStep({ formData, updateFormData, errors }: Secur
               {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           }
-          error={errors?.confirmacaoSenha}
+          error={errors?.passwordConfirmation}
           required
         />
-        {formData.confirmacaoSenha && formData.senha !== formData.confirmacaoSenha && (
-          <p className="text-xs text-red-500 mt-1">As senhas não coincidem</p>
-        )}
+        {formData.passwordConfirmation &&
+          formData.password !== formData.passwordConfirmation && (
+            <p className="text-xs text-red-500 mt-1">As senhas não coincidem</p>
+          )}
       </div>
 
       {/* Password Strength Indicator */}
@@ -87,8 +86,8 @@ export default function SecurityStep({ formData, updateFormData, errors }: Secur
                   ? level <= 2
                     ? "bg-red-400"
                     : level === 3
-                      ? "bg-yellow-400"
-                      : "bg-emerald-400"
+                    ? "bg-yellow-400"
+                    : "bg-emerald-400"
                   : "bg-slate-200"
               }`}
             />
@@ -96,5 +95,7 @@ export default function SecurityStep({ formData, updateFormData, errors }: Secur
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default SecurityStep;
