@@ -17,10 +17,10 @@ import { useState, useEffect } from "react";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Clientes", href: "/clientes", icon: Users },
-  { name: "Agenda", href: "/agenda", icon: Calendar },
-  { name: "Contratos", href: "/contratos", icon: ArchiveIcon },
-  { name: "Serviços", href: "/servicos", icon: HandshakeIcon },
+  { name: "Clientes", href: "/dashboard/clientes", icon: Users },
+  { name: "Agenda", href: "/dashboard/agenda", icon: Calendar },
+  { name: "Contratos", href: "/dashboard/contratos", icon: ArchiveIcon },
+  { name: "Serviços", href: "/dashboard/servicos", icon: HandshakeIcon },
   // { name: "Profissionais", href: "/profissionais", icon: UserCheck },
   // { name: "Financeiro", href: "/financeiro", icon: DollarSign },
 ];
@@ -82,7 +82,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile menu button */}
-      <div className="lg:hidden fixed bottom-4 right-4 z-50">
+      <div className="lg:hidden fixed bottom-4 left-4 z-50">
         <button
           id="menu-button"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

@@ -1,12 +1,12 @@
 "use client";
 
-import { useGetClients } from "@/hooks/api/professional/useProfessional";
 import Header from "../../../../components/Header";
 import { Plus, Search, Eye, Edit, Trash2, Users } from "lucide-react";
 import { useState } from "react";
 import { ClientUserModel } from "@/models/user";
 import { StringHelper } from "@/helpers/string-helper";
-import { ClientsTable } from "@/components/ui/tables/ClientsTable";
+import InfiniteScroll from "@/components/ui/infinite-scroll";
+import { getClients } from "@/api/professional/professional";
 
 export default function ClientsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,25 +15,84 @@ export default function ClientsPage() {
   const [statusFilter, setStatusFilter] = useState<
     "todos" | "ativo" | "inativo"
   >("todos");
-  const { data: clients } = useGetClients();
+  // const { data: clients } = useGetClients();
 
-  const filteredClients: ClientUserModel[] = (clients || []).filter(
-    (client) => {
-      const matchesSearch =
-        client.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        client.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        client.email.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus =
-        statusFilter === "todos" ||
-        (client.professionalReferralCode ? "ativo" : "inativo") ===
-          statusFilter;
-      return matchesSearch && matchesStatus;
-    }
-  );
+  // const filteredClients: ClientUserModel[] = (clients?.results || []).filter(
+  //   (client) => {
+  //     const matchesSearch =
+  //       client.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       client.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       client.email.toLowerCase().includes(searchTerm.toLowerCase());
+  //     const matchesStatus =
+  //       statusFilter === "todos" ||
+  //       (client.professionalReferralCode ? "ativo" : "inativo") ===
+  //         statusFilter;
+  //     return matchesSearch && matchesStatus;
+  //   }
+  // );
 
   const getStatusBadge = (status: string) => {
     return status === "ativo" ? "status-badge-active" : "status-badge-inactive";
   };
+
+  const renderData = (client: ClientUserModel) => (
+    <tr key={client.id} className="hover:bg-slate-50/50 transition-colors">
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div>
+          <div className="text-sm font-medium text-gray-900">
+            {client.firstName} {client.lastName}
+          </div>
+          <div className="text-sm text-gray-500">{client.email}</div>
+          <div className="text-sm text-gray-500">
+            {stringHelper.formatAsPhoneNumber(client.phone)}
+          </div>
+          <div className="text-sm text-gray-500">
+            {stringHelper.formatAsCPF(client.cpf)}
+          </div>
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <span className="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-700">
+          N/A
+        </span>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">N/A</td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <span
+          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusBadge(
+            client.professionalReferralCode ? "ativo" : "inativo"
+          )}`}
+        >
+          {client.professionalReferralCode ? "Ativo" : "Inativo"}
+        </span>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        {new Date(client.createdAt).toLocaleDateString("pt-BR")}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+        <div className="flex items-center justify-end space-x-2">
+          <button
+            className="text-gray-400 hover:text-gray-600 p-1"
+            aria-label="Ver detalhes"
+          >
+            <Eye size={16} />
+          </button>
+          <button
+            className="text-gray-400 hover:text-gray-600 p-1"
+            aria-label="Editar"
+          >
+            <Edit size={16} />
+          </button>
+          <button
+            className="text-gray-400 hover:text-red-600 p-1"
+            aria-label="Excluir"
+          >
+            <Trash2 size={16} />
+          </button>
+        </div>
+      </td>
+    </tr>
+  );
 
   return (
     <div className="p-4 sm:p-6 space-y-6">
@@ -158,29 +217,33 @@ export default function ClientsPage() {
           </div>
         )}
       </div> */}
-
-      <ClientsTable clients={filteredClients} />
+      <InfiniteScroll
+        querykey="clients"
+        fetchData={(pageData: any) => getClients(pageData)}
+        renderData={renderData}
+      />
+      {/* <ClientsTable clients={filteredClients} /> */}
       {/* Estatísticas */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
         <div className="card text-center">
           <div className="text-xl sm:text-2xl font-bold text-gray-900">
-            {clients?.filter((c) => c.professionalReferralCode).length}
+            {clients?.results.filter((c) => c.professionalReferralCode).length}
           </div>
           <div className="text-sm text-gray-600">Clientes Ativos</div>
         </div>
         <div className="card text-center">
           <div className="text-xl sm:text-2xl font-bold text-gray-900">
-            {clients?.filter((c) => !c.professionalReferralCode).length}
+            {clients?.results.filter((c) => !c.professionalReferralCode).length}
           </div>
           <div className="text-sm text-gray-600">Clientes Inativos</div>
         </div>
         <div className="card text-center">
           <div className="text-xl sm:text-2xl font-bold text-gray-900">
-            {clients?.length}
+            {clients?.results.length}
           </div>
           <div className="text-sm text-gray-600">Total de Clientes</div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

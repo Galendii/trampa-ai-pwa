@@ -1,5 +1,6 @@
 import { ClientUserModel, ProfessionalUserModel } from "@/models/user";
 import api from "@/api";
+import { PaginatedResponseModel } from "@/models/paginated-response";
 export const getProfessionalDetails = async () => {
   const { data } = await api.get<ProfessionalUserModel>(
     `/professionals/details/`
@@ -7,8 +8,15 @@ export const getProfessionalDetails = async () => {
   return data;
 };
 
-export const getClients = async () => {
-  const { data } = await api.get<ClientUserModel[]>(`/professionals/clients`);
+export const getClients = async ({ page }: { page: number }) => {
+  const { data } = await api.get<PaginatedResponseModel<ClientUserModel>>(
+    `/management/clients/`,
+    {
+      params: {
+        page,
+      },
+    }
+  );
   return data;
 };
 export const getClientById = async (id: string) => {

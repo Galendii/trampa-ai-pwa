@@ -55,8 +55,8 @@ export default function LoginModal({ userType, onClose }: LoginModalProps) {
         onSettled: () => {
           setIsLoading(false);
         },
-        onError: () => {
-          addToast("deu ruim", "danger");
+        onError: (error) => {
+          addToast(error.message, "danger");
         },
       }
     );

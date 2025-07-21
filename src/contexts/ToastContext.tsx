@@ -93,7 +93,7 @@ const ToastItem: React.FC<ToastProps> = ({ id, message, variant, onClose }) => {
   return (
     <div
       className={cn(
-        "relative p-4 rounded-lg shadow-lg flex items-center gap-3 pr-10 pointer-events-auto",
+        "relative p-4 rounded-lg shadow-lg flex items-center gap-3 pr-10 pointer-events-auto z-50",
         variantClasses[variant || "default"]
       )}
     >
@@ -101,7 +101,7 @@ const ToastItem: React.FC<ToastProps> = ({ id, message, variant, onClose }) => {
       <p className="text-sm font-medium flex-1">{message}</p>
       <button
         onClick={onClose}
-        className="absolute top-2 right-2 p-1 rounded-full hover:bg-black/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-current"
+        className="absolute top-2 right-2 p-1 rounded-full whover:bg-black/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-current"
       >
         <X size={16} />
       </button>
