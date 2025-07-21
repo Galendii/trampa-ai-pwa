@@ -27,17 +27,17 @@ export default function LoginModal({ userType, onClose }: LoginModalProps) {
   const { addToast } = useToast();
 
   const userTypeLabels = {
-    cliente: "Cliente",
-    profissional: "Profissional",
-    organizacao: "Organização",
+    client: "Cliente",
+    professional: "Profissional",
+    organization: "Organização",
   };
   const userTypePaths: Record<
-    "cliente" | "profissional" | "organizacao",
+    "client" | "professional" | "organization",
     UserLoginType
   > = {
-    cliente: "clients",
-    profissional: "professionals",
-    organizacao: "professionals",
+    client: "clients",
+    professional: "professionals",
+    organization: "organizations",
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

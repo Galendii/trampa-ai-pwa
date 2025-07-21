@@ -1,7 +1,7 @@
 // import { UserModel } from './user-model';
 
 import { UserModel } from "./user";
-export type UserLoginType = "clients" | "professionals";
+export type UserLoginType = "clients" | "professionals" | "organizations";
 
 export type AuthenticationModel = {
   access: string | null;

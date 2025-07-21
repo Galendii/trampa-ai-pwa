@@ -83,7 +83,7 @@ const LoginPage = () => {
   const userTypes = useMemo(
     () => [
       {
-        id: "cliente" as const,
+        id: "client" as const,
         title: "Cliente",
         description: "Acesse sua agenda, planos e acompanhe seu progresso",
         icon: User,
@@ -94,7 +94,7 @@ const LoginPage = () => {
         iconColor: "text-blue",
       },
       {
-        id: "profissional" as const,
+        id: "professional" as const,
         title: "Profissional",
         description:
           "Gerencie seus clientes, agenda e crescimento profissional",
@@ -105,17 +105,17 @@ const LoginPage = () => {
         hoverColor: "hover:border-emerald-300",
         iconColor: "text-emerald",
       },
-      {
-        id: "organizacao" as const,
-        title: "Organização",
-        description: "Administre sua equipe, profissionais e operação completa",
-        icon: Building2,
-        color: "from-purple-500 to-purple-600",
-        bgColor: "bg-purple-50",
-        borderColor: "border-purple-200",
-        hoverColor: "hover:border-purple-300",
-        iconColor: "text-purple",
-      },
+      // {
+      //   id: "organization" as const,
+      //   title: "Organização",
+      //   description: "Administre sua equipe, profissionais e operação completa",
+      //   icon: Building2,
+      //   color: "from-purple-500 to-purple-600",
+      //   bgColor: "bg-purple-50",
+      //   borderColor: "border-purple-200",
+      //   hoverColor: "hover:border-purple-300",
+      //   iconColor: "text-purple",
+      // },
     ],
     []
   );
@@ -127,7 +127,7 @@ const LoginPage = () => {
         <LoginHeader />
 
         {/* User Type Cards */}
-        <div className="grid md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid md:grid-cols-2 gap-6 mb-6 sm:mb-8">
           {userTypes.map((type) => {
             const Icon = type.icon;
             return (
@@ -170,9 +170,6 @@ const LoginPage = () => {
             );
           })}
         </div>
-
-        {/* Features */}
-        <Features />
       </div>
 
       {/* Modals */}

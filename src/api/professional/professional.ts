@@ -8,7 +8,7 @@ export const getProfessionalDetails = async () => {
 };
 
 export const getClients = async () => {
-  const { data } = await api.get<ClientUserModel[]>(`/professionals/clients/`);
+  const { data } = await api.get<ClientUserModel[]>(`/professionals/clients`);
   return data;
 };
 export const getClientById = async (id: string) => {
