@@ -44,7 +44,7 @@ export function Input({
         <input
           id={inputId}
           className={cn(
-            "w-full px-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white",
+            "w-full p-2  border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white",
             leftIcon && "pl-10",
             rightIcon && "pr-10",
             error &&

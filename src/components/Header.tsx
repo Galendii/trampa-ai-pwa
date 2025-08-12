@@ -1,8 +1,8 @@
-import { organizacao } from "../lib/mock-data"
-import { Bell, Settings, User } from "lucide-react"
+import { organizacao } from "../lib/mock-data";
+import { Bell, Settings, User } from "lucide-react";
 
 interface HeaderProps {
-  title: string
+  title: string;
 }
 
 export default function Header({ title }: HeaderProps) {
@@ -10,8 +10,12 @@ export default function Header({ title }: HeaderProps) {
     <header className="bg-white/80 backdrop-blur-xl shadow-sm border-b border-slate-200/60 px-4 sm:px-6 py-4">
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-800">{title}</h1>
-          <p className="text-sm text-slate-500 mt-0.5">Gerencie seu negócio com clareza</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-800">
+            {title}
+          </h1>
+          <p className="text-sm text-slate-500 mt-0.5">
+            Gerencie seu negócio com clareza
+          </p>
         </div>
 
         <div className="flex items-center space-x-2 sm:space-x-3">
@@ -37,12 +41,16 @@ export default function Header({ title }: HeaderProps) {
               <User size={16} className="text-white" />
             </div>
             <div className="hidden sm:block">
-              <p className="text-sm font-semibold text-slate-800">{organizacao.dono}</p>
-              <p className="text-xs text-slate-500">Dono da {organizacao.nome}</p>
+              <p className="text-sm font-semibold text-slate-800">
+                {organizacao.dono}
+              </p>
+              <p className="text-xs text-slate-500">
+                Dono da {organizacao.nome}
+              </p>
             </div>
           </div>
         </div>
       </div>
     </header>
-  )
+  );
 }

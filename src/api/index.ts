@@ -40,6 +40,7 @@ api.interceptors.response.use(
         "role",
       ].forEach((key) => deleteCookie(key));
       console.log("Unauthorized, redirecting to login...");
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }

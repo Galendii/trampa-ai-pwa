@@ -1,19 +1,22 @@
 "use client";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
+import React from "react";
 
 type InfiniteScrollProps = {
   fetchData: (pageData: any) => Promise<any>;
 
   renderData: (data: any) => React.ReactNode;
-  querykey: string;
+  queryKey: string;
+  className?: string;
 };
 
 // --- Infinite Query Component ---
 const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
   fetchData,
   renderData,
-  querykey,
+  queryKey,
+  className = "",
 }) => {
   // useInfiniteQuery hook to manage fetching paginated data
   const {
@@ -25,7 +28,7 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
     isError, // Boolean indicating if an error occurred
     error, // Error object if isError is true
   } = useInfiniteQuery({
-    queryKey: [querykey], // Unique key for this infinite query
+    queryKey: [queryKey], // Unique key for this infinite query
     // queryFn now directly uses the fetchData prop, which will be your getClients function
     queryFn: ({ pageParam = 1 }) => fetchData({ page: pageParam }),
     refetchOnReconnect: true,
@@ -71,14 +74,18 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
   const allData = data?.pages.flatMap((page) => page.results) || [];
 
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-6 bg-white rounded-xl shadow-lg font-inter">
+    <div className={className}>
       {/* <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
         Our Projects
       </h2> */}
 
       <div className="space-y-4">
         {allData.length > 0 ? (
-          allData.map((data) => renderData(data))
+          allData.map((data) => (
+            <React.Fragment key={Math.random()}>
+              {renderData(data)}
+            </React.Fragment>
+          ))
         ) : (
           <p className="text-center text-gray-600 text-lg py-8">
             Dados não encontrados.

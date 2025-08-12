@@ -1,8 +1,16 @@
 import api from "@/api";
+import { PaginatedResponseModel } from "@/models/paginated-response";
 import { ServiceModel } from "@/models/service";
 
-export const getServices = async () => {
-  const { data } = await api.get<ServiceModel[]>(`/services/`);
+export const getServices = async ({ page }: { page: number }) => {
+  const { data } = await api.get<PaginatedResponseModel<ServiceModel[]>>(
+    `/services/`,
+    {
+      params: {
+        page,
+      },
+    }
+  );
   return data;
 };
 export const createService = async (serviceData: ServiceModel) => {

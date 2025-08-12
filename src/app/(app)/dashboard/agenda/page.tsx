@@ -82,9 +82,7 @@ export default function AgendaPage() {
     setEvents(events.filter((event) => event.id !== eventId));
   };
 
-  const handleDateSelect = (date: Date) => {
-    console.log("Data selecionada:", date);
-  };
+  const handleDateSelect = (date: Date) => {};
 
   return (
     <div className="p-4 sm:p-6 h-screen flex flex-col">

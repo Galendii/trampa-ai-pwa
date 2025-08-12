@@ -218,7 +218,7 @@ export default function ClientsPage() {
         )}
       </div> */}
       <InfiniteScroll
-        querykey="clients"
+        queryKey="clients"
         fetchData={(pageData: any) => getClients(pageData)}
         renderData={renderData}
       />
