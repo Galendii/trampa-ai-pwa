@@ -4,9 +4,12 @@ export type PlanModel = {
   updatedAt: string;
   deletedAt: string;
   name: string;
-  uuid: string;
   price: string;
   duration: number;
   frequency: number;
   active: boolean;
 };
+export type PlanCreateModel = Omit<
+  PlanModel,
+  "id" | "createdAt" | "updatedAt" | "deletedAt"
+>;

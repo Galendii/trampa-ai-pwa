@@ -9,3 +9,8 @@ export type ServiceModel = {
   professional: number;
   plans: PlanModel[];
 };
+
+export type CreateServiceModel = {
+  name: string;
+  description?: string;
+};

@@ -5,10 +5,14 @@ import {
   getServices,
   updateService,
 } from "@/api/professional/services/services";
-import { ServiceModel } from "@/models/service";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import { CreateServiceModel, ServiceModel } from "@/models/service";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export const useGetServices = () => {
   return useQuery<ServiceModel[], Error>({
@@ -18,24 +22,41 @@ export const useGetServices = () => {
 };
 
 export const useCreateService = () => {
-  return useMutation<ServiceModel, Error, ServiceModel>({
-    mutationFn: (serviceData: ServiceModel) => createService(serviceData),
+  const queryClient = useQueryClient();
+  return useMutation<ServiceModel, Error, CreateServiceModel>({
+    mutationFn: (serviceData: CreateServiceModel) => createService(serviceData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["professional-services"] });
+      toast.success("Serviço criado com sucesso!");
+    },
+    onError: (error) => {
+      try {
+        toast.error(error.message);
+      } catch {
+        console.error("Error displaying toast notification");
+      }
     },
   });
 };
 export const useUpdateService = () => {
-  return useMutation<ServiceModel, Error, ServiceModel>({
-    mutationFn: (serviceData: ServiceModel) => updateService(serviceData),
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    ServiceModel,
+    Error,
+    { serviceData: CreateServiceModel; serviceId: string }
+  >({
+    mutationFn: ({ serviceData, serviceId }) =>
+      updateService(serviceData, serviceId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["professional-services"] });
     },
   });
 };
 export const useDeleteService = () => {
-  return useMutation<ServiceModel, Error, ServiceModel>({
-    mutationFn: (serviceData: ServiceModel) => deleteService(serviceData),
+  const queryClient = useQueryClient();
+  return useMutation<ServiceModel, Error, string>({
+    mutationFn: (serviceId: string) => deleteService(serviceId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["professional-services"] });
     },

@@ -15,7 +15,7 @@ type InitialStateType = {
 };
 
 type AuthProviderProps = {
-  children: React.ReactElement;
+  children: React.ReactNode;
   user?: UserModel | null;
 };
 
@@ -39,6 +39,7 @@ AuthProviderProps) => {
   const [user, setUser] = useState<UserModel | null>(null);
   const isUserLoggedIn = !!user;
   const login = useCallback((auth: AuthenticationModel) => {
+    console.log(auth);
     const { access, refresh, ...user } = auth;
 
     setCookie("accessToken", access, { secure: true, sameSite: "strict" });

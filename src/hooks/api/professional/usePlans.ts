@@ -11,7 +11,7 @@ const queryClient = new QueryClient();
 
 export const useGetPlans = () => {
   return useQuery<PlanModel[], Error>({
-    queryKey: ["professional-Plans"],
+    queryKey: ["professional-plans"],
     queryFn: getPlans,
   });
 };
@@ -20,7 +20,7 @@ export const useCreatePlan = () => {
   return useMutation<PlanModel, Error, PlanModel>({
     mutationFn: (planData: PlanModel) => createPlan(planData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["professional-Plans"] });
+      queryClient.invalidateQueries({ queryKey: ["professional-plans"] });
     },
   });
 };

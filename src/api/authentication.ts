@@ -7,9 +7,17 @@ export const login = async (
   password: string,
   userType: UserLoginType
 ) => {
-  const { data } = await api.post<AuthenticationModel>(`/${userType}/login/`, {
-    email,
-    password,
-  });
-  return data;
+  console.log(api.defaults.baseURL);
+  try {
+    const { data } = await api.post<AuthenticationModel>(
+      `/${userType}/login/`,
+      {
+        email,
+        password,
+      }
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
 };

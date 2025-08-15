@@ -1,8 +1,9 @@
 import api from "@/api";
 import { PaginatedResponseModel } from "@/models/paginated-response";
-import { ServiceModel } from "@/models/service";
+import { CreateServiceModel, ServiceModel } from "@/models/service";
 
 export const getServices = async ({ page }: { page: number }) => {
+  console.log(api.defaults.baseURL);
   const { data } = await api.get<PaginatedResponseModel<ServiceModel[]>>(
     `/services/`,
     {
@@ -13,18 +14,22 @@ export const getServices = async ({ page }: { page: number }) => {
   );
   return data;
 };
-export const createService = async (serviceData: ServiceModel) => {
+export const createService = async (serviceData: CreateServiceModel) => {
   const { data } = await api.post<ServiceModel>(`/services/`, serviceData);
   return data;
 };
-export const updateService = async (serviceData: ServiceModel) => {
-  const { data } = await api.patch<ServiceModel>(`/services/`, serviceData);
+export const updateService = async (
+  serviceData: CreateServiceModel,
+  serviceId: string
+) => {
+  const { data } = await api.patch<ServiceModel>(
+    `/services/${serviceId}/`,
+    serviceData
+  );
   return data;
 };
-export const deleteService = async (serviceData: ServiceModel) => {
-  const { data } = await api.delete<ServiceModel>(`/services/`, {
-    data: serviceData,
-  });
+export const deleteService = async (serviceId: string) => {
+  const { data } = await api.delete<ServiceModel>(`/services/${serviceId}/`);
   return data;
 };
 export const getServiceById = async (id: string) => {

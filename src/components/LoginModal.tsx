@@ -10,6 +10,7 @@ import { useLogin } from "@/hooks/api/useAuth";
 import { UserLoginType } from "@/models/authentication";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
+import { toast } from "sonner";
 
 interface LoginModalProps {
   userType: "client" | "professional" | "organization";
@@ -24,7 +25,6 @@ export default function LoginModal({ userType, onClose }: LoginModalProps) {
   const router = useRouter();
   const { mutate: login } = useLogin();
   const { login: contextLogin } = useAuthContext();
-  const { addToast } = useToast();
 
   const userTypeLabels = {
     client: "Cliente",
@@ -50,13 +50,14 @@ export default function LoginModal({ userType, onClose }: LoginModalProps) {
       {
         onSuccess: (response) => {
           contextLogin(response);
+          toast.success(`Bem-vindo, ${response.firstName}!`);
           router.push("/dashboard");
         },
         onSettled: () => {
           setIsLoading(false);
         },
         onError: (error) => {
-          addToast(error.message, "danger");
+          toast.error(error.message);
         },
       }
     );

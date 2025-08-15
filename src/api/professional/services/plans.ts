@@ -1,25 +1,42 @@
-import { PlanModel } from "@/models/plan";
+import { PlanModel, PlanCreateModel } from "@/models/plan";
 import api from "@/api";
 
-export const getPlans = async () => {
-  const { data } = await api.get<PlanModel[]>(`/plans/`);
+export const getPlans = async (serviceId: string) => {
+  const { data } = await api.get<PlanModel[]>(`/services/${serviceId}/plans/`);
   return data;
 };
-export const createPlan = async (planData: PlanModel) => {
-  const { data } = await api.post<PlanModel>(`/plans/`, planData);
+export const createPlan = async (
+  planData: PlanCreateModel,
+  serviceId: string
+) => {
+  const { data } = await api.post<PlanModel>(
+    `/services/${serviceId}/plans/`,
+    planData
+  );
   return data;
 };
-export const updatePlan = async (planData: PlanModel) => {
-  const { data } = await api.patch<PlanModel>(`/plans/`, planData);
+export const updatePlan = async (
+  planData: Partial<PlanCreateModel>,
+  serviceId: string
+) => {
+  const { data } = await api.patch<PlanModel>(
+    `/services/${serviceId}/plans/`,
+    planData
+  );
   return data;
 };
-export const deletePlan = async (planData: PlanModel) => {
-  const { data } = await api.delete<PlanModel>(`/plans/`, {
-    data: planData,
-  });
+export const deletePlan = async (planData: PlanModel, serviceId: string) => {
+  const { data } = await api.delete<PlanModel>(
+    `/services/${serviceId}/plans/`,
+    {
+      data: planData,
+    }
+  );
   return data;
 };
-export const getPlanById = async (id: string) => {
-  const { data } = await api.get<PlanModel>(`/plans/${id}`);
+export const getPlanById = async (id: string, serviceId: string) => {
+  const { data } = await api.get<PlanModel>(
+    `/services/${serviceId}/plans/${id}`
+  );
   return data;
 };

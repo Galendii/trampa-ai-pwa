@@ -7,7 +7,7 @@ import QueryProvider from "./QueryProvider";
 import { cn } from "@/lib/utils";
 import { ToastProvider } from "@/contexts/ToastContext";
 import { AuthProvider } from "@/contexts/AuthContext";
-
+import { Toaster } from "sonner";
 export const metadata: Metadata = {
   title: "Trampa AI - Sua gestão, clara como o dia",
   description: "Cockpit de gestão para negócios de serviço no Brasil",
@@ -44,12 +44,11 @@ export default function RootLayout({
         > */}
 
         <QueryProvider>
-          <AuthProvider>
-            <ToastProvider>{children}</ToastProvider>
-          </AuthProvider>
+          <AuthProvider>{children}</AuthProvider>
         </QueryProvider>
         {/* <Toaster /> */}
         {/* </ThemeProvider> */}
+        <Toaster />
       </body>
     </html>
   );
