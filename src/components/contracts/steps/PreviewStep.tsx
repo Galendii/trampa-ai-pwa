@@ -14,7 +14,7 @@ import { useGetByClientId } from "@/hooks/api/professional/useProfessional";
 import { useGetPlanById } from "@/hooks/api/professional/usePlans";
 import { useGetServiceById } from "@/hooks/api/professional/useService";
 import { useUser } from "@/hooks/api/useUsers";
-import { PAYMENT_METHOD_OPTIONS } from "../wizard";
+import { PAYMENT_METHOD_OPTIONS } from "../create-contract-wizard";
 
 // Helper for weekday labels
 const WEEKDAY_LABELS: { [key: string]: string } = {

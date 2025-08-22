@@ -11,7 +11,7 @@ import { Select } from "@/components/ui/Select";
 // Hooks & Context
 import { useWizard } from "@/contexts/WizardContext";
 import { useGetPlanById } from "@/hooks/api/professional/usePlans";
-import { PAYMENT_METHOD_OPTIONS } from "../wizard";
+import { PAYMENT_METHOD_OPTIONS } from "../create-contract-wizard";
 
 const PaymentStep = () => {
   const { formData, updateFormData, errors } = useWizard();

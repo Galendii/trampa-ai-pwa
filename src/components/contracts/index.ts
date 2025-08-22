@@ -1,1 +1,1 @@
-export { default as CreateContractWizard } from "./wizard";
+export { default as CreateContractWizard } from "./create-contract-wizard";
