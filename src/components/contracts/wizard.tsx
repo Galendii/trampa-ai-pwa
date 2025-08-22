@@ -31,16 +31,19 @@ import {
   ServiceContractModel,
 } from "@/models/service-contract";
 
-import SelectClientStep from "./steps/SelectClientStep";
-import SelectServiceStep from "./steps/SelectServiceStep";
-import SelectPlanStep from "./steps/SelectPlanStep";
-import SelectDatesStep from "./steps/SelectDatesStep";
-import AttendanceStep from "./steps/AttendanceStep";
-import TermsStep from "./steps/TermsStep";
-import PaymentStep from "./steps/PaymentStep";
-import SuccessStep from "./steps/SuccessStep";
 import { SelectOption } from "../ui/Select";
-import PreviewStep from "./steps/PreviewStep";
+
+import {
+  SelectClientStep,
+  SelectServiceStep,
+  SelectPlanStep,
+  SelectDatesStep,
+  AttendanceStep,
+  TermsStep,
+  PaymentStep,
+  SuccessStep,
+  PreviewStep,
+} from "./steps";
 
 // --- Wizard Step Definitions ---
 const CONTRACT_STEPS = [

@@ -16,11 +16,8 @@ import { useModalContext } from "@/contexts/ModalContext";
 
 // API & Models
 import { getServiceContracts } from "@/api/professional/services/contracts";
-import {
-  ServiceContractFullModel,
-  ServiceContractModel,
-} from "@/models/service-contract";
-import CreateContractWizard from "@/components/contracts/wizard";
+import { ServiceContractFullModel } from "@/models/service-contract";
+import { CreateContractWizard } from "@/components/contracts";
 
 // Placeholders for components we will create next
 
