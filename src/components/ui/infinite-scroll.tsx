@@ -1,57 +1,66 @@
 "use client";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 
-type InfiniteScrollProps = {
-  fetchData: (pageData: any) => Promise<any>;
-
-  renderData: (data: any) => React.ReactNode;
-  queryKey: string;
+// Use a generic TData to make the component type-safe.
+// We constrain TData to ensure it has an 'id' for the React key.
+type InfiniteScrollProps<TData extends { id: string | number }> = {
+  queryKey: string[];
+  fetchData: (pageData: {
+    page: number;
+  }) => Promise<{ results: TData[]; next: string | null }>;
+  renderData: (data: TData) => React.ReactNode;
   className?: string;
+  disabled?: boolean;
+  loadOnEnd?: boolean;
 };
 
-// --- Infinite Query Component ---
-const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
+// --- True Infinite Scroll Component ---
+const InfiniteScroll = <TData extends { id: string | number }>({
   fetchData,
   renderData,
   queryKey,
   className = "",
-}) => {
-  // useInfiniteQuery hook to manage fetching paginated data
+  disabled = false,
+  loadOnEnd = false,
+}: InfiniteScrollProps<TData>) => {
+  const { ref, inView } = useInView(); // Hook to observe when an element is in view
   const {
-    data, // Contains the fetched data, structured by pages
-    fetchNextPage, // Function to fetch the next page
-    hasNextPage, // Boolean indicating if there's a next page to fetch
-    isFetchingNextPage, // Boolean indicating if the next page is currently being fetched
-    isLoading, // Boolean indicating if the initial data is loading
-    isError, // Boolean indicating if an error occurred
-    error, // Error object if isError is true
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error,
   } = useInfiniteQuery({
-    queryKey: [queryKey], // Unique key for this infinite query
-    // queryFn now directly uses the fetchData prop, which will be your getClients function
-    queryFn: ({ pageParam = 1 }) => fetchData({ page: pageParam }),
-    refetchOnReconnect: true,
-
-    initialPageParam: 1, // The initial page number to start fetching from
+    queryKey,
+    queryFn: ({ pageParam }) => fetchData({ page: pageParam }),
+    initialPageParam: 1,
+    enabled: !disabled,
     getNextPageParam: (lastPage) => {
-      // If 'lastPage.next' exists, extract the page number from its URL
       if (lastPage.next) {
-        const regex = /[?&]page=(\d+)/;
-        const match = lastPage.next.match(regex);
-        // Return the parsed page number, or undefined if not found/no more pages
-        return match ? parseInt(match[1], 10) : undefined;
+        const url = new URL(lastPage.next);
+        const nextPage = url.searchParams.get("page");
+        return nextPage ? parseInt(nextPage, 10) : undefined;
       }
-      // If 'lastPage.next' is null, there are no more pages
       return undefined;
     },
   });
 
+  // When the observer element (`ref`) comes into view, fetch the next page.
+  useEffect(() => {
+    if (loadOnEnd && inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [loadOnEnd, inView, hasNextPage, isFetchingNextPage, fetchNextPage, data]);
+
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64 bg-gray-50 rounded-lg shadow-md p-6">
+      <div className="flex justify-center items-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-        <p className="ml-4 text-lg text-gray-700">Carregando...</p>
       </div>
     );
   }
@@ -59,42 +68,40 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
   if (isError) {
     return (
       <div
-        className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+        className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
         role="alert"
       >
-        <strong className="font-bold">Erro!</strong>
-        <span className="block sm:inline ml-2">
-          Falha ao carregar os dados: {error?.message}
-        </span>
+        <strong className="font-bold">Error:</strong>
+        <span className="block sm:inline ml-2">{error.message}</span>
       </div>
     );
   }
 
-  // Flatten the data from all pages into a single array for rendering
-  const allData = data?.pages.flatMap((page) => page.results) || [];
+  const allData = data?.pages.flatMap((page) => page.results) ?? [];
 
   return (
     <div className={className}>
-      {/* <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-        Our Projects
-      </h2> */}
-
       <div className="space-y-4">
         {allData.length > 0 ? (
-          allData.map((data) => (
-            <React.Fragment key={Math.random()}>
-              {renderData(data)}
-            </React.Fragment>
+          allData.map((item) => (
+            <React.Fragment key={item.id}>{renderData(item)}</React.Fragment>
           ))
         ) : (
-          <p className="text-center text-gray-600 text-lg py-8">
-            Dados não encontrados.
+          <p className="text-center text-gray-600 py-8">
+            Nenhum dado encontrado.
           </p>
         )}
       </div>
 
-      {/* Load More Button */}
-      {hasNextPage && (
+      {/* This invisible div at the bottom will trigger the next fetch */}
+      <div ref={ref} className="h-1" />
+
+      {isFetchingNextPage && (
+        <div className="flex justify-center items-center py-6">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        </div>
+      )}
+      {!loadOnEnd && hasNextPage && (
         <div className="flex justify-center mt-8">
           <button
             onClick={() => fetchNextPage()}
@@ -123,7 +130,7 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
 
       {!hasNextPage && allData.length > 0 && (
         <p className="text-center text-gray-500 mt-8 text-sm">
-          Não há mais dados para carregar.
+          Você chegou ao fim da lista.
         </p>
       )}
     </div>

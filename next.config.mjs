@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-import withPWA from '@ducanh2912/next-pwa';
+import withPWA from "@ducanh2912/next-pwa";
 
 const nextConfig = {
   eslint: {
@@ -11,20 +11,34 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Next.js config options
+
+  // // 👇 add this to control what the dev server watches
+  // webpackDevMiddleware: (config) => {
+  //   config.watchOptions = {
+  //     poll: 1000, // check files every second (fixes pnpm + macOS fsevents issues)
+  //     aggregateTimeout: 300, // debounce rebuilds
+  //     ignored: [
+  //       "**/node_modules/**",
+  //       "**/.git/**",
+  //       "**/.next/**",
+  //       "**/dist/**", // ignore built outputs from sibling packages
+  //     ],
+  //   };
+  //   return config;
+  // },
 };
 
 export default withPWA({
-  dest: 'public',
+  dest: "public",
   cacheOnFrontEndNav: true,
   aggressiveFrontEndNavCaching: true,
-  reloadOnOnline: true,
+  // reloadOnOnline: true,
   swcMinify: true,
   disable: process.env.NODE_ENV === 'development',
   workboxOptions: {
     disableDevLogs: true,
   },
   fallbacks: {
-    document: '/offline',
+    document: "/offline",
   },
 })(nextConfig);

@@ -1,28 +1,163 @@
 "use client";
+
+import React, { useState, useCallback, useMemo } from "react";
+import { PlusCircleIcon, TextSelectIcon } from "lucide-react";
+import clsx from "clsx";
+
+// Core Components
 import Header from "@/components/Header";
-import { useGetServiceContracts } from "@/hooks/api/professional/useServiceContracts";
-import React, { useEffect } from "react";
+import Button from "@/components/ui/Button";
+import { Drawer } from "@/components/ui/Drawer";
+import InfiniteScroll from "@/components/ui/infinite-scroll";
 
-// import { Container } from './styles';
+// Hooks & Contexts
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { useModalContext } from "@/contexts/ModalContext";
 
-const Contratos: React.FC = () => {
-  const { data: contracts } = useGetServiceContracts();
+// API & Models
+import { getServiceContracts } from "@/api/professional/services/contracts";
+import {
+  ServiceContractFullModel,
+  ServiceContractModel,
+} from "@/models/service-contract";
+import CreateContractWizard from "@/components/contracts/wizard";
 
+// Placeholders for components we will create next
+
+// import ContractDetails from "./components/contract-details";
+const ContractDetails = ({
+  selectedContract,
+}: {
+  selectedContract: ServiceContractFullModel | null;
+}) => {
+  if (!selectedContract) return null;
   return (
     <div>
-      <Header title="Contratos" />
-      <div className="mt-6 card">
-        <div className="text-center py-12">
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
-            Página em Desenvolvimento
-          </h3>
-          <p className="text-gray-600">
-            O módulo financeiro completo estará disponível em breve.
-          </p>
-        </div>
-      </div>
+      <h3 className="text-lg font-bold mb-4">
+        {selectedContract.label || `Contrato #${selectedContract.id}`}
+      </h3>
+      <p>
+        <strong>Cliente ID:</strong> {selectedContract.client.id}
+      </p>
+      <p>
+        <strong>Plano ID:</strong> {selectedContract.plan.name}
+      </p>
+      <p>
+        <strong>Status:</strong>{" "}
+        {selectedContract.signature ? "Assinado" : "Pendente"}
+      </p>
     </div>
   );
 };
 
-export default Contratos;
+const ContratosPage = () => {
+  const isMobile = useIsMobile();
+  const [selectedContract, setSelectedContract] =
+    useState<ServiceContractFullModel | null>(null);
+  const [drawerOpened, setDrawerOpened] = useState<boolean>(false);
+  const { openModal } = useModalContext();
+
+  const isDrawerOpened = useMemo(
+    () => drawerOpened && isMobile,
+    [drawerOpened, isMobile]
+  );
+
+  const handleContractCreationModal = useCallback(() => {
+    // This will open our new wizard component in a modal
+    openModal(<CreateContractWizard onClose={() => setDrawerOpened(false)} />);
+  }, [openModal]);
+
+  const handleContractSelection = useCallback(
+    (contract: ServiceContractFullModel) => {
+      setSelectedContract(contract);
+      setDrawerOpened(true);
+    },
+    []
+  );
+
+  const renderData = useCallback(
+    (contract: ServiceContractFullModel): React.ReactElement => {
+      if (!contract) return <></>;
+      return (
+        <div
+          key={contract?.id}
+          onClick={() => handleContractSelection(contract)}
+          className={clsx(
+            "border-slate-300 hover:border-primary-500 border border-l-4 cursor-pointer p-4 rounded-lg transition-all duration-300",
+            {
+              "border-l-[10px] border-primary-500 hover:border-primary-500 bg-slate-50":
+                contract.id === selectedContract?.id,
+            }
+          )}
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-full">
+              <p className="font-semibold text-gray-900 truncate">
+                {contract.label || `Contrato #${contract.id}`}
+              </p>
+              <p className="text-sm text-gray-600 mt-1">
+                Cliente ID: {contract.client.firstName}{" "}
+                {contract.client.lastName}
+              </p>
+              <p className="text-xs text-gray-500 mt-2">
+                Criado em:{" "}
+                {new Date(contract.createdAt).toLocaleDateString("pt-BR")}
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    },
+    [selectedContract, handleContractSelection]
+  );
+
+  return (
+    <>
+      <Header title="Contratos" />
+      <div className="w-full">
+        <div className="p-4 h-full w-full flex flex-col md:flex-row justify-around items-start space-y-4 md:space-y-0 md:space-x-4">
+          <div className="bg-white p-4 rounded-md shadow-md w-full md:flex-1">
+            <Button onClick={handleContractCreationModal} variant="outline">
+              <PlusCircleIcon className="h-4 w-4 mr-2" />
+              <span className="text-sm">Criar Contrato</span>
+            </Button>
+            <InfiniteScroll
+              className="mt-6"
+              queryKey={["professional-contracts"]}
+              renderData={renderData}
+              fetchData={getServiceContracts} // Note: Assumes getServiceContracts supports this or is adapted
+            />
+          </div>
+
+          <div className="hidden md:block w-full max-w-sm">
+            {selectedContract ? (
+              <div className="bg-white h-full p-4 rounded-md shadow-md">
+                <ContractDetails selectedContract={selectedContract} />
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center h-full p-4 border-2 border-dashed rounded-lg">
+                <TextSelectIcon className="h-12 w-12 text-gray-400" />
+                <p className="text-md font-semibold text-neutral-800 mt-2">
+                  Nenhum contrato selecionado
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  Selecione um contrato na lista para ver seus detalhes.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      <Drawer
+        handleCloseDrawer={() => setDrawerOpened(false)}
+        opened={isDrawerOpened}
+      >
+        <div className="p-4">
+          <ContractDetails selectedContract={selectedContract} />
+        </div>
+      </Drawer>
+    </>
+  );
+};
+
+export default React.memo(ContratosPage);

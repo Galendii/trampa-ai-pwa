@@ -5,6 +5,7 @@ import {
   getServices,
   updateService,
 } from "@/api/professional/services/services";
+import { PaginatedResponseModel } from "@/models/paginated-response";
 import { CreateServiceModel, ServiceModel } from "@/models/service";
 import {
   QueryClient,
@@ -14,10 +15,10 @@ import {
 } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-export const useGetServices = () => {
-  return useQuery<ServiceModel[], Error>({
+export const useGetServices = (page: number) => {
+  return useQuery<PaginatedResponseModel<ServiceModel>, Error>({
     queryKey: ["professional-services"],
-    queryFn: getServices,
+    queryFn: () => getServices({ page }),
   });
 };
 
@@ -67,5 +68,6 @@ export const useGetServiceById = (id: string) => {
   return useQuery<ServiceModel, Error>({
     queryKey: ["professional-service", id],
     queryFn: () => getServiceById(id),
+    enabled: !!id,
   });
 };

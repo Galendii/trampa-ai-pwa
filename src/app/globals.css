@@ -57,3 +57,19 @@
     @apply inline-flex px-3 py-1 text-xs font-medium rounded-full bg-slate-100 text-slate-600;
   }
 }
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .contract-preview, .contract-preview * {
+    visibility: visible;
+  }
+  .contract-preview {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: none !important;
+    padding: 18px !important;
+  }
+}

@@ -10,7 +10,7 @@ export const getProfessionalDetails = async () => {
 
 export const getClients = async ({ page }: { page: number }) => {
   const { data } = await api.get<PaginatedResponseModel<ClientUserModel>>(
-    `/management/clients/`,
+    `/professionals/management/clients/`,
     {
       params: {
         page,
@@ -21,7 +21,7 @@ export const getClients = async ({ page }: { page: number }) => {
 };
 export const getClientById = async (id: string) => {
   const { data } = await api.get<ClientUserModel>(
-    `/professionals/clients/${id}`
+    `/professionals/management/clients/${id}`
   );
   return data;
 };

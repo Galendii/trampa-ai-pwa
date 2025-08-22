@@ -3,7 +3,7 @@ import { deleteCookie, getCookie } from "cookies-next";
 import humps from "humps";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "http://0.0.0.0:8000/api/v1",
+  baseURL: "http://127.0.0.1:8000/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
@@ -40,7 +40,6 @@ api.interceptors.response.use(
         "role",
       ].forEach((key) => deleteCookie(key));
       console.log("Unauthorized, redirecting to login...");
-      window.location.href = "/login";
     }
     return Promise.reject(error);
   }

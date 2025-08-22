@@ -39,16 +39,15 @@ AuthProviderProps) => {
   const [user, setUser] = useState<UserModel | null>(null);
   const isUserLoggedIn = !!user;
   const login = useCallback((auth: AuthenticationModel) => {
-    console.log(auth);
     const { access, refresh, ...user } = auth;
 
-    setCookie("accessToken", access, { secure: true, sameSite: "strict" });
-    setCookie("refreshToken", refresh, { secure: true, sameSite: "strict" });
-    setCookie("role", user.role, { secure: true, sameSite: "strict" });
+    setCookie("accessToken", access);
+    setCookie("refreshToken", refresh);
+    setCookie("role", user.role);
 
-    const emailKey =
-      user.role === "professional" ? "professionalEmail" : "clientEmail";
-    setCookie(emailKey, user.email, { secure: true, sameSite: "strict" });
+    // const emailKey =
+    //   user.role === "professional" ? "professionalEmail" : "clientEmail";
+    // setCookie(emailKey, user.email, { secure: true });
 
     setUser(user);
   }, []);

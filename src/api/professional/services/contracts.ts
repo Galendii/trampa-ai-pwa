@@ -1,12 +1,18 @@
 import api from "@/api";
+import { PaginatedResponseModel } from "@/models/paginated-response";
 import {
+  ServiceContractFullModel,
   ServiceContractModel,
   ServiceContractPreviewModel,
   ServiceContractPreviewPayloadModel,
 } from "@/models/service-contract";
 
-export const getServiceContracts = async () => {
-  const { data } = await api.get<ServiceContractModel[]>(`/contracts/`);
+export const getServiceContracts = async (pageData: any) => {
+  const { data } = await api.get<
+    PaginatedResponseModel<ServiceContractFullModel>
+  >(`/contracts/`, {
+    params: pageData,
+  });
   return data;
 };
 

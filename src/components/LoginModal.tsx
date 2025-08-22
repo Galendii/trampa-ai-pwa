@@ -44,7 +44,6 @@ export default function LoginModal({ userType, onClose }: LoginModalProps) {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simular login
     login(
       { email, password, userType: userTypePaths[userType] },
       {

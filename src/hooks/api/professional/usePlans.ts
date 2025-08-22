@@ -4,34 +4,51 @@ import {
   getPlans,
   updatePlan,
 } from "@/api/professional/services/plans";
-import { PlanModel } from "@/models/plan";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { PaginatedResponseModel } from "@/models/paginated-response";
+import { PlanCreateModel, PlanModel } from "@/models/plan";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
-const queryClient = new QueryClient();
-
-export const useGetPlans = () => {
-  return useQuery<PlanModel[], Error>({
-    queryKey: ["professional-plans"],
-    queryFn: getPlans,
+export const useGetPlans = (serviceId: string, page: any = { page: 1 }) => {
+  return useQuery<PaginatedResponseModel<PlanModel>, Error>({
+    queryKey: ["service-plans", serviceId],
+    queryFn: () => getPlans(serviceId, page),
+    enabled: !!serviceId,
   });
 };
 
-export const useCreatePlan = () => {
-  return useMutation<PlanModel, Error, PlanModel>({
-    mutationFn: (planData: PlanModel) => createPlan(planData),
+export const useCreatePlan = (serviceId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation<PlanModel, Error, PlanCreateModel>({
+    mutationFn: (planData) => createPlan(planData, serviceId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["professional-plans"] });
+      queryClient.invalidateQueries({
+        queryKey: ["service-plans", serviceId],
+      });
+      toast.success("Plano criado com sucesso!");
+    },
+    onError: (error) => {
+      toast.error(`Erro ao criar o plano: ${error.message}`);
     },
   });
 };
-// export const useUpdatePlan = () => {
-//   return useMutation<PlanModel, Error, PlanModel>({
-//     mutationFn: (planData: PlanModel) => updatePlan(planData),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ["professional-Plans"] });
-//     },
-//   });
-// };
+export const useUpdatePlan = (serviceId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation<PlanModel, Error, Partial<PlanModel>>({
+    mutationFn: (planData) => updatePlan(planData, serviceId),
+    onSuccess: () => {
+      console.log(serviceId);
+      queryClient.invalidateQueries({
+        queryKey: ["service-plans", serviceId],
+      });
+
+      toast.success("Plano atualizado com sucesso!");
+    },
+    onError: (error) => {
+      toast.error(`Erro ao atualizar o plano: ${error.message}`);
+    },
+  });
+};
 // export const useDeletePlan = () => {
 //   return useMutation<PlanModel, Error, PlanModel>({
 //     mutationFn: (planData: PlanModel) => deletePlan(planData),
@@ -41,9 +58,10 @@ export const useCreatePlan = () => {
 //   });
 // };
 
-export const useGetPlanById = (id: string) => {
+export const useGetPlanById = (id: string, serviceId: string) => {
   return useQuery<PlanModel, Error>({
-    queryKey: ["professional-Plan", id],
-    queryFn: () => getPlanById(id),
+    queryKey: ["service-plans", serviceId, id],
+    queryFn: () => getPlanById(id, serviceId),
+    enabled: !!id && !!serviceId,
   });
 };

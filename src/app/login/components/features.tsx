@@ -1,3 +1,4 @@
+"use client";
 import { Building2, Shield, Sparkles } from "lucide-react";
 import React from "react";
 import Card from "@/components/ui/Card";

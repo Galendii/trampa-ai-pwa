@@ -14,5 +14,6 @@ export const useGetByClientId = (id: string) => {
   return useQuery<ClientUserModel, Error>({
     queryKey: ["professional-client", id],
     queryFn: () => getClientById(id),
+    enabled: !!id,
   });
 };

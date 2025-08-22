@@ -84,7 +84,7 @@ export function Modal({
       <div
         ref={modalRef}
         className={cn(
-          "relative w-full bg-white md:rounded shadow-2xl md:max-h-[95vh] overflow-hidden p-4 md:p-6 md:max-w-2xl",
+          "relative w-full bg-white md:rounded shadow-2xl h-[95vh] md:h-[90vh] overflow-hidden p-4 md:p-6 md:max-w-2xl",
           className
         )}
         tabIndex={-1}
@@ -102,9 +102,7 @@ export function Modal({
         )}
 
         {/* Content */}
-        <div className="overflow-y-auto max-h-[calc(90vh-8rem)] md:max-h-[calc(95vh-8rem)] py-4 md:py-6">
-          {children}
-        </div>
+        <div className="overflow-y-auto h-full  ">{children}</div>
       </div>
     </div>
   );

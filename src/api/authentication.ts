@@ -7,7 +7,6 @@ export const login = async (
   password: string,
   userType: UserLoginType
 ) => {
-  console.log(api.defaults.baseURL);
   try {
     const { data } = await api.post<AuthenticationModel>(
       `/${userType}/login/`,
