@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   User,
   HandshakeIcon,
@@ -27,6 +27,7 @@ import {
 // API & Models
 import { useCreateServiceContract } from "@/hooks/api/professional/useServiceContracts";
 import {
+  CreateContractFormData,
   PaymentMethods,
   ServiceContractModel,
 } from "@/models/service-contract";
@@ -74,34 +75,38 @@ const CreateContractWizard: React.FC<CreateContractWizardProps> = ({
   const { mutate: createContract, isPending } = useCreateServiceContract();
 
   // --- Initial Form State for the Wizard ---
-  const initialFormData = useMemo(
+  const initialFormData = useMemo<CreateContractFormData>(
     () => ({
-      clientId: null,
-      serviceId: null,
-      planId: null,
-      startingDate: null,
-      endingDate: null,
+      client: "",
+      service: "",
+      plan: "",
+      startingDate: new Date().toISOString(),
+      endingDate: new Date().toISOString(),
       attendance: [],
       rescheduleTerms: "",
       cancellationTerms: "",
-      paymentMethod: null,
+      paymentMethod: "",
+      professional: "",
+      installmentAmount: 0,
+      firstPaymentDate: new Date().toISOString(),
+      installments: 0,
+      label: "Contrato de serviços",
     }),
     []
   );
 
   // --- Final Submission Logic ---
-  const handleSubmit = (formData: Record<string, any>) => {
+  const handleSubmit = (formData: CreateContractFormData) => {
     // Here you would transform formData into the ServiceContractModel payload
-    const contractData = {
-      // ... map formData to the contract model
-    } as ServiceContractModel;
 
-    createContract(contractData, {
-      onSuccess: () => {
+    createContract(formData, {
+      onSuccess: (resp) => {
+        console.log(resp);
         toast.success("Contrato criado com sucesso!");
         // The wizard will automatically move to the success step
       },
       onError: (error) => {
+        console.error(error);
         toast.error(`Erro ao criar contrato: ${error.message}`);
       },
     });
@@ -129,11 +134,14 @@ const WizardWrapper = ({
   isSubmitting: boolean;
 }) => {
   const { formData, nextStep, isLastStep, currentStepId } = useWizard();
-
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
   const handleNext = () => {
     // Here you can add validation logic for each step before calling nextStep()
-    if (isLastStep) {
+    if (currentStepId === "preview") {
       onSubmit(formData);
+      nextStep();
     }
     nextStep();
   };
@@ -171,14 +179,14 @@ const WizardWrapper = ({
         </WizardStep>
       </WizardContent>
 
-      {currentStepId !== "success" && (
-        <WizardFooter
-          className="p-6 border-t"
-          onNext={handleNext}
-          isLoading={isSubmitting}
-          finishLabel="Criar Contrato"
-        />
-      )}
+      {/* {currentStepId !== "success" && ( */}
+      <WizardFooter
+        className="p-6 border-t"
+        onNext={handleNext}
+        isLoading={isSubmitting}
+        finishLabel="Criar Contrato"
+      />
+      {/* )} */}
     </Wizard>
   );
 };

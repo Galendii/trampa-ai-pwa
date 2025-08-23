@@ -1,7 +1,11 @@
 "use client";
 
 import React, { useState, useCallback, useMemo } from "react";
-import { PlusCircleIcon, TextSelectIcon } from "lucide-react";
+import {
+  MessageSquareWarningIcon,
+  PlusCircleIcon,
+  TextSelectIcon,
+} from "lucide-react";
 import clsx from "clsx";
 
 // Core Components
@@ -18,6 +22,12 @@ import { useModalContext } from "@/contexts/ModalContext";
 import { getServiceContracts } from "@/api/professional/services/contracts";
 import { ServiceContractFullModel } from "@/models/service-contract";
 import { CreateContractWizard } from "@/components/contracts";
+import FilterableList from "@/components/ui/filterable-list";
+import {
+  ContractFiltersType,
+  ContractsFilter,
+} from "@/components/contracts/components/contracts-filter";
+import { useUrlStateSync } from "@/hooks/useUrlStateSync";
 
 // Placeholders for components we will create next
 
@@ -53,6 +63,11 @@ const ContratosPage = () => {
     useState<ServiceContractFullModel | null>(null);
   const [drawerOpened, setDrawerOpened] = useState<boolean>(false);
   const { openModal } = useModalContext();
+  const [filters, setFilters] = useUrlStateSync<ContractFiltersType>({
+    search: "",
+    status: [],
+    ordering: "-created_at",
+  });
 
   const isDrawerOpened = useMemo(
     () => drawerOpened && isMobile,
@@ -60,7 +75,6 @@ const ContratosPage = () => {
   );
 
   const handleContractCreationModal = useCallback(() => {
-    // This will open our new wizard component in a modal
     openModal(<CreateContractWizard onClose={() => setDrawerOpened(false)} />);
   }, [openModal]);
 
@@ -75,12 +89,16 @@ const ContratosPage = () => {
   const renderData = useCallback(
     (contract: ServiceContractFullModel): React.ReactElement => {
       if (!contract) return <></>;
+      const isPendingSignature = !contract.signature?.clientSignatureDate;
       return (
         <div
           key={contract?.id}
           onClick={() => handleContractSelection(contract)}
           className={clsx(
-            "border-slate-300 hover:border-primary-500 border border-l-4 cursor-pointer p-4 rounded-lg transition-all duration-300",
+            "border-emerald-300 hover:border-emerald-500 border border-l-4 cursor-pointer p-4 rounded-lg transition-all duration-300 relative",
+            {
+              "bg-yellow-50 border-yellow-400": isPendingSignature,
+            },
             {
               "border-l-[10px] border-primary-500 hover:border-primary-500 bg-slate-50":
                 contract.id === selectedContract?.id,
@@ -89,7 +107,7 @@ const ContratosPage = () => {
         >
           <div className="flex items-center justify-between">
             <div className="w-full">
-              <p className="font-semibold text-gray-900 truncate">
+              <p className="font-semibold text-gray-900 truncate w-full">
                 {contract.label || `Contrato #${contract.id}`}
               </p>
               <p className="text-sm text-gray-600 mt-1">
@@ -100,8 +118,14 @@ const ContratosPage = () => {
                 Criado em:{" "}
                 {new Date(contract.createdAt).toLocaleDateString("pt-BR")}
               </p>
+              {isPendingSignature && (
+                <span className="text-yellow-700">Pendente de assinatura</span>
+              )}
             </div>
           </div>
+          {isPendingSignature && (
+            <MessageSquareWarningIcon className="h-6 w-6 mb-2 ml-2 text-yellow-700 absolute top-2 right-2" />
+          )}
         </div>
       );
     },
@@ -118,11 +142,14 @@ const ContratosPage = () => {
               <PlusCircleIcon className="h-4 w-4 mr-2" />
               <span className="text-sm">Criar Contrato</span>
             </Button>
-            <InfiniteScroll
+            <ContractsFilter filters={filters} onFilterChange={setFilters} />
+            <FilterableList<ServiceContractFullModel, ContractFiltersType>
+              baseQueryKey={["professional-contracts"]}
               className="mt-6"
-              queryKey={["professional-contracts"]}
+              filters={filters}
               renderData={renderData}
-              fetchData={getServiceContracts} // Note: Assumes getServiceContracts supports this or is adapted
+              fetchData={getServiceContracts}
+              ordering={filters.ordering}
             />
           </div>
 

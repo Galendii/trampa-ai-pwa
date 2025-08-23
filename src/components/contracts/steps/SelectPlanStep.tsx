@@ -13,14 +13,14 @@ import { PlanModel } from "@/models/plan";
 
 const SelectPlanStep = () => {
   const { formData, updateFormData, errors } = useWizard();
-  const serviceId = formData.serviceId;
+  const serviceId = formData.service;
 
   const { data: plansData, isLoading, isError } = useGetPlans(serviceId); // Query is enabled only if a serviceId exists
 
   const plans = (plansData as any)?.results || [];
 
   const handleSelectPlan = (plan: PlanModel) => {
-    updateFormData("planId", plan.id);
+    updateFormData("plan", plan.id);
   };
 
   const renderContent = () => {

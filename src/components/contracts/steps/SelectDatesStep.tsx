@@ -14,14 +14,14 @@ import { useGetPlanById } from "@/hooks/api/professional/usePlans";
 
 const SelectDatesStep = () => {
   const { formData, updateFormData, errors } = useWizard();
-  const { serviceId, planId, startingDate } = formData;
+  const { service, plan, startingDate } = formData;
 
   // Fetch the full details of the selected plan to get its duration
   const {
     data: selectedPlan,
     isLoading,
     isError,
-  } = useGetPlanById(planId, serviceId);
+  } = useGetPlanById(plan, service);
 
   // Automatically calculate and update the end date when the start date or plan changes
   useEffect(() => {
@@ -29,7 +29,7 @@ const SelectDatesStep = () => {
       const startDateObj = new Date(startingDate);
       // addMonths is a reliable way to add months, handling edge cases like end-of-month dates
       const calculatedEndDate = addMonths(startDateObj, selectedPlan.duration);
-      updateFormData("endingDate", calculatedEndDate);
+      updateFormData("endingDate", calculatedEndDate.toISOString());
     }
   }, [startingDate, selectedPlan, updateFormData]);
 
@@ -50,7 +50,7 @@ const SelectDatesStep = () => {
       );
     }
 
-    if (!planId || !selectedPlan) {
+    if (!plan || !selectedPlan) {
       return (
         <p className="text-center text-slate-500 py-8">
           Por favor, volte e selecione um plano primeiro.
@@ -65,16 +65,18 @@ const SelectDatesStep = () => {
           value={
             formData.startingDate ? new Date(formData.startingDate) : undefined
           }
-          onChange={(date) => updateFormData("startingDate", date)}
+          onChange={(date) =>
+            updateFormData("startingDate", date?.toISOString())
+          }
           fullWidth
-          minDate={new Date()} // Can't start a contract in the past
+          minDate={new Date()}
         />
 
         {formData.endingDate && (
           <div>
             <Input
               label="Data de Término do Contrato"
-              value={format(new Date(formData.endingDate), "dd/MM/yyyy")}
+              value={format(formData.endingDate, "dd/MM/yyyy")}
               readOnly
               disabled
             />

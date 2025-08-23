@@ -1,5 +1,9 @@
 "use client";
 
+import {
+  PageDataModel,
+  PaginatedResponseModel,
+} from "@/models/paginated-response";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
@@ -8,9 +12,9 @@ import { useInView } from "react-intersection-observer";
 // We constrain TData to ensure it has an 'id' for the React key.
 type InfiniteScrollProps<TData extends { id: string | number }> = {
   queryKey: string[];
-  fetchData: (pageData: {
-    page: number;
-  }) => Promise<{ results: TData[]; next: string | null }>;
+  fetchData: (
+    pageData: PageDataModel
+  ) => Promise<PaginatedResponseModel<TData>>;
   renderData: (data: TData) => React.ReactNode;
   className?: string;
   disabled?: boolean;

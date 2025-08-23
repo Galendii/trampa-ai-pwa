@@ -2,21 +2,29 @@ import {
   createServiceContract,
   getServiceContracts,
 } from "@/api/professional/services/contracts";
-import { ServiceContractModel } from "@/models/service-contract";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import {
+  PageDataModel,
+  PaginatedResponseModel,
+} from "@/models/paginated-response";
+import {
+  CreateContractFormData,
+  ServiceContractFullModel,
+  ServiceContractModel,
+} from "@/models/service-contract";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
-
-export const useGetServiceContracts = () => {
-  return useQuery<ServiceContractModel[], Error>({
+export const useGetServiceContracts = (pageData: PageDataModel) => {
+  return useQuery<PaginatedResponseModel<ServiceContractFullModel>, Error>({
     queryKey: ["professional-service-contract"],
-    queryFn: getServiceContracts,
+    queryFn: () => getServiceContracts(pageData),
   });
 };
 
 export const useCreateServiceContract = () => {
-  return useMutation<ServiceContractModel, Error, ServiceContractModel>({
-    mutationFn: (serviceContractData: ServiceContractModel) =>
+  const queryClient = useQueryClient();
+
+  return useMutation<ServiceContractModel, Error, CreateContractFormData>({
+    mutationFn: (serviceContractData: CreateContractFormData) =>
       createServiceContract(serviceContractData),
     onSuccess: () => {
       queryClient.invalidateQueries({

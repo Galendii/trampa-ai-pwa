@@ -40,13 +40,13 @@ const SelectClientStep = () => {
       <AutocompleteSelect
         label="Cliente"
         options={clientOptions}
-        value={formData.clientId}
-        onChange={(value) => updateFormData("clientId", value)}
+        value={formData.client}
+        onChange={(value) => updateFormData("client", value)}
         placeholder={
           isLoading ? "Carregando clientes..." : "Procure por nome ou CPF"
         }
         disabled={isLoading}
-        error={errors?.clientId}
+        error={errors?.client}
         fullWidth
       />
     </div>

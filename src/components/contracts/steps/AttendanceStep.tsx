@@ -26,7 +26,7 @@ const WEEKDAY_OPTIONS: SelectOption[] = [
 
 const AttendanceStep = () => {
   const { formData, updateFormData } = useWizard();
-  const { serviceId, planId } = formData;
+  const { service, plan } = formData;
 
   // Local state for the new slot being added
   const [newWeekday, setNewWeekday] = useState<string>("");
@@ -36,7 +36,7 @@ const AttendanceStep = () => {
     data: selectedPlan,
     isLoading,
     isError,
-  } = useGetPlanById(planId, serviceId);
+  } = useGetPlanById(plan, service);
 
   // Generate time slots for the select dropdown
   const timeSlots = useMemo(() => {
@@ -53,7 +53,7 @@ const AttendanceStep = () => {
     return slots;
   }, []);
 
-  const handleAddAttendance = () => {
+  const handleAddAttendance = useCallback(() => {
     if (!newWeekday || !newTime || !selectedPlan) return;
     if (formData.attendance.length >= selectedPlan.frequency) return;
 
@@ -68,7 +68,7 @@ const AttendanceStep = () => {
     // Reset for next entry
     setNewWeekday("");
     setNewTime("");
-  };
+  }, [newWeekday, newTime, selectedPlan, formData.attendance, updateFormData]);
 
   const handleRemoveAttendance = (index: number) => {
     const updatedAttendance = formData.attendance.filter(

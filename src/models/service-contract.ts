@@ -34,10 +34,10 @@ export type ServiceContractModel = {
   endingDate: Date;
   cancellationTerms: string;
   rescheduleTerms: string;
-  installmentAmount: string;
+  installmentAmount: number;
   paymentMethod: string;
   firstPaymentDate: Date;
-  installments: string;
+  installments: string | number;
   updatedAt: string;
   createdAt: string;
   label: string;
@@ -71,4 +71,25 @@ export type ServiceContractPreviewPayloadModel = Omit<
 >;
 export type ServiceContractPreviewModel = {
   contractUrl: string;
+};
+
+export type CreateContractFormData = Omit<
+  ServiceContractModel,
+  | "id"
+  | "createdAt"
+  | "updatedAt"
+  | "startingDate"
+  | "endingDate"
+  | "firstPaymentDate"
+> & {
+  startingDate: string;
+  endingDate: string;
+  firstPaymentDate: string;
+};
+
+export type ServiceContractFilterOptionsModel = {
+  status?: string;
+  clientName?: string;
+  plan?: string;
+  service?: string;
 };

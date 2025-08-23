@@ -3,7 +3,7 @@ import { deleteCookie, getCookie } from "cookies-next";
 import humps from "humps";
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/v1",
+  baseURL: "http://192.168.0.234:8000/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
@@ -24,6 +24,12 @@ api.interceptors.response.use((response) => {
     response.data = humps.camelizeKeys(response.data);
   }
   return response;
+});
+api.interceptors.request.use((request) => {
+  if (request.data) {
+    request.data = humps.decamelizeKeys(request.data);
+  }
+  return request;
 });
 
 // Interceptores de resposta (ex: lidar com erros 401/403)

@@ -29,10 +29,10 @@ const SelectServiceStep = () => {
   }, [servicesData]);
 
   const handleServiceChange = (serviceId: string) => {
-    updateFormData("serviceId", serviceId);
+    updateFormData("service", serviceId);
     // IMPORTANT: When the service changes, we must clear the selected plan,
     // as the old plan may not belong to the new service.
-    updateFormData("planId", null);
+    updateFormData("plan", null);
   };
 
   return (
@@ -52,13 +52,13 @@ const SelectServiceStep = () => {
       <AutocompleteSelect
         label="Serviço"
         options={serviceOptions}
-        value={formData.serviceId}
+        value={formData.service}
         onChange={handleServiceChange}
         placeholder={
           isLoading ? "Carregando serviços..." : "Procure pelo nome do serviço"
         }
         disabled={isLoading}
-        error={errors?.serviceId}
+        error={errors?.service}
         fullWidth
       />
     </div>

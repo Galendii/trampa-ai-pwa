@@ -15,13 +15,13 @@ import { PAYMENT_METHOD_OPTIONS } from "../create-contract-wizard";
 
 const PaymentStep = () => {
   const { formData, updateFormData, errors } = useWizard();
-  const { serviceId, planId } = formData;
+  const { service, plan } = formData;
 
   const {
     data: selectedPlan,
     isLoading,
     isError,
-  } = useGetPlanById(planId, serviceId);
+  } = useGetPlanById(plan, service);
 
   const renderContent = () => {
     if (isLoading) {
@@ -77,7 +77,12 @@ const PaymentStep = () => {
                 ? new Date(formData.firstPaymentDate)
                 : undefined
             }
-            onChange={(date) => updateFormData("firstPaymentDate", date)}
+            onChange={(date) =>
+              updateFormData(
+                "firstPaymentDate",
+                date?.toISOString().substring(0, 10)
+              )
+            }
             fullWidth
           />
         </div>

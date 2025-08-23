@@ -1,13 +1,20 @@
 import api from "@/api";
-import { PaginatedResponseModel } from "@/models/paginated-response";
+import { ContractFiltersType } from "@/components/contracts/components/contracts-filter";
 import {
+  PageDataModel,
+  PaginatedResponseModel,
+} from "@/models/paginated-response";
+import {
+  CreateContractFormData,
   ServiceContractFullModel,
   ServiceContractModel,
   ServiceContractPreviewModel,
   ServiceContractPreviewPayloadModel,
 } from "@/models/service-contract";
 
-export const getServiceContracts = async (pageData: any) => {
+export const getServiceContracts = async (
+  pageData: PageDataModel & ContractFiltersType
+) => {
   const { data } = await api.get<
     PaginatedResponseModel<ServiceContractFullModel>
   >(`/contracts/`, {
@@ -27,7 +34,7 @@ export const getContractPreview = async (
 };
 
 export const createServiceContract = async (
-  contractData: ServiceContractModel
+  contractData: CreateContractFormData
 ) => {
   const { data } = await api.post<ServiceContractModel>(
     `/contracts/`,

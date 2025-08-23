@@ -29,18 +29,18 @@ const WEEKDAY_LABELS: { [key: string]: string } = {
 
 const PreviewStep = () => {
   const { formData } = useWizard();
-  const { serviceId, planId, clientId } = formData;
+  const { service, plan, client } = formData;
   const contractRef = useRef<HTMLDivElement>(null);
 
   // --- Aggregate Data from Hooks ---
   const { data: professional, isLoading: isLoadingProf } = useUser();
-  const { data: client, isLoading: isLoadingClient } =
-    useGetByClientId(clientId);
-  const { data: service, isLoading: isLoadingService } =
-    useGetServiceById(serviceId);
-  const { data: plan, isLoading: isLoadingPlan } = useGetPlanById(
-    planId,
-    serviceId
+  const { data: clientData, isLoading: isLoadingClient } =
+    useGetByClientId(client);
+  const { data: serviceData, isLoading: isLoadingService } =
+    useGetServiceById(service);
+  const { data: planData, isLoading: isLoadingPlan } = useGetPlanById(
+    plan,
+    service
   );
 
   const isLoading =
@@ -49,7 +49,7 @@ const PreviewStep = () => {
   // --- Print and Download Handlers ---
   const handlePrint = useReactToPrint({
     contentRef: contractRef,
-    documentTitle: `Contrato-${client?.firstName}-${service?.name}`,
+    documentTitle: `Contrato-${clientData?.firstName}-${serviceData?.name}`,
   });
 
   const renderContent = () => {
@@ -64,7 +64,7 @@ const PreviewStep = () => {
       );
     }
 
-    if (!professional || !client || !service || !plan) {
+    if (!professional || !clientData || !serviceData || !planData) {
       return (
         <p className="text-center text-red-500 py-8">
           Não foi possível carregar os dados. Por favor, verifique os passos
@@ -93,8 +93,8 @@ const PreviewStep = () => {
             <div>
               <h3 className="font-bold text-slate-800">CONTRATANTE:</h3>
               <p>
-                {client.firstName} {client.lastName}, portador(a) do CPF nº{" "}
-                {client.cpf}.
+                {clientData.firstName} {clientData.lastName}, portador(a) do CPF
+                nº {clientData.cpf}.
               </p>
             </div>
             <div>
@@ -112,8 +112,8 @@ const PreviewStep = () => {
                 CLÁUSULA 1ª - DO OBJETO:
               </strong>{" "}
               O presente contrato tem por objeto a prestação de serviços de{" "}
-              <strong>{service.name}</strong>, referente ao{" "}
-              <strong>{plan.name}</strong>.
+              <strong>{serviceData.name}</strong>, referente ao{" "}
+              <strong>{planData.name}</strong>.
             </p>
 
             <p>
@@ -131,8 +131,8 @@ const PreviewStep = () => {
               <strong className="text-slate-800">
                 CLÁUSULA 3ª - DO PRAZO:
               </strong>{" "}
-              O contrato terá vigência de <strong>{plan.duration} meses</strong>
-              , iniciando em{" "}
+              O contrato terá vigência de{" "}
+              <strong>{planData.duration} meses</strong>, iniciando em{" "}
               <strong>
                 {format(new Date(formData.startingDate), "dd/MM/yyyy")}
               </strong>{" "}
@@ -152,7 +152,7 @@ const PreviewStep = () => {
                 {new Intl.NumberFormat("pt-BR", {
                   style: "currency",
                   currency: "BRL",
-                }).format(plan.price)}
+                }).format(planData.price)}
               </strong>{" "}
               será pago em <strong>{formData.installments} parcela(s)</strong>{" "}
               de{" "}
@@ -195,7 +195,7 @@ const PreviewStep = () => {
             <div>
               <p className="border-t pt-2 w-64">Assinatura do CONTRATANTE</p>
               <p className="text-xs">
-                {client.firstName} {client.lastName}
+                {clientData.firstName} {clientData.lastName}
               </p>
             </div>
             <div>
