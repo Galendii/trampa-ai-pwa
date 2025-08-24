@@ -2,6 +2,19 @@ import { PlanModel } from "./plan";
 import { ServiceModel } from "./service";
 import { ClientUserModel, ProfessionalUserModel } from "./user";
 
+export enum ServiceContractStatus {
+  ACTIVE = "active",
+  PENDING_SIGNATURE = "pending-signature",
+  CANCELED = "canceled",
+  OVERDUE = "overdue",
+}
+export const ServiceContractStatusMap = {
+  [ServiceContractStatus.ACTIVE]: "Ativo",
+  [ServiceContractStatus.PENDING_SIGNATURE]: "Pendente de Assinatura",
+  [ServiceContractStatus.CANCELED]: "Cancelado",
+  [ServiceContractStatus.OVERDUE]: "Pagamento atrasado",
+};
+
 export enum PaymentMethods {
   CREDIT_CARD = "credit-card",
   DEBIT_CARD = "debit-card",
@@ -40,8 +53,8 @@ export type ServiceContractModel = {
   installments: string | number;
   updatedAt: string;
   createdAt: string;
-  label: string;
   attendance: WeekdayTimeModel[];
+  status: ServiceContractStatus;
 };
 
 export type ServiceContractFullModel = {
@@ -61,8 +74,8 @@ export type ServiceContractFullModel = {
   installments: string;
   updatedAt: string;
   createdAt: string;
-  label: string;
   attendance: WeekdayTimeModel[];
+  status: ServiceContractStatus;
 };
 
 export type ServiceContractPreviewPayloadModel = Omit<

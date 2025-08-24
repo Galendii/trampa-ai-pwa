@@ -30,6 +30,7 @@ import {
   CreateContractFormData,
   PaymentMethods,
   ServiceContractModel,
+  ServiceContractStatus,
 } from "@/models/service-contract";
 
 import { SelectOption } from "../ui/Select";
@@ -83,6 +84,7 @@ const CreateContractWizard: React.FC<CreateContractWizardProps> = ({
       startingDate: new Date().toISOString(),
       endingDate: new Date().toISOString(),
       attendance: [],
+      status: ServiceContractStatus.PENDING_SIGNATURE,
       rescheduleTerms: "",
       cancellationTerms: "",
       paymentMethod: "",
@@ -90,7 +92,6 @@ const CreateContractWizard: React.FC<CreateContractWizardProps> = ({
       installmentAmount: 0,
       firstPaymentDate: new Date().toISOString(),
       installments: 0,
-      label: "Contrato de serviços",
     }),
     []
   );

@@ -5,6 +5,7 @@ import {
   MessageSquareWarningIcon,
   PlusCircleIcon,
   TextSelectIcon,
+  TrashIcon,
 } from "lucide-react";
 import clsx from "clsx";
 
@@ -20,7 +21,11 @@ import { useModalContext } from "@/contexts/ModalContext";
 
 // API & Models
 import { getServiceContracts } from "@/api/professional/services/contracts";
-import { ServiceContractFullModel } from "@/models/service-contract";
+import {
+  ServiceContractFullModel,
+  ServiceContractStatus,
+  ServiceContractStatusMap,
+} from "@/models/service-contract";
 import { CreateContractWizard } from "@/components/contracts";
 import FilterableList from "@/components/ui/filterable-list";
 import {
@@ -28,6 +33,7 @@ import {
   ContractsFilter,
 } from "@/components/contracts/components/contracts-filter";
 import { useUrlStateSync } from "@/hooks/useUrlStateSync";
+import { ActionConfirmationModal } from "@/components/ui/ActionConfirmationModal";
 
 // Placeholders for components we will create next
 
@@ -37,12 +43,27 @@ const ContractDetails = ({
 }: {
   selectedContract: ServiceContractFullModel | null;
 }) => {
+  const { openModal, closeModal } = useModalContext();
+
+  const handlConfirmationModal = () => {
+    openModal(
+      <ActionConfirmationModal onConfirm={closeModal} onCancel={closeModal} />,
+      "small"
+    );
+  };
+
   if (!selectedContract) return null;
   return (
     <div>
-      <h3 className="text-lg font-bold mb-4">
-        {selectedContract.label || `Contrato #${selectedContract.id}`}
-      </h3>
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-bold mb-4">
+          {`Contrato #${selectedContract.id}`}
+        </h3>
+        <Button onClick={handlConfirmationModal} variant="danger">
+          <TrashIcon className="h-4 w-4 mr-2" />
+          Excluir
+        </Button>
+      </div>
       <p>
         <strong>Cliente ID:</strong> {selectedContract.client.id}
       </p>
@@ -51,7 +72,7 @@ const ContractDetails = ({
       </p>
       <p>
         <strong>Status:</strong>{" "}
-        {selectedContract.signature ? "Assinado" : "Pendente"}
+        {ServiceContractStatusMap[selectedContract.status]}
       </p>
     </div>
   );
@@ -89,15 +110,22 @@ const ContratosPage = () => {
   const renderData = useCallback(
     (contract: ServiceContractFullModel): React.ReactElement => {
       if (!contract) return <></>;
-      const isPendingSignature = !contract.signature?.clientSignatureDate;
+      const statusColorMap = {
+        [ServiceContractStatus.ACTIVE]: "emerald",
+        [ServiceContractStatus.PENDING_SIGNATURE]: "yellow",
+        [ServiceContractStatus.CANCELED]: "red",
+        [ServiceContractStatus.OVERDUE]: "orange",
+      };
       return (
         <div
           key={contract?.id}
           onClick={() => handleContractSelection(contract)}
           className={clsx(
-            "border-emerald-300 hover:border-emerald-500 border border-l-4 cursor-pointer p-4 rounded-lg transition-all duration-300 relative",
+            "hover:border-primary-500 border border-l-4 cursor-pointer p-4 rounded-lg transition-all duration-300 relative",
             {
-              "bg-yellow-50 border-yellow-400": isPendingSignature,
+              [`bg-${statusColorMap[contract.status]}-50 border-${
+                statusColorMap[contract.status]
+              }-400`]: contract.status,
             },
             {
               "border-l-[10px] border-primary-500 hover:border-primary-500 bg-slate-50":
@@ -108,7 +136,7 @@ const ContratosPage = () => {
           <div className="flex items-center justify-between">
             <div className="w-full">
               <p className="font-semibold text-gray-900 truncate w-full">
-                {contract.label || `Contrato #${contract.id}`}
+                {`Contrato #${contract.id}`}
               </p>
               <p className="text-sm text-gray-600 mt-1">
                 Cliente ID: {contract.client.firstName}{" "}
@@ -118,13 +146,19 @@ const ContratosPage = () => {
                 Criado em:{" "}
                 {new Date(contract.createdAt).toLocaleDateString("pt-BR")}
               </p>
-              {isPendingSignature && (
-                <span className="text-yellow-700">Pendente de assinatura</span>
-              )}
+              <span className="text-yellow-700">
+                {ServiceContractStatusMap[contract.status]}
+              </span>
             </div>
           </div>
-          {isPendingSignature && (
-            <MessageSquareWarningIcon className="h-6 w-6 mb-2 ml-2 text-yellow-700 absolute top-2 right-2" />
+          {(contract.status === ServiceContractStatus.PENDING_SIGNATURE ||
+            contract.status === ServiceContractStatus.OVERDUE) && (
+            <MessageSquareWarningIcon
+              className={clsx("h-6 w-6 mb-2 ml-2 absolute top-2 right-2", {
+                [`text-${statusColorMap[contract.status]}-700`]:
+                  contract.status,
+              })}
+            />
           )}
         </div>
       );

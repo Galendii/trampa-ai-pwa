@@ -5,6 +5,8 @@ import { useEffect, useRef } from "react";
 import { cn } from "../../lib/utils";
 import { X } from "lucide-react";
 
+export type ModalSizes = "small" | "medium" | "large";
+
 export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -14,6 +16,7 @@ export interface ModalProps {
   closeOnOverlayClick?: boolean;
   closeOnEscape?: boolean;
   className?: string;
+  size?: ModalSizes;
 }
 
 export function Modal({
@@ -25,9 +28,15 @@ export function Modal({
   closeOnOverlayClick = true,
   closeOnEscape = true,
   className,
+  size = "large",
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const modalSizeMap: Record<ModalSizes, string> = {
+    large: "w-full md:w-[90vw]",
+    medium: "w-full md:w-[70vw] lg:w-[80vw]",
+    small: "w-full md:w-[60vw] lg:w-[40vw] ",
+  };
 
   // Handle escape key
   useEffect(() => {
@@ -84,7 +93,8 @@ export function Modal({
       <div
         ref={modalRef}
         className={cn(
-          "relative w-full bg-white md:rounded shadow-2xl h-[95vh] md:h-[90vh] overflow-hidden p-4 md:p-6 md:max-w-2xl",
+          "relative w-full bg-white md:rounded shadow-2xl overflow-hidden p-4 md:p-6 md:max-w-2xl",
+          modalSizeMap[size],
           className
         )}
         tabIndex={-1}

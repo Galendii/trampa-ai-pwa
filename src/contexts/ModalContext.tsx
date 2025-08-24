@@ -1,12 +1,11 @@
-import { Modal } from "@/components/ui/Modal";
+import { Modal, ModalSizes } from "@/components/ui/Modal";
 import useModal from "@/hooks/useModal";
 import React, { createContext, useContext, useEffect, ReactNode } from "react";
 
-// Define a interface para o valor do contexto
 interface ModalContextType {
   isOpen: boolean;
   modalContent: ReactNode | null;
-  openModal: (content: ReactNode) => void;
+  openModal: (content: ReactNode, size?: ModalSizes) => void;
   closeModal: () => void;
 }
 
@@ -34,12 +33,12 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [modal.closeModal]);
+  }, [modal.closeModal, modal.size]);
 
   return (
     <ModalContext.Provider value={modal}>
       {children}
-      <Modal isOpen={modal.isOpen} onClose={modal.closeModal}>
+      <Modal size={modal.size} isOpen={modal.isOpen} onClose={modal.closeModal}>
         {modal.modalContent}
       </Modal>
     </ModalContext.Provider>

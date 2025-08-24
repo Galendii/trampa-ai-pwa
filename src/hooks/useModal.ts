@@ -1,29 +1,34 @@
+import { ModalSizes } from "@/components/ui/Modal";
 import { useState, useCallback, ReactNode } from "react";
 
 // Define a interface para o estado do modal
 interface ModalState {
   isOpen: boolean;
   modalContent: ReactNode | null;
+  size?: "small" | "medium" | "large";
 }
 
 // Define a interface para o retorno do hook
 interface UseModal {
   isOpen: boolean;
   modalContent: ReactNode | null;
-  openModal: (content: ReactNode) => void;
+  openModal: (content: ReactNode, size?: ModalSizes) => void;
   closeModal: () => void;
+  size?: ModalSizes;
 }
 
 const useModal = (): UseModal => {
   const [state, setState] = useState<ModalState>({
     isOpen: false,
     modalContent: null,
+    size: "large",
   });
 
-  const openModal = useCallback((content: ReactNode) => {
+  const openModal = useCallback((content: ReactNode, size?: ModalSizes) => {
     setState({
       isOpen: true,
       modalContent: content,
+      size,
     });
   }, []);
 
@@ -31,6 +36,7 @@ const useModal = (): UseModal => {
     setState({
       isOpen: false,
       modalContent: null,
+      size: "large",
     });
   }, []);
 
@@ -39,6 +45,7 @@ const useModal = (): UseModal => {
     modalContent: state.modalContent,
     openModal,
     closeModal,
+    size: state.size,
   };
 };
 
