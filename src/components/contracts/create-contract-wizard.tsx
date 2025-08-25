@@ -81,8 +81,8 @@ const CreateContractWizard: React.FC<CreateContractWizardProps> = ({
       client: "",
       service: "",
       plan: "",
-      startingDate: new Date().toISOString(),
-      endingDate: new Date().toISOString(),
+      startingDate: new Date().toISOString().substring(0, 10),
+      endingDate: new Date().toISOString().substring(0, 10),
       attendance: [],
       status: ServiceContractStatus.PENDING_SIGNATURE,
       rescheduleTerms: "",
@@ -90,7 +90,7 @@ const CreateContractWizard: React.FC<CreateContractWizardProps> = ({
       paymentMethod: "",
       professional: "",
       installmentAmount: 0,
-      firstPaymentDate: new Date().toISOString(),
+      firstPaymentDate: new Date().toISOString().substring(0, 10),
       installments: 0,
     }),
     []
@@ -101,10 +101,11 @@ const CreateContractWizard: React.FC<CreateContractWizardProps> = ({
     // Here you would transform formData into the ServiceContractModel payload
 
     createContract(formData, {
-      onSuccess: (resp) => {
-        console.log(resp);
+      onSuccess: () => {
         toast.success("Contrato criado com sucesso!");
-        // The wizard will automatically move to the success step
+        setTimeout(() => {
+          onClose();
+        }, 2000);
       },
       onError: (error) => {
         console.error(error);
@@ -135,9 +136,7 @@ const WizardWrapper = ({
   isSubmitting: boolean;
 }) => {
   const { formData, nextStep, isLastStep, currentStepId } = useWizard();
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+
   const handleNext = () => {
     // Here you can add validation logic for each step before calling nextStep()
     if (currentStepId === "preview") {

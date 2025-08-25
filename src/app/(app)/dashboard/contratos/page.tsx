@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, Suspense } from "react";
 import {
   MessageSquareWarningIcon,
   PlusCircleIcon,
@@ -8,12 +8,12 @@ import {
   TrashIcon,
 } from "lucide-react";
 import clsx from "clsx";
+import { useQueryClient } from "@tanstack/react-query";
 
 // Core Components
 import Header from "@/components/Header";
 import Button from "@/components/ui/Button";
 import { Drawer } from "@/components/ui/Drawer";
-import InfiniteScroll from "@/components/ui/infinite-scroll";
 
 // Hooks & Contexts
 import { useIsMobile } from "@/hooks/useIsMobile";
@@ -34,61 +34,103 @@ import {
 } from "@/components/contracts/components/contracts-filter";
 import { useUrlStateSync } from "@/hooks/useUrlStateSync";
 import { ActionConfirmationModal } from "@/components/ui/ActionConfirmationModal";
+import {
+  useDeleteServiceContract,
+  useGetServiceContractById,
+} from "@/hooks/api/professional/useServiceContracts";
 
-// Placeholders for components we will create next
-
-// import ContractDetails from "./components/contract-details";
+// --- ContractDetails component is now leaner ---
+// It receives the delete function and loading state as props.
 const ContractDetails = ({
-  selectedContract,
+  selectedContractId,
+  onDelete,
+  isDeleting,
 }: {
-  selectedContract: ServiceContractFullModel | null;
+  selectedContractId: string;
+  onDelete: (id: string) => void;
+  isDeleting: boolean;
 }) => {
   const { openModal, closeModal } = useModalContext();
+  const { data: contract, isPending } =
+    useGetServiceContractById(selectedContractId);
 
-  const handlConfirmationModal = () => {
+  const handleDeleteContract = () => {
+    onDelete(String(contract.id));
+  };
+
+  const handleConfirmationModal = () => {
     openModal(
-      <ActionConfirmationModal onConfirm={closeModal} onCancel={closeModal} />,
+      <ActionConfirmationModal
+        title="Excluir Contrato"
+        message="Tem certeza que deseja excluir este contrato?"
+        onConfirm={handleDeleteContract}
+        onCancel={closeModal}
+        isLoading={isPending}
+      />,
       "small"
     );
   };
 
-  if (!selectedContract) return null;
   return (
-    <div>
+    <div className="bg-white h-full p-4 rounded-md shadow-md">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-bold mb-4">
-          {`Contrato #${selectedContract.id}`}
-        </h3>
-        <Button onClick={handlConfirmationModal} variant="danger">
-          <TrashIcon className="h-4 w-4 mr-2" />
-          Excluir
+        <h3 className="text-lg font-bold mb-4">{`Contrato #${contract.id}`}</h3>
+        <Button
+          onClick={handleConfirmationModal}
+          variant="danger"
+          disabled={isDeleting}
+        >
+          {isDeleting ? (
+            "Excluindo..."
+          ) : (
+            <>
+              <TrashIcon className="h-4 w-4 mr-2" />
+              Excluir
+            </>
+          )}
         </Button>
       </div>
       <p>
-        <strong>Cliente ID:</strong> {selectedContract.client.id}
+        <strong>Cliente:</strong> {contract.client.firstName}{" "}
+        {contract.client.lastName}
       </p>
       <p>
-        <strong>Plano ID:</strong> {selectedContract.plan.name}
+        <strong>Plano:</strong> {contract.plan.name}
       </p>
       <p>
-        <strong>Status:</strong>{" "}
-        {ServiceContractStatusMap[selectedContract.status]}
+        <strong>Status:</strong> {ServiceContractStatusMap[contract.status]}
       </p>
     </div>
   );
 };
+
+// A simple skeleton loader for the details view
+const ContractDetailsSkeleton = () => (
+  <div className="bg-white h-full p-4 rounded-md shadow-md animate-pulse">
+    <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
+    <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+    <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+  </div>
+);
 
 const ContratosPage = () => {
   const isMobile = useIsMobile();
   const [selectedContract, setSelectedContract] =
     useState<ServiceContractFullModel | null>(null);
   const [drawerOpened, setDrawerOpened] = useState<boolean>(false);
-  const { openModal } = useModalContext();
+  const { openModal, closeModal } = useModalContext();
   const [filters, setFilters] = useUrlStateSync<ContractFiltersType>({
     search: "",
     status: [],
     ordering: "-created_at",
   });
+  const queryClient = useQueryClient();
+
+  // --- FIX 1: The mutation logic is moved to the parent component ---
+  // This component owns the state, so it should control the mutation's side effects.
+  const { mutate: deleteContract, isPending: isDeletingContract } =
+    useDeleteServiceContract();
 
   const isDrawerOpened = useMemo(
     () => drawerOpened && isMobile,
@@ -139,8 +181,7 @@ const ContratosPage = () => {
                 {`Contrato #${contract.id}`}
               </p>
               <p className="text-sm text-gray-600 mt-1">
-                Cliente ID: {contract.client.firstName}{" "}
-                {contract.client.lastName}
+                Cliente: {contract.client.firstName} {contract.client.lastName}
               </p>
               <p className="text-xs text-gray-500 mt-2">
                 Criado em:{" "}
@@ -166,6 +207,47 @@ const ContratosPage = () => {
     [selectedContract, handleContractSelection]
   );
 
+  const handleContractDeletion = useCallback(() => {
+    if (!selectedContract?.id) return;
+    try {
+      deleteContract(String(selectedContract.id));
+      setSelectedContract(null);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      closeModal();
+      setDrawerOpened(false);
+    }
+  }, [selectedContract, deleteContract]);
+
+  const renderContractDetails = useCallback(() => {
+    if (!selectedContract?.id) {
+      return (
+        <div className="hidden md:flex flex-col items-center justify-center text-center h-full p-4 border-2 border-dashed rounded-lg w-full max-w-sm">
+          <TextSelectIcon className="h-12 w-12 text-gray-400" />
+          <p className="text-md font-semibold text-neutral-800 mt-2">
+            Nenhum contrato selecionado
+          </p>
+          <p className="text-sm text-gray-500 mt-1">
+            Selecione um contrato na lista para ver seus detalhes.
+          </p>
+        </div>
+      );
+    }
+    return (
+      <div className="hidden md:block w-full max-w-sm">
+        <Suspense fallback={<ContractDetailsSkeleton />}>
+          {/* --- FIX 2: Pass the delete function and loading state down as props --- */}
+          <ContractDetails
+            selectedContractId={String(selectedContract.id)}
+            onDelete={handleContractDeletion}
+            isDeleting={isDeletingContract}
+          />
+        </Suspense>
+      </div>
+    );
+  }, [selectedContract, deleteContract, isDeletingContract]);
+
   return (
     <>
       <Header title="Contratos" />
@@ -178,32 +260,15 @@ const ContratosPage = () => {
             </Button>
             <ContractsFilter filters={filters} onFilterChange={setFilters} />
             <FilterableList<ServiceContractFullModel, ContractFiltersType>
-              baseQueryKey={["professional-contracts"]}
+              baseQueryKey={["professional-service-contracts"]}
               className="mt-6"
               filters={filters}
               renderData={renderData}
               fetchData={getServiceContracts}
-              ordering={filters.ordering}
+              ordering={filters.ordering || "-created_at"}
             />
           </div>
-
-          <div className="hidden md:block w-full max-w-sm">
-            {selectedContract ? (
-              <div className="bg-white h-full p-4 rounded-md shadow-md">
-                <ContractDetails selectedContract={selectedContract} />
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center text-center h-full p-4 border-2 border-dashed rounded-lg">
-                <TextSelectIcon className="h-12 w-12 text-gray-400" />
-                <p className="text-md font-semibold text-neutral-800 mt-2">
-                  Nenhum contrato selecionado
-                </p>
-                <p className="text-sm text-gray-500 mt-1">
-                  Selecione um contrato na lista para ver seus detalhes.
-                </p>
-              </div>
-            )}
-          </div>
+          {renderContractDetails()}
         </div>
       </div>
       <Drawer
@@ -211,7 +276,16 @@ const ContratosPage = () => {
         opened={isDrawerOpened}
       >
         <div className="p-4">
-          <ContractDetails selectedContract={selectedContract} />
+          {selectedContract?.id ? (
+            <Suspense fallback={<ContractDetailsSkeleton />}>
+              {/* --- FIX 3: Also pass the props to the Drawer's instance --- */}
+              <ContractDetails
+                selectedContractId={String(selectedContract.id)}
+                onDelete={handleContractDeletion}
+                isDeleting={isDeletingContract}
+              />
+            </Suspense>
+          ) : null}
         </div>
       </Drawer>
     </>

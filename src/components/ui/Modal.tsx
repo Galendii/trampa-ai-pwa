@@ -33,9 +33,9 @@ export function Modal({
   const modalRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const modalSizeMap: Record<ModalSizes, string> = {
-    large: "w-full md:w-[90vw]",
-    medium: "w-full md:w-[70vw] lg:w-[80vw]",
-    small: "w-full md:w-[60vw] lg:w-[40vw] ",
+    large: "w-full md:w-[70vw]",
+    medium: "w-full md:w-[60vw] lg:w-[70vw]",
+    small: "w-full md:w-[50vw] lg:w-[40vw] ",
   };
 
   // Handle escape key
@@ -93,7 +93,7 @@ export function Modal({
       <div
         ref={modalRef}
         className={cn(
-          "relative w-full bg-white md:rounded shadow-2xl overflow-hidden p-4 md:p-6 md:max-w-2xl",
+          "relative w-full bg-white md:rounded shadow-2xl overflow-hidden p-4 md:p-6 max-h-[90vh]",
           modalSizeMap[size],
           className
         )}
@@ -112,7 +112,7 @@ export function Modal({
         )}
 
         {/* Content */}
-        <div className="overflow-y-auto h-full  ">{children}</div>
+        <div className="overflow-y-auto h-full  max-h-[80vh] ">{children}</div>
       </div>
     </div>
   );

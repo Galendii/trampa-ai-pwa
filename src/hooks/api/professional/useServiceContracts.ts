@@ -1,5 +1,7 @@
 import {
   createServiceContract,
+  deleteServiceContract,
+  getServiceContractById,
   getServiceContracts,
 } from "@/api/professional/services/contracts";
 import {
@@ -11,11 +13,16 @@ import {
   ServiceContractFullModel,
   ServiceContractModel,
 } from "@/models/service-contract";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 export const useGetServiceContracts = (pageData: PageDataModel) => {
   return useQuery<PaginatedResponseModel<ServiceContractFullModel>, Error>({
-    queryKey: ["professional-service-contract"],
+    queryKey: ["professional-service-contracts", pageData],
     queryFn: () => getServiceContracts(pageData),
   });
 };
@@ -28,7 +35,7 @@ export const useCreateServiceContract = () => {
       createServiceContract(serviceContractData),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["professional-service-contract"],
+        queryKey: ["professional-service-contracts"],
       });
     },
   });
@@ -44,21 +51,21 @@ export const useCreateServiceContract = () => {
 //     },
 //   });
 // };
-// export const useDeleteServiceContract = () => {
-//   return useMutation<ServiceContractModel, Error, ServiceContractModel>({
-//     mutationFn: (serviceContractData: ServiceContractModel) =>
-//       deleteServiceContract(serviceContractData),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({
-//         queryKey: ["professional-service-contract"],
-//       });
-//     },
-//   });
-// };
+export const useDeleteServiceContract = () => {
+  const queryClient = useQueryClient();
+  return useMutation<ServiceContractModel, Error, string>({
+    mutationFn: (contractId: string) => deleteServiceContract(contractId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["professional-service-contracts"],
+      });
+    },
+  });
+};
 
-// export const useGetServiceContractById = (id: string) => {
-//   return useQuery<ServiceContractModel, Error>({
-//     queryKey: ["professional-service-contract", id],
-//     queryFn: () => getServiceContractById(id),
-//   });
-// };
+export const useGetServiceContractById = (id: string) => {
+  return useSuspenseQuery<ServiceContractFullModel, Error>({
+    queryKey: ["professional-service-contracts", id],
+    queryFn: () => getServiceContractById(id),
+  });
+};

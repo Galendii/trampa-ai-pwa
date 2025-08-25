@@ -8,13 +8,12 @@ import {
 } from "@/components/ui/MultiSelectGroup";
 import { Select, SelectOption } from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
+import { PageDataModel } from "@/models/paginated-response";
 
 // This is the type for the state that our hook will manage
 export type ContractFiltersType = {
-  search: string;
-  status: string[];
-  ordering: string;
-};
+  status?: string[];
+} & Omit<PageDataModel, "page">;
 
 type ContractsFilterProps = {
   filters: ContractFiltersType;
@@ -43,15 +42,12 @@ export const ContractsFilter: React.FC<ContractsFilterProps> = ({
     <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="relative">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-            size={18}
-          />
           <Input
             placeholder="Buscar por cliente ou plano..."
             className="pl-10"
             value={filters.search}
             onChange={(e) => onFilterChange({ search: e.target.value })}
+            leftIcon={<Search className="h-4 w-4 text-neutral-600" />}
           />
         </div>
         <Select
@@ -64,7 +60,7 @@ export const ContractsFilter: React.FC<ContractsFilterProps> = ({
         <MultiSelectGroup
           label="Status do Contrato"
           options={STATUS_OPTIONS}
-          values={filters.status}
+          values={filters.status ?? []}
           onChange={(values) => onFilterChange({ status: values })}
         />
       </div>

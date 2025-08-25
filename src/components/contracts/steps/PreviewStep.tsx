@@ -191,7 +191,7 @@ const PreviewStep = () => {
             </p>
           </div>
 
-          <div className="mt-24 flex flex-col gap-y-16 justify-around text-center">
+          <div className="mt-24 flex flex-col gap-y-16 justify-around text-start">
             <div>
               <p className="border-t pt-2 w-64">Assinatura do CONTRATANTE</p>
               <p className="text-xs">

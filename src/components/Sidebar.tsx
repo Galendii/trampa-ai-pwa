@@ -1,177 +1,218 @@
-"use client";
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import React, {
+  ForwardRefExoticComponent,
+  RefAttributes,
+  useState,
+} from "react";
 import {
   LayoutDashboard,
-  Calendar,
+  FileText,
   Users,
-  UserCheck,
-  DollarSign,
+  Settings,
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
   Menu,
-  X,
-  ArchiveIcon,
   HandshakeIcon,
-  LogOutIcon,
+  Calendar,
+  LucideProps,
+  MenuIcon,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import clsx from "clsx";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-const navigation = [
-  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Clientes", href: "/dashboard/clientes", icon: Users },
-  { name: "Agenda", href: "/dashboard/agenda", icon: Calendar },
-  { name: "Contratos", href: "/dashboard/contratos", icon: ArchiveIcon },
-  { name: "Serviços", href: "/dashboard/servicos", icon: HandshakeIcon },
-  // { name: "Profissionais", href: "/profissionais", icon: UserCheck },
-  // { name: "Financeiro", href: "/financeiro", icon: DollarSign },
-];
+type SidebarLinkProps = {
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
+  text: string;
+  isCollapsed: boolean;
+  href: string;
+};
 
-export default function Sidebar() {
-  const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 0
+// --- Sub-component for individual sidebar links ---
+const SidebarLink = ({
+  icon: Icon,
+  text,
+  isCollapsed,
+  href,
+}: SidebarLinkProps) => {
+  return (
+    <Link className="flex items-center" href={href}>
+      <Icon size={20} />
+      <span
+        className={clsx(
+          "overflow-hidden transition-all whitespace-nowrap",
+          isCollapsed ? "w-0 ml-0" : "w-full ml-3"
+        )}
+      >
+        {text}
+      </span>
+      {/* Tooltip that appears only when collapsed on desktop */}
+      {isCollapsed && (
+        <div
+          className={clsx(
+            "absolute left-full rounded-md px-2 py-1 ml-6",
+            "bg-blue-100 text-blue-800 text-sm",
+            "invisible opacity-20 -translate-x-3 transition-all",
+            "group-hover:visible group-hover:opacity-100 group-hover:translate-x-0"
+          )}
+        >
+          {text}
+        </div>
+      )}
+    </Link>
   );
+};
 
-  // Handle window resize
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-      if (window.innerWidth >= 1024) {
-        setIsMobileMenuOpen(false);
-      }
-    };
+type SidebarProps = {
+  isMobileOpen: boolean;
+  setMobileOpen: (isOpen: boolean) => void;
+};
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+// --- Main Sidebar Component ---
+const Sidebar = ({ isMobileOpen, setMobileOpen }: SidebarProps) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const pathname = usePathname();
+  const toggleDesktopSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
 
-  // Close mobile menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const sidebar = document.getElementById("sidebar");
-      const menuButton = document.getElementById("menu-button");
-
-      if (
-        isMobileMenuOpen &&
-        sidebar &&
-        !sidebar.contains(event.target as Node) &&
-        menuButton &&
-        !menuButton.contains(event.target as Node)
-      ) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isMobileMenuOpen]);
-
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    if (isMobileMenuOpen && windowWidth < 1024) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isMobileMenuOpen, windowWidth]);
+  const navItems = [
+    {
+      icon: LayoutDashboard,
+      text: "Dashboard",
+      href: "/dashboard",
+    },
+    {
+      icon: FileText,
+      text: "Contratos",
+      href: "/dashboard/contratos",
+    },
+    {
+      icon: Users,
+      text: "Clientes",
+      href: "/dashboard/clientes",
+    },
+    {
+      icon: HandshakeIcon,
+      text: "Serviços",
+      href: "/dashboard/servicos",
+    },
+    {
+      icon: Calendar,
+      text: "Agenda",
+      href: "/dashboard/agenda",
+    },
+  ];
 
   return (
     <>
-      {/* Mobile menu button */}
-      <div className="lg:hidden fixed bottom-4 left-4 z-50">
-        <button
-          id="menu-button"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2.5 rounded-xl bg-white shadow-soft border border-slate-200/60 text-slate-600 hover:text-slate-800 transition-colors"
-          aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
-          aria-expanded={isMobileMenuOpen}
-        >
-          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </div>
-
-      {/* Sidebar */}
+      {/* Overlay for mobile */}
       <div
-        id="sidebar"
-        className={`
-          fixed inset-y-0 left-0 z-40 w-64 bg-white/95 backdrop-blur-xl shadow-soft-lg border-r border-slate-200/60 transform transition-transform duration-300 ease-in-out
-          lg:translate-x-0 lg:static lg:inset-0
-          ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
+        onClick={() => setMobileOpen(false)}
+        className={clsx(
+          "fixed inset-0 bg-black/50 z-30 md:hidden",
+          isMobileOpen ? "block" : "hidden"
+        )}
+      />
+      <aside
+        className={clsx(
+          "fixed top-0 left-0 h-screen flex flex-col bg-white border-r transition-all duration-300 ease-in-out z-40",
+          // Mobile state
+          isMobileOpen ? "translate-x-0" : "-translate-x-full",
+          // Desktop state
+          "md:sticky md:translate-x-0",
+          isCollapsed ? "md:w-20" : "md:w-64",
+          // Default width for mobile
+          "w-64"
+        )}
       >
-        <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="flex items-center justify-center h-16 px-4 border-b border-slate-200/60">
-            <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-sm">
-                <span className="text-white font-bold text-lg">T</span>
-              </div>
-              <div>
-                <span className="text-xl font-bold text-slate-800">
-                  Trampa AI
-                </span>
-                <p className="text-xs text-slate-500 -mt-0.5">
-                  Gestão Inteligente
-                </p>
-              </div>
-            </div>
-          </div>
+        <div className="p-4 pb-2 flex justify-between items-center">
+          <span
+            className={clsx(
+              "text-xl font-bold text-blue-800 transition-opacity duration-200 whitespace-nowrap",
+              isCollapsed ? "md:opacity-0" : "opacity-100"
+            )}
+          >
+            TrampaAI
+          </span>
+        </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-            {navigation.map((item) => {
+        <nav className="flex-1 flex flex-col px-3">
+          <ul className="flex-1 flex flex-col">
+            {navItems.map((item, index) => {
               const isActive = pathname === item.href;
               return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`sidebar-link ${isActive ? "active" : ""}`}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                <li
+                  className={clsx(
+                    "relative flex items-center py-3 px-4 my-1 font-medium rounded-md cursor-pointer transition-colors group",
+                    isActive
+                      ? "bg-gradient-to-tr from-blue-200 to-blue-100 text-blue-800"
+                      : "hover:bg-blue-50 text-gray-600"
+                  )}
+                  onClick={() => setMobileOpen(false)}
                 >
-                  <item.icon className="w-5 h-5 mr-3" />
-                  {item.name}
-                </Link>
+                  <SidebarLink
+                    key={index}
+                    {...item}
+                    isCollapsed={isCollapsed}
+                  />
+                </li>
               );
             })}
-            <Link
-              key="logout"
+          </ul>
+          {/* Logout button for desktop */}
+          <button
+            className="flex py-3 px-4 text-danger-500"
+            onClick={() => setMobileOpen(false)}
+          >
+            <SidebarLink
               href="/login"
-              className="sidebar-link text-red-500 hover:text-red-500 hover:bg-red-100 mt-auto"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <LogOutIcon className="w-5 h-5 mr-3" />
-              Sair
-            </Link>
-          </nav>
+              icon={LogOut}
+              text="Sair"
+              isCollapsed={isCollapsed}
+            />
+          </button>
+        </nav>
 
-          {/* Footer */}
-          <div className="p-4 border-t border-slate-200/60">
-            <div className="text-center">
-              <p className="text-xs text-slate-500 font-medium">
-                Sua gestão, clara como o dia.
-              </p>
-              <div className="mt-2 flex items-center justify-center space-x-1">
-                <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                <span className="text-xs text-slate-400">Online</span>
-              </div>
+        <div className="border-t flex p-3 relative">
+          <div className="w-10 h-10 rounded-md bg-blue-200 flex-shrink-0"></div>
+          <div
+            className={clsx(
+              "flex justify-between items-center overflow-hidden transition-all",
+              isCollapsed ? "w-0" : "w-full ml-3"
+            )}
+          >
+            <div className="leading-4 whitespace-nowrap">
+              <h4 className="font-semibold">Seu Nome</h4>
+              <span className="text-xs text-gray-600">seuemail@email.com</span>
             </div>
           </div>
+          {/* Desktop collapse button */}
+          <button
+            onClick={toggleDesktopSidebar}
+            className="absolute -right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-blue-50 hover:bg-blue-100 border hidden md:block"
+          >
+            {isCollapsed ? (
+              <ChevronRight size={20} />
+            ) : (
+              <ChevronLeft size={20} />
+            )}
+          </button>
         </div>
-      </div>
-
-      {/* Mobile overlay */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-30 lg:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-          aria-hidden="true"
-        />
+      </aside>
+      {!isMobileOpen && (
+        <div className="md:hidden">
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="absolute bottom-2 left-2 -translate-y-1/2 p-1.5 rounded-full bg-blue-50 hover:bg-blue-100 border z-20"
+          >
+            <MenuIcon size={24} />
+          </button>
+        </div>
       )}
     </>
   );
-}
+};
+export default Sidebar;

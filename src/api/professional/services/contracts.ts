@@ -49,3 +49,17 @@ export const signServiceContract = async (contractId: string) => {
   );
   return data;
 };
+
+export const deleteServiceContract = async (contractId: string) => {
+  const { data } = await api.delete<ServiceContractModel>(
+    `/contracts/${contractId}/`
+  );
+  return data;
+};
+
+export const getServiceContractById = async (contractId: string) => {
+  const { data } = await api.get<ServiceContractFullModel>(
+    `/contracts/${contractId}/`
+  );
+  return data;
+};
