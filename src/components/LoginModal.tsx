@@ -8,7 +8,6 @@ import { Eye, EyeOff, Lock, Mail, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { useAuthContext } from "@/contexts/AuthContext";
-import { useToast } from "@/contexts/ToastContext";
 import { useLogin } from "@/hooks/api/useAuth";
 import { UserLoginType } from "@/models/authentication";
 
@@ -109,7 +108,10 @@ export default function LoginModal({ userType, onClose }: LoginModalProps) {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
                 E-mail
               </label>
               <div className="relative">
@@ -130,7 +132,10 @@ export default function LoginModal({ userType, onClose }: LoginModalProps) {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
                 Senha
               </label>
               <div className="relative">

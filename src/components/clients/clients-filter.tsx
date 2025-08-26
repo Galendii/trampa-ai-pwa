@@ -2,19 +2,17 @@
 
 import React, { useState } from "react";
 
-import { ArrowDown, ArrowUp, Loader, Search, UserPlus } from "lucide-react";
+import { Loader, Search, UserPlus } from "lucide-react";
 
 import { Input } from "@/components/ui/Input";
-import {
-  MultiSelectGroup,
-  MultiSelectOption,
-} from "@/components/ui/MultiSelectGroup";
 import { Select, SelectOption } from "@/components/ui/Select";
 import { useModalContext } from "@/contexts/ModalContext";
 import useDebounce from "@/hooks/useDebounce";
 import { PageDataModel } from "@/models/paginated-response";
 
 import Button from "../ui/Button";
+
+import ClientPreSignModal from "./client-pre-sign-modal";
 
 // This is the type for the state that our hook will manage
 export type ClientsFiltersType = Omit<PageDataModel, "page">;
@@ -34,7 +32,7 @@ export const ClientsFilter: React.FC<ClientsFilterProps> = ({
   onFilterChange,
 }) => {
   const [search, setSearch] = useState(filters.search);
-  const { openModal } = useModalContext();
+  const { openModal, closeModal } = useModalContext();
   const [isReady] = useDebounce(
     () => {
       onFilterChange({ ...filters, search });
@@ -44,7 +42,7 @@ export const ClientsFilter: React.FC<ClientsFilterProps> = ({
   );
 
   const handleClientPreSignModal = () => {
-    openModal(ClientPreSignModal);
+    openModal(<ClientPreSignModal onSuccess={closeModal} />);
   };
   return (
     <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-4 w-full">

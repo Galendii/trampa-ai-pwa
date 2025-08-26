@@ -11,7 +11,7 @@ import Button from "@/components/ui/Button";
 // Hooks & Context
 import { useWizard } from "@/contexts/WizardContext";
 import { useGetPlanById } from "@/hooks/api/professional/usePlans";
-import { useGetByClientId } from "@/hooks/api/professional/useProfessional";
+import { useGetByClientId } from "@/hooks/api/professional/useClients";
 import { useGetServiceById } from "@/hooks/api/professional/useService";
 import { useUser } from "@/hooks/api/useUsers";
 

@@ -8,7 +8,7 @@ import { User } from "lucide-react";
 import { AutocompleteSelect } from "@/components/ui/AutocompleteSelect";
 // Hooks & Context
 import { useWizard } from "@/contexts/WizardContext";
-import { useGetClients } from "@/hooks/api/professional/useProfessional";
+import { useGetClients } from "@/hooks/api/professional/useClients";
 
 const SelectClientStep = () => {
   const { formData, updateFormData, errors } = useWizard();

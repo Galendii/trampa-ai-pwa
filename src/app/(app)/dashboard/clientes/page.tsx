@@ -1,13 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { Edit, Eye, Trash2 } from "lucide-react";
 
-import { Edit, Eye, Plus, Search, Trash2, Users } from "lucide-react";
-
-import { getClients } from "@/api/professional/professional";
+import { getClients } from "@/api/professional";
 import { ClientsFilter } from "@/components/clients/clients-filter";
 import FilterableList from "@/components/ui/filterable-list";
-import InfiniteScroll from "@/components/ui/infinite-scroll";
 import { StringHelper } from "@/helpers/string-helper";
 import { useUrlStateSync } from "@/hooks/useUrlStateSync";
 import { PageDataModel } from "@/models/paginated-response";
@@ -24,8 +21,30 @@ export default function ClientsPage() {
     ordering: "-created_at",
   });
 
-  const getStatusBadge = (status: string) => {
-    return status === "ativo" ? "status-badge-active" : "status-badge-inactive";
+  const getStatusBadge = (status: ClientUserModel["status"]) => {
+    switch (status) {
+      case "active":
+        return "bg-green-500 text-white";
+      case "account-pending-creation":
+        return "bg-yellow-500 text-white";
+      case "user-deactivated":
+        return "bg-red-500 text-white";
+      default:
+        return "bg-gray-500 text-white";
+    }
+  };
+
+  const getStatusText = (status: ClientUserModel["status"]) => {
+    switch (status) {
+      case "active":
+        return "Ativo";
+      case "account-pending-creation":
+        return "Pendente de criação";
+      case "user-deactivated":
+        return "Inativo";
+      default:
+        return "Indefinido";
+    }
   };
 
   const renderData = (client: ClientUserModel) => (
@@ -54,10 +73,10 @@ export default function ClientsPage() {
       <div className="px-2 md:px-6 md:py-4 whitespace-nowrap">
         <span
           className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusBadge(
-            client.professionalReferralCode ? "ativo" : "inativo"
+            client.status
           )}`}
         >
-          {client.professionalReferralCode ? "Ativo" : "Inativo"}
+          {getStatusText(client.status)}
         </span>
       </div>
       <div className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

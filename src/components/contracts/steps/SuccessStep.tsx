@@ -4,7 +4,7 @@ import { Check, Loader2, Sparkles } from "lucide-react";
 
 // Hooks & Context
 import { useWizard } from "@/contexts/WizardContext";
-import { useGetByClientId } from "@/hooks/api/professional/useProfessional";
+import { useGetByClientId } from "@/hooks/api/professional/useClients";
 
 const SuccessStep = () => {
   const { formData } = useWizard();
