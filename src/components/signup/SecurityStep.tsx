@@ -1,9 +1,12 @@
 "use client";
 
-import { Lock, Eye, EyeOff, Shield } from "lucide-react";
 import { useState } from "react";
-import { Input } from "../ui/Input";
+
+import { Eye, EyeOff, Lock, Shield } from "lucide-react";
+
 import { useWizard } from "@/contexts/WizardContext";
+
+import { Input } from "../ui/Input";
 
 const SecurityStep = () => {
   const { updateFormData, formData, errors, setErrors } = useWizard();
@@ -86,8 +89,8 @@ const SecurityStep = () => {
                   ? level <= 2
                     ? "bg-red-400"
                     : level === 3
-                    ? "bg-yellow-400"
-                    : "bg-emerald-400"
+                      ? "bg-yellow-400"
+                      : "bg-emerald-400"
                   : "bg-slate-200"
               }`}
             />

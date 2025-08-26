@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Table as TableComposer } from "../table-composition";
 import { ButtonProps } from "../button";
+import { Table as TableComposer } from "../table-composition";
 // import useTableSortFilter from '@/presentation/hooks/use-table-sort-filter';
 
 type HeaderType = {

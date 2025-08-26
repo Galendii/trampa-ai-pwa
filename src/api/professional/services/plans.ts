@@ -1,6 +1,6 @@
-import { PlanModel, PlanCreateModel } from "@/models/plan";
 import api from "@/api";
 import { PaginatedResponseModel } from "@/models/paginated-response";
+import { PlanCreateModel, PlanModel } from "@/models/plan";
 
 export const getPlans = async (
   serviceId: string,

@@ -1,16 +1,18 @@
 "use client";
 
 import type React from "react";
-
 import { useState } from "react";
-import { X, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import PWAInstallBanner from "./PWAInstallBanner";
-import { useLogin } from "@/hooks/api/useAuth";
-import { UserLoginType } from "@/models/authentication";
+
+import { Eye, EyeOff, Lock, Mail, X } from "lucide-react";
+import { toast } from "sonner";
+
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
-import { toast } from "sonner";
+import { useLogin } from "@/hooks/api/useAuth";
+import { UserLoginType } from "@/models/authentication";
+
+import PWAInstallBanner from "./PWAInstallBanner";
 
 interface LoginModalProps {
   userType: "client" | "professional" | "organization";

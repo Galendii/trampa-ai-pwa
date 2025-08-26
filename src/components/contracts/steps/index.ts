@@ -1,6 +1,6 @@
-export { default as PreviewStep } from "./PreviewStep";
-export { default as PaymentStep } from "./PaymentStep";
 export { default as AttendanceStep } from "./AttendanceStep";
+export { default as PaymentStep } from "./PaymentStep";
+export { default as PreviewStep } from "./PreviewStep";
 export { default as SelectClientStep } from "./SelectClientStep";
 export { default as SelectDatesStep } from "./SelectDatesStep";
 export { default as SelectPlanStep } from "./SelectPlanStep";

@@ -1,4 +1,5 @@
 import React from "react";
+
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import styles from "./pagination.module.scss";

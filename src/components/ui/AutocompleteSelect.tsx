@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef, useId } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+
+import { Check, Search, X } from "lucide-react";
+
 import { cn } from "../../lib/utils";
-import { Search, X, Check } from "lucide-react";
 
 export interface AutocompleteOption {
   value: string;

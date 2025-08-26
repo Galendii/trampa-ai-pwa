@@ -1,12 +1,14 @@
 "use client";
 
+import React, { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+
+import { useInfiniteQuery } from "@tanstack/react-query";
+
 import {
   PageDataModel,
   PaginatedResponseModel,
 } from "@/models/paginated-response";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
-import { useInView } from "react-intersection-observer";
 
 // Use a generic TData to make the component type-safe.
 // We constrain TData to ensure it has an 'id' for the React key.

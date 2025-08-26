@@ -1,18 +1,21 @@
 "use client";
 
+import React, { useCallback, useMemo, useState } from "react";
+
+import clsx from "clsx";
+import { PlusCircleIcon } from "lucide-react";
+
 import { getServices } from "@/api/professional/services/services";
 import Header from "@/components/Header";
 import Button from "@/components/ui/Button";
 import { Drawer } from "@/components/ui/Drawer";
 import InfiniteScroll from "@/components/ui/infinite-scroll";
-import { ServiceModel } from "@/models/service";
-import clsx from "clsx";
-import { useIsMobile } from "@/hooks/useIsMobile";
-import { PlusCircleIcon } from "lucide-react";
-import React, { useCallback, useMemo, useState } from "react";
-import ServiceDetails from "./components/service-details";
 import { useModalContext } from "@/contexts/ModalContext";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { ServiceModel } from "@/models/service";
+
 import CreateServiceModal from "./components/modals/create-service-modal";
+import ServiceDetails from "./components/service-details";
 
 const ServicesPage = () => {
   const isMobile = useIsMobile();

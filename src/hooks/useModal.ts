@@ -1,5 +1,6 @@
+import { ReactNode, useCallback, useState } from "react";
+
 import { ModalSizes } from "@/components/ui/Modal";
-import { useState, useCallback, ReactNode } from "react";
 
 // Define a interface para o estado do modal
 interface ModalState {

@@ -1,22 +1,25 @@
 "use client";
-import { useState, useMemo, useEffect } from "react";
-import { cn, formatDate } from "../../lib/utils";
+import { useEffect, useMemo, useState } from "react";
+
 import {
+  CalendarIcon,
   ChevronLeft,
   ChevronRight,
-  Plus,
-  CalendarIcon,
   Clock,
   MapPin,
-  Trash2,
   MoreHorizontal,
+  Plus,
+  Trash2,
   User,
 } from "lucide-react";
+
+import { cn, formatDate } from "../../lib/utils";
+
 import { Button } from "./Button";
-import { Modal, ModalBody, ModalFooter } from "./Modal";
-import { Input } from "./Input";
-import { Select } from "./Select";
 import { DatePicker } from "./DatePicker";
+import { Input } from "./Input";
+import { Modal, ModalBody, ModalFooter } from "./Modal";
+import { Select } from "./Select";
 
 export interface CalendarEvent {
   id: string;

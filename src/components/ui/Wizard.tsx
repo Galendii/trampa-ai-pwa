@@ -1,12 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils";
+
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+
 import {
   useWizard,
   WizardStep as WizardStepType,
 } from "@/contexts/WizardContext";
+import { cn } from "@/lib/utils";
 
 export interface WizardProps {
   children: React.ReactNode;
@@ -93,8 +95,8 @@ export function WizardHeader({
                           isCompleted
                             ? "bg-emerald-500 text-white"
                             : isActive
-                            ? "bg-blue-600 text-white shadow-lg"
-                            : "bg-slate-200 text-slate-500"
+                              ? "bg-blue-600 text-white shadow-lg"
+                              : "bg-slate-200 text-slate-500"
                         )}
                       >
                         {isCompleted ? (

@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Download, X, Smartphone, Monitor } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { Download, Monitor, Smartphone, X } from "lucide-react";
+
 import { usePWA } from "../hooks/usePWA";
 
 interface PWAInstallBannerProps {

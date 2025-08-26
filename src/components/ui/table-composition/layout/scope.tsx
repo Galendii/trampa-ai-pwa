@@ -1,7 +1,8 @@
 import React from "react";
 
-import styles from "./layout.module.scss";
 import { ButtonProps } from "../../button";
+
+import styles from "./layout.module.scss";
 
 type ScopeProps = {
   title?: string;

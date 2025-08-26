@@ -1,11 +1,12 @@
 "use client";
+import { useUser } from "@/hooks/api/useUsers";
+
+import FaturamentoChart from "../../../components/FaturamentoChart";
 import Header from "../../../components/Header";
 import KPICard from "../../../components/KPICard";
-import FaturamentoChart from "../../../components/FaturamentoChart";
+import PWAInstallBanner from "../../../components/PWAInstallBanner";
 import TransacoesTable from "../../../components/TransacoesTable";
 import { kpis } from "../../../lib/mock-data";
-import PWAInstallBanner from "../../../components/PWAInstallBanner";
-import { useUser } from "@/hooks/api/useUsers";
 
 export default function DashboardPage() {
   const { data: user } = useUser();

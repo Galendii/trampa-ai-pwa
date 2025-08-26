@@ -1,4 +1,11 @@
-import type { Organizacao, Profissional, Cliente, Transacao, EventoAgenda, KPI } from "@/types"
+import type {
+  Cliente,
+  EventoAgenda,
+  KPI,
+  Organizacao,
+  Profissional,
+  Transacao,
+} from "@/types";
 
 export const organizacao: Organizacao = {
   id: "1",
@@ -8,7 +15,7 @@ export const organizacao: Organizacao = {
   email: "jose@forcatotal.com.br",
   telefone: "(11) 99999-9999",
   endereco: "Rua das Flores, 123 - São Paulo, SP",
-}
+};
 
 export const profissionais: Profissional[] = [
   {
@@ -38,7 +45,7 @@ export const profissionais: Profissional[] = [
     organizacaoId: "1",
     ativo: false,
   },
-]
+];
 
 export const clientes: Cliente[] = [
   {
@@ -85,7 +92,7 @@ export const clientes: Cliente[] = [
     dataInicio: "2024-03-05",
     organizacaoId: "1",
   },
-]
+];
 
 export const transacoes: Transacao[] = [
   {
@@ -133,7 +140,7 @@ export const transacoes: Transacao[] = [
     categoria: "Equipamentos",
     organizacaoId: "1",
   },
-]
+];
 
 export const eventosAgenda: EventoAgenda[] = [
   {
@@ -166,7 +173,7 @@ export const eventosAgenda: EventoAgenda[] = [
     valorEsperado: 50.0,
     organizacaoId: "1",
   },
-]
+];
 
 export const kpis: KPI[] = [
   {
@@ -193,7 +200,7 @@ export const kpis: KPI[] = [
     variacao: "+8",
     tipo: "positivo",
   },
-]
+];
 
 export const faturamentoMensal = [
   { mes: "Ago", valor: 8500 },
@@ -202,4 +209,4 @@ export const faturamentoMensal = [
   { mes: "Nov", valor: 11300 },
   { mes: "Dez", valor: 10800 },
   { mes: "Jan", valor: 12450 },
-]
+];

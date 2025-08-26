@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 export default function OfflinePage() {
   return (
@@ -13,13 +13,20 @@ export default function OfflinePage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-          <h2 className="text-lg font-semibold text-slate-800 mb-2">Você está offline</h2>
-          <p className="text-slate-600 mb-4">Verifique sua conexão com a internet e tente novamente.</p>
-          <button onClick={() => window.location.reload()} className="btn-primary w-full">
+          <h2 className="text-lg font-semibold text-slate-800 mb-2">
+            Você está offline
+          </h2>
+          <p className="text-slate-600 mb-4">
+            Verifique sua conexão com a internet e tente novamente.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="btn-primary w-full"
+          >
             Tentar Novamente
           </button>
         </div>
       </div>
     </div>
-  )
+  );
 }

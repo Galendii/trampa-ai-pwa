@@ -1,10 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { useState, createContext, useContext, useMemo } from "react";
-import { cn } from "../../lib/utils";
+import { createContext, useContext, useMemo, useState } from "react";
+
 import * as TabsPrimitive from "@radix-ui/react-tabs";
+
 import { useTabs } from "@/contexts/TabsContext";
+
+import { cn } from "../../lib/utils";
 
 interface TabsProps
   extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> {

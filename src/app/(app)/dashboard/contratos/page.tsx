@@ -1,43 +1,42 @@
 "use client";
 
-import React, { useState, useCallback, useMemo, Suspense } from "react";
+import React, { Suspense, useCallback, useMemo, useState } from "react";
+
+import { useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
 import {
   MessageSquareWarningIcon,
   PlusCircleIcon,
   TextSelectIcon,
   TrashIcon,
 } from "lucide-react";
-import clsx from "clsx";
-import { useQueryClient } from "@tanstack/react-query";
-
-// Core Components
-import Header from "@/components/Header";
-import Button from "@/components/ui/Button";
-import { Drawer } from "@/components/ui/Drawer";
-
-// Hooks & Contexts
-import { useIsMobile } from "@/hooks/useIsMobile";
-import { useModalContext } from "@/contexts/ModalContext";
 
 // API & Models
 import { getServiceContracts } from "@/api/professional/services/contracts";
+import { CreateContractWizard } from "@/components/contracts";
+import {
+  ContractFiltersType,
+  ContractsFilter,
+} from "@/components/contracts/components/contracts-filter";
+// Core Components
+import Header from "@/components/Header";
+import { ActionConfirmationModal } from "@/components/ui/ActionConfirmationModal";
+import Button from "@/components/ui/Button";
+import { Drawer } from "@/components/ui/Drawer";
+import FilterableList from "@/components/ui/filterable-list";
+import { useModalContext } from "@/contexts/ModalContext";
+import {
+  useDeleteServiceContract,
+  useGetServiceContractById,
+} from "@/hooks/api/professional/useServiceContracts";
+// Hooks & Contexts
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { useUrlStateSync } from "@/hooks/useUrlStateSync";
 import {
   ServiceContractFullModel,
   ServiceContractStatus,
   ServiceContractStatusMap,
 } from "@/models/service-contract";
-import { CreateContractWizard } from "@/components/contracts";
-import FilterableList from "@/components/ui/filterable-list";
-import {
-  ContractFiltersType,
-  ContractsFilter,
-} from "@/components/contracts/components/contracts-filter";
-import { useUrlStateSync } from "@/hooks/useUrlStateSync";
-import { ActionConfirmationModal } from "@/components/ui/ActionConfirmationModal";
-import {
-  useDeleteServiceContract,
-  useGetServiceContractById,
-} from "@/hooks/api/professional/useServiceContracts";
 
 // --- ContractDetails component is now leaner ---
 // It receives the delete function and loading state as props.

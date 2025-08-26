@@ -1,18 +1,22 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Building2, User, UserCheck, ArrowRight } from "lucide-react";
+import React, { useMemo, useState } from "react";
+
+import { ArrowRight, Building2, User, UserCheck } from "lucide-react";
+
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import { WizardProvider } from "@/contexts/WizardContext";
+
 import LoginModal from "../../components/LoginModal";
 import SignupWizard, {
   CLIENT_STEPS,
   ORGANIZATION_STEPS,
   PROFESSIONAL_STEPS,
 } from "../../components/SignupWizard";
-import { WizardProvider } from "@/contexts/WizardContext";
-import Card from "@/components/ui/Card";
-import Button from "@/components/ui/Button";
-import LoginHeader from "./components/login-header";
+
 import Features from "./components/features";
+import LoginHeader from "./components/login-header";
 
 type UserType = "client" | "professional" | "organization" | null;
 

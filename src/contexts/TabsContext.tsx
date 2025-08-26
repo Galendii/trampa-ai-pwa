@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useCallback, useContext, useState } from "react";
 
 interface TabsContextType {
   activeTab: string;
@@ -29,17 +29,13 @@ export const TabsProvider: React.FC<TabsProviderProps> = ({
     setActiveTab,
   };
 
-  return (
-    <TabsContext.Provider value={value}>
-      {children}
-    </TabsContext.Provider>
-  );
+  return <TabsContext.Provider value={value}>{children}</TabsContext.Provider>;
 };
 
 export const useTabs = () => {
   const context = useContext(TabsContext);
   if (context === undefined) {
-    throw new Error('useTabs must be used within a TabsProvider');
+    throw new Error("useTabs must be used within a TabsProvider");
   }
   return context;
 };

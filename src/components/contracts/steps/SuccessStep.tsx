@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Sparkles, Loader2 } from "lucide-react";
+import { Check, Loader2, Sparkles } from "lucide-react";
 
 // Hooks & Context
 import { useWizard } from "@/contexts/WizardContext";

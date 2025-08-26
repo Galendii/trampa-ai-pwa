@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useContext, createContext, useState, useCallback } from "react";
+import React, { createContext, useCallback, useContext, useState } from "react";
+
+import { deleteCookie, setCookie } from "cookies-next";
+
+import { AuthenticationModel } from "@/models/authentication";
 // import { RefreshAccessToken } from "domain/models/refresh-access-token";
 import { UserModel } from "@/models/user";
-import { AuthenticationModel } from "@/models/authentication";
-import { deleteCookie, setCookie } from "cookies-next";
 
 type InitialStateType = {
   user: UserModel | null;

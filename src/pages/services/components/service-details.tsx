@@ -1,9 +1,6 @@
-import Button from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { TextArea } from "@/components/ui/TextArea";
-import { useUpdateService } from "@/hooks/api/professional/useService";
-import { PlanModel } from "@/models/plan";
-import { CreateServiceModel, ServiceModel } from "@/models/service";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import {
@@ -15,14 +12,20 @@ import {
   TextSelectIcon,
   TrashIcon,
 } from "lucide-react";
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
-import PlanModal from "./modals/plan-modal";
+
+import { getPlans } from "@/api/professional/services/plans";
+import Button from "@/components/ui/Button";
+import InfiniteScroll from "@/components/ui/infinite-scroll";
+import { Input } from "@/components/ui/Input";
+import { TextArea } from "@/components/ui/TextArea";
 import { useModalContext } from "@/contexts/ModalContext";
 import { useGetPlans } from "@/hooks/api/professional/usePlans";
-import InfiniteScroll from "@/components/ui/infinite-scroll";
-import { getPlans } from "@/api/professional/services/plans";
+import { useUpdateService } from "@/hooks/api/professional/useService";
+import { PlanModel } from "@/models/plan";
+import { CreateServiceModel, ServiceModel } from "@/models/service";
+
+import PlanModal from "./modals/plan-modal";
 
 type ServiceDetailsProps = {
   selectedService?: ServiceModel | null;

@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useMemo } from "react";
+
 import { User } from "lucide-react";
 
 // Components
 import { AutocompleteSelect } from "@/components/ui/AutocompleteSelect";
-
 // Hooks & Context
 import { useWizard } from "@/contexts/WizardContext";
 import { useGetClients } from "@/hooks/api/professional/useProfessional";

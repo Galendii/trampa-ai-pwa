@@ -1,12 +1,12 @@
-"use client"
-import Navigation from "../../components/landing/Navigation"
-import Hero from "../../components/landing/Hero"
-import Features from "../../components/landing/Features"
-import Testimonials from "../../components/landing/Testimonials"
-import Pricing from "../../components/landing/Pricing"
-import CTA from "../../components/landing/CTA"
-import Footer from "../../components/landing/Footer"
-import PWAInstallBanner from "../../components/PWAInstallBanner"
+"use client";
+import CTA from "../../components/landing/CTA";
+import Features from "../../components/landing/Features";
+import Footer from "../../components/landing/Footer";
+import Hero from "../../components/landing/Hero";
+import Navigation from "../../components/landing/Navigation";
+import Pricing from "../../components/landing/Pricing";
+import Testimonials from "../../components/landing/Testimonials";
+import PWAInstallBanner from "../../components/PWAInstallBanner";
 
 export default function LandingPage() {
   return (
@@ -20,5 +20,5 @@ export default function LandingPage() {
       <Footer />
       <PWAInstallBanner />
     </div>
-  )
+  );
 }

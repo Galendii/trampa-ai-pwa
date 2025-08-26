@@ -1,10 +1,13 @@
-import { transacoes } from "../lib/mock-data"
-import { ArrowUpCircle, ArrowDownCircle } from "lucide-react"
+import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
+
+import { transacoes } from "../lib/mock-data";
 
 export default function TransacoesTable() {
   return (
     <div className="card">
-      <h3 className="text-lg font-semibold text-slate-800 mb-6">Transações Recentes</h3>
+      <h3 className="text-lg font-semibold text-slate-800 mb-6">
+        Transações Recentes
+      </h3>
       <div className="overflow-x-auto">
         <table className="min-w-full">
           <thead>
@@ -18,7 +21,10 @@ export default function TransacoesTable() {
           </thead>
           <tbody className="divide-y divide-slate-100">
             {transacoes.map((transacao) => (
-              <tr key={transacao.id} className="hover:bg-slate-50/50 transition-colors">
+              <tr
+                key={transacao.id}
+                className="hover:bg-slate-50/50 transition-colors"
+              >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     {transacao.tipo === "entrada" ? (
@@ -44,8 +50,15 @@ export default function TransacoesTable() {
                   {new Date(transacao.data).toLocaleDateString("pt-BR")}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-semibold">
-                  <span className={transacao.tipo === "entrada" ? "text-emerald-600" : "text-red-500"}>
-                    {transacao.tipo === "entrada" ? "+" : "-"}R$ {transacao.valor.toFixed(2)}
+                  <span
+                    className={
+                      transacao.tipo === "entrada"
+                        ? "text-emerald-600"
+                        : "text-red-500"
+                    }
+                  >
+                    {transacao.tipo === "entrada" ? "+" : "-"}R${" "}
+                    {transacao.valor.toFixed(2)}
                   </span>
                 </td>
               </tr>
@@ -54,5 +67,5 @@ export default function TransacoesTable() {
         </table>
       </div>
     </div>
-  )
+  );
 }

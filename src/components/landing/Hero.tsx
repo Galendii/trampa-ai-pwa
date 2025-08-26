@@ -1,8 +1,10 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { ArrowRight, Zap, Play, CheckCircle } from "lucide-react"
-import PWAInstallBanner from "../PWAInstallBanner"
+import Link from "next/link";
+
+import { ArrowRight, CheckCircle, Play, Zap } from "lucide-react";
+
+import PWAInstallBanner from "../PWAInstallBanner";
 
 export default function Hero() {
   return (
@@ -21,8 +23,9 @@ export default function Hero() {
             </h1>
 
             <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-              Transforme a gestão do seu negócio com inteligência artificial. Controle financeiro, agenda e clientes em
-              uma plataforma simples e poderosa.
+              Transforme a gestão do seu negócio com inteligência artificial.
+              Controle financeiro, agenda e clientes em uma plataforma simples e
+              poderosa.
             </p>
 
             <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-8">
@@ -30,16 +33,22 @@ export default function Hero() {
                 <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
                   <CheckCircle className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="font-semibold text-emerald-800">Clientes Sempre Grátis</h3>
+                <h3 className="font-semibold text-emerald-800">
+                  Clientes Sempre Grátis
+                </h3>
               </div>
               <p className="text-emerald-700 text-sm leading-relaxed">
-                <strong>Seus clientes nunca pagam nada!</strong> Eles têm acesso gratuito ao aplicativo para acompanhar
-                seu progresso, agendamentos e comunicação direta com você.
+                <strong>Seus clientes nunca pagam nada!</strong> Eles têm acesso
+                gratuito ao aplicativo para acompanhar seu progresso,
+                agendamentos e comunicação direta com você.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Link href="/login" className="btn-primary text-lg px-8 py-4 flex items-center justify-center">
+              <Link
+                href="/login"
+                className="btn-primary text-lg px-8 py-4 flex items-center justify-center"
+              >
                 Começar Agora
                 <ArrowRight className="ml-2" size={20} />
               </Link>
@@ -70,7 +79,9 @@ export default function Hero() {
             <div className="bg-white rounded-2xl shadow-2xl p-8 border border-slate-200/60">
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-slate-800">Dashboard</h3>
+                  <h3 className="text-lg font-semibold text-slate-800">
+                    Dashboard
+                  </h3>
                   <div className="flex space-x-2">
                     <div className="w-3 h-3 bg-red-400 rounded-full"></div>
                     <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
@@ -80,7 +91,9 @@ export default function Hero() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-emerald-50 p-4 rounded-lg">
-                    <div className="text-2xl font-bold text-emerald-700">R$ 12.5k</div>
+                    <div className="text-2xl font-bold text-emerald-700">
+                      R$ 12.5k
+                    </div>
                     <div className="text-sm text-emerald-600">Faturamento</div>
                   </div>
                   <div className="bg-blue-50 p-4 rounded-lg">
@@ -96,5 +109,5 @@ export default function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }

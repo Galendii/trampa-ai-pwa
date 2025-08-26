@@ -1,4 +1,5 @@
 import { UserModel } from "@/models/user";
+
 import api from "./index";
 
 export const getLoggedUser = async (): Promise<UserModel> => {

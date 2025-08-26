@@ -3,23 +3,24 @@ import React, {
   RefAttributes,
   useState,
 } from "react";
-import {
-  LayoutDashboard,
-  FileText,
-  Users,
-  Settings,
-  LogOut,
-  ChevronLeft,
-  ChevronRight,
-  Menu,
-  HandshakeIcon,
-  Calendar,
-  LucideProps,
-  MenuIcon,
-} from "lucide-react";
-import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+import clsx from "clsx";
+import {
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  FileText,
+  HandshakeIcon,
+  LayoutDashboard,
+  LogOut,
+  LucideProps,
+  Menu,
+  MenuIcon,
+  Settings,
+  Users,
+} from "lucide-react";
 
 type SidebarLinkProps = {
   icon: ForwardRefExoticComponent<

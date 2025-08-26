@@ -1,9 +1,11 @@
 "use client";
 
 import type React from "react";
-import { cn } from "../../lib/utils";
-import { Check } from "lucide-react";
 import { useId } from "react";
+
+import { Check } from "lucide-react";
+
+import { cn } from "../../lib/utils";
 
 export interface CheckboxProps
   extends React.InputHTMLAttributes<HTMLInputElement> {

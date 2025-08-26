@@ -1,7 +1,8 @@
-import { getClients, getClientById } from "@/api/professional/professional";
+import { useQuery } from "@tanstack/react-query";
+
+import { getClientById, getClients } from "@/api/professional/professional";
 import { PaginatedResponseModel } from "@/models/paginated-response";
 import { ClientUserModel } from "@/models/user";
-import { useQuery } from "@tanstack/react-query";
 
 export const useGetClients = () => {
   return useQuery<PaginatedResponseModel<ClientUserModel>, Error>({

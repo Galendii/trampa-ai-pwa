@@ -1,12 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Menu, X } from "lucide-react"
-import PWAInstallBanner from "../PWAInstallBanner"
+import { useState } from "react";
+import Link from "next/link";
+
+import { Menu, X } from "lucide-react";
+
+import PWAInstallBanner from "../PWAInstallBanner";
 
 export default function Navigation() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-lg border-b border-slate-200/60 z-50">
@@ -22,13 +24,22 @@ export default function Navigation() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-slate-600 hover:text-slate-800 font-medium transition-colors">
+            <a
+              href="#features"
+              className="text-slate-600 hover:text-slate-800 font-medium transition-colors"
+            >
               Recursos
             </a>
-            <a href="#testimonials" className="text-slate-600 hover:text-slate-800 font-medium transition-colors">
+            <a
+              href="#testimonials"
+              className="text-slate-600 hover:text-slate-800 font-medium transition-colors"
+            >
               Depoimentos
             </a>
-            <a href="#pricing" className="text-slate-600 hover:text-slate-800 font-medium transition-colors">
+            <a
+              href="#pricing"
+              className="text-slate-600 hover:text-slate-800 font-medium transition-colors"
+            >
               Preços
             </a>
             <PWAInstallBanner variant="button" />
@@ -50,13 +61,22 @@ export default function Navigation() {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-slate-200">
             <div className="flex flex-col space-y-4">
-              <a href="#features" className="text-slate-600 hover:text-slate-800 font-medium">
+              <a
+                href="#features"
+                className="text-slate-600 hover:text-slate-800 font-medium"
+              >
                 Recursos
               </a>
-              <a href="#testimonials" className="text-slate-600 hover:text-slate-800 font-medium">
+              <a
+                href="#testimonials"
+                className="text-slate-600 hover:text-slate-800 font-medium"
+              >
                 Depoimentos
               </a>
-              <a href="#pricing" className="text-slate-600 hover:text-slate-800 font-medium">
+              <a
+                href="#pricing"
+                className="text-slate-600 hover:text-slate-800 font-medium"
+              >
                 Preços
               </a>
               <PWAInstallBanner variant="button" />
@@ -68,5 +88,5 @@ export default function Navigation() {
         )}
       </div>
     </nav>
-  )
+  );
 }

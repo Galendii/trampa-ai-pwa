@@ -1,15 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { X, User, Lock, FileText, Check, ClipboardList } from "lucide-react";
-import {
-  Wizard,
-  WizardHeader,
-  WizardContent,
-  WizardStep,
-  WizardFooter,
-} from "./Wizard";
+import { useRouter } from "next/navigation";
 
+import { Check, ClipboardList, FileText, Lock, User, X } from "lucide-react";
+
+import LoginHeader from "@/app/login/components/login-header";
 import { useToast } from "@/contexts/ToastContext";
 import { useWizard } from "@/contexts/WizardContext";
+
+import Features from "./landing/Features";
 import {
   DocumentationStep,
   PersonalInfoStep,
@@ -17,9 +15,13 @@ import {
   SecurityStep,
   SuccessStep,
 } from "./signup/";
-import LoginHeader from "@/app/login/components/login-header";
-import Features from "./landing/Features";
-import { useRouter } from "next/navigation";
+import {
+  Wizard,
+  WizardContent,
+  WizardFooter,
+  WizardHeader,
+  WizardStep,
+} from "./Wizard";
 
 interface SignupWizardProps {
   userType: "client" | "professional" | "organization";

@@ -1,21 +1,20 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+
 import {
-  User,
-  HandshakeIcon,
-  ClipboardList,
   Calendar,
-  Clock,
-  FileText,
-  CreditCard,
   Check,
+  ClipboardList,
+  Clock,
+  CreditCard,
   FileCheck,
+  FileText,
+  HandshakeIcon,
+  User,
 } from "lucide-react";
 import { toast } from "sonner";
 
-// Wizard Components & Context
-import { useWizard, WizardProvider } from "@/contexts/WizardContext";
 import {
   Wizard,
   WizardContent,
@@ -23,7 +22,8 @@ import {
   WizardHeader,
   WizardStep,
 } from "@/components/ui/Wizard";
-
+// Wizard Components & Context
+import { useWizard, WizardProvider } from "@/contexts/WizardContext";
 // API & Models
 import { useCreateServiceContract } from "@/hooks/api/professional/useServiceContracts";
 import {
@@ -36,15 +36,15 @@ import {
 import { SelectOption } from "../ui/Select";
 
 import {
-  SelectClientStep,
-  SelectServiceStep,
-  SelectPlanStep,
-  SelectDatesStep,
   AttendanceStep,
-  TermsStep,
   PaymentStep,
-  SuccessStep,
   PreviewStep,
+  SelectClientStep,
+  SelectDatesStep,
+  SelectPlanStep,
+  SelectServiceStep,
+  SuccessStep,
+  TermsStep,
 } from "./steps";
 
 // --- Wizard Step Definitions ---

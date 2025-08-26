@@ -1,4 +1,12 @@
 import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { toast } from "sonner";
+
+import {
   createService,
   deleteService,
   getServiceById,
@@ -7,13 +15,6 @@ import {
 } from "@/api/professional/services/services";
 import { PaginatedResponseModel } from "@/models/paginated-response";
 import { CreateServiceModel, ServiceModel } from "@/models/service";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
-import { toast } from "sonner";
 
 export const useGetServices = (page: number) => {
   return useQuery<PaginatedResponseModel<ServiceModel>, Error>({

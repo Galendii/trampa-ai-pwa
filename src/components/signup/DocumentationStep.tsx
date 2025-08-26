@@ -1,9 +1,11 @@
 "use client";
 
-import { FileText, Building2 } from "lucide-react";
-import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
+import { Building2, FileText } from "lucide-react";
+
 import { useWizard } from "@/contexts/WizardContext";
+
+import { Button } from "../ui/Button";
+import { Input } from "../ui/Input";
 
 const DocumentationStep = () => {
   const { updateFormData, formData, errors, setErrors } = useWizard();

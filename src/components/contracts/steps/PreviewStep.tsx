@@ -1,19 +1,20 @@
 "use client";
 
 import React, { useRef } from "react";
-import { FileCheck, Loader2, Printer } from "lucide-react";
-import { format } from "date-fns";
 import { useReactToPrint } from "react-to-print";
+
+import { format } from "date-fns";
+import { FileCheck, Loader2, Printer } from "lucide-react";
 
 // Components
 import Button from "@/components/ui/Button";
-
 // Hooks & Context
 import { useWizard } from "@/contexts/WizardContext";
-import { useGetByClientId } from "@/hooks/api/professional/useProfessional";
 import { useGetPlanById } from "@/hooks/api/professional/usePlans";
+import { useGetByClientId } from "@/hooks/api/professional/useProfessional";
 import { useGetServiceById } from "@/hooks/api/professional/useService";
 import { useUser } from "@/hooks/api/useUsers";
+
 import { PAYMENT_METHOD_OPTIONS } from "../create-contract-wizard";
 
 // Helper for weekday labels

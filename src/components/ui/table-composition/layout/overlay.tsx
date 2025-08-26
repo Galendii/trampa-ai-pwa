@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import styles from './layout.module.scss';
+import styles from "./layout.module.scss";
 
 type OverlayProps = {
   withBorder?: boolean | false;

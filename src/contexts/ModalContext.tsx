@@ -1,6 +1,7 @@
+import React, { createContext, ReactNode, useContext, useEffect } from "react";
+
 import { Modal, ModalSizes } from "@/components/ui/Modal";
 import useModal from "@/hooks/useModal";
-import React, { createContext, useContext, useEffect, ReactNode } from "react";
 
 interface ModalContextType {
   isOpen: boolean;

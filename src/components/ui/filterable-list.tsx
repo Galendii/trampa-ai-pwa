@@ -1,12 +1,15 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+
+import { useInfiniteQuery } from "@tanstack/react-query";
+
 import {
   PageDataModel,
   PaginatedResponseModel,
 } from "@/models/paginated-response";
+
 import Button from "./Button";
 
 type FilterableListProps<TData extends { id: string | number }, TFilters> = {

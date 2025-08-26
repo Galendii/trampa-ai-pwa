@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { CheckCircle, Users, Crown, Zap } from "lucide-react";
+
+import { CheckCircle, Crown, Users, Zap } from "lucide-react";
 
 export default function Pricing() {
   const plans = [

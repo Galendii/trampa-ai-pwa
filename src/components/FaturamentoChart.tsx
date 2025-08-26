@@ -1,13 +1,15 @@
-"use client"
+"use client";
 
-import { faturamentoMensal } from "../lib/mock-data"
+import { faturamentoMensal } from "../lib/mock-data";
 
 export default function FaturamentoChart() {
-  const maxValue = Math.max(...faturamentoMensal.map((item) => item.valor))
+  const maxValue = Math.max(...faturamentoMensal.map((item) => item.valor));
 
   return (
     <div className="card">
-      <h3 className="text-lg font-semibold text-slate-800 mb-6">Evolução do Faturamento</h3>
+      <h3 className="text-lg font-semibold text-slate-800 mb-6">
+        Evolução do Faturamento
+      </h3>
       <div className="flex items-end justify-between h-64 space-x-3">
         {faturamentoMensal.map((item, index) => (
           <div key={index} className="flex flex-col items-center flex-1">
@@ -20,11 +22,13 @@ export default function FaturamentoChart() {
             />
             <div className="mt-3 text-center">
               <p className="text-xs font-semibold text-slate-700">{item.mes}</p>
-              <p className="text-xs text-slate-500 mt-0.5">R$ {(item.valor / 1000).toFixed(1)}k</p>
+              <p className="text-xs text-slate-500 mt-0.5">
+                R$ {(item.valor / 1000).toFixed(1)}k
+              </p>
             </div>
           </div>
         ))}
       </div>
     </div>
-  )
+  );
 }

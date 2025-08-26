@@ -11,7 +11,8 @@ export default function Footer() {
               <span className="text-xl font-bold">Trampa AI</span>
             </div>
             <p className="text-slate-400 leading-relaxed">
-              Transformando a gestão de pequenos negócios com inteligência artificial e simplicidade.
+              Transformando a gestão de pequenos negócios com inteligência
+              artificial e simplicidade.
             </p>
           </div>
 
@@ -95,20 +96,31 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-slate-400">© 2024 Trampa AI. Todos os direitos reservados.</p>
+          <p className="text-slate-400">
+            © 2024 Trampa AI. Todos os direitos reservados.
+          </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
+            <a
+              href="#"
+              className="text-slate-400 hover:text-white transition-colors"
+            >
               Privacidade
             </a>
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
+            <a
+              href="#"
+              className="text-slate-400 hover:text-white transition-colors"
+            >
               Termos
             </a>
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
+            <a
+              href="#"
+              className="text-slate-400 hover:text-white transition-colors"
+            >
               Cookies
             </a>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

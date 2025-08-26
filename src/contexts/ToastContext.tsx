@@ -1,8 +1,10 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+
+import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from "lucide-react";
+
 import { cn } from "@/lib/utils";
-import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from "lucide-react";
 
 export type ToastVariant =
   | "default"

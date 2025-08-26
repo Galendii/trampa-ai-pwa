@@ -1,8 +1,10 @@
 import React from "react";
+
 import { Search as SearchIcon, XSquare as XSquareIcon } from "lucide-react";
 
-import styles from "./addons.module.scss";
 import { useKeyListener } from "@/hooks/useKeyListener";
+
+import styles from "./addons.module.scss";
 
 type SearchProps = {
   handleSearch: (value: string) => void;

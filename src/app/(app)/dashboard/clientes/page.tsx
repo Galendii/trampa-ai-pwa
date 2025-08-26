@@ -1,16 +1,19 @@
 "use client";
 
-import Header from "../../../../components/Header";
-import { Plus, Search, Eye, Edit, Trash2, Users } from "lucide-react";
 import { useState } from "react";
-import { ClientUserModel } from "@/models/user";
-import { StringHelper } from "@/helpers/string-helper";
-import InfiniteScroll from "@/components/ui/infinite-scroll";
+
+import { Edit, Eye, Plus, Search, Trash2, Users } from "lucide-react";
+
 import { getClients } from "@/api/professional/professional";
+import { ClientsFilter } from "@/components/clients/clients-filter";
 import FilterableList from "@/components/ui/filterable-list";
+import InfiniteScroll from "@/components/ui/infinite-scroll";
+import { StringHelper } from "@/helpers/string-helper";
 import { useUrlStateSync } from "@/hooks/useUrlStateSync";
 import { PageDataModel } from "@/models/paginated-response";
-import { ClientsFilter } from "@/components/clients/clients-filter";
+import { ClientUserModel } from "@/models/user";
+
+import Header from "../../../../components/Header";
 
 type ClientsFilterTypes = Omit<PageDataModel, "page">;
 

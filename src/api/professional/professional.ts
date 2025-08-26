@@ -1,9 +1,9 @@
-import { ClientUserModel, ProfessionalUserModel } from "@/models/user";
 import api from "@/api";
 import {
   PageDataModel,
   PaginatedResponseModel,
 } from "@/models/paginated-response";
+import { ClientUserModel, ProfessionalUserModel } from "@/models/user";
 export const getProfessionalDetails = async () => {
   const { data } = await api.get<ProfessionalUserModel>(
     `/professionals/details/`

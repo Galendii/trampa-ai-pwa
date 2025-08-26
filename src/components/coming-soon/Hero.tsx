@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
+import { useState } from "react";
 
-import { useState } from "react"
-import { ArrowRight, Bell, CheckCircle, Rocket } from "lucide-react"
+import { ArrowRight, Bell, CheckCircle, Rocket } from "lucide-react";
 
 export default function ComingSoonHero() {
-  const [email, setEmail] = useState("")
-  const [isSubscribed, setIsSubscribed] = useState(false)
+  const [email, setEmail] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (email) {
-      setIsSubscribed(true)
-      setEmail("")
+      setIsSubscribed(true);
+      setEmail("");
     }
-  }
+  };
 
   return (
     <main className="px-6 py-12">
@@ -36,27 +36,39 @@ export default function ComingSoonHero() {
         </h1>
 
         <p className="text-xl md:text-2xl text-slate-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-          Imagine nunca mais se preocupar com planilhas, controles manuais ou clientes perdidos.
-          <strong className="text-white"> Trampa AI</strong> vai transformar freelancers e pequenas empresas em máquinas
-          de crescimento automatizadas.
+          Imagine nunca mais se preocupar com planilhas, controles manuais ou
+          clientes perdidos.
+          <strong className="text-white"> Trampa AI</strong> vai transformar
+          freelancers e pequenas empresas em máquinas de crescimento
+          automatizadas.
         </p>
 
         {/* Value Propositions */}
         <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
           <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
             <div className="text-2xl mb-2">🧠</div>
-            <h3 className="font-semibold text-white mb-2">IA que Pensa por Você</h3>
-            <p className="text-slate-300 text-sm">Decisões automáticas baseadas nos seus dados</p>
+            <h3 className="font-semibold text-white mb-2">
+              IA que Pensa por Você
+            </h3>
+            <p className="text-slate-300 text-sm">
+              Decisões automáticas baseadas nos seus dados
+            </p>
           </div>
           <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
             <div className="text-2xl mb-2">⚡</div>
-            <h3 className="font-semibold text-white mb-2">Crescimento Acelerado</h3>
-            <p className="text-slate-300 text-sm">Identifica oportunidades que você nem sabia que existiam</p>
+            <h3 className="font-semibold text-white mb-2">
+              Crescimento Acelerado
+            </h3>
+            <p className="text-slate-300 text-sm">
+              Identifica oportunidades que você nem sabia que existiam
+            </p>
           </div>
           <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
             <div className="text-2xl mb-2">🎯</div>
             <h3 className="font-semibold text-white mb-2">Foco Total</h3>
-            <p className="text-slate-300 text-sm">Automatiza o chato, libera você para o que importa</p>
+            <p className="text-slate-300 text-sm">
+              Automatiza o chato, libera você para o que importa
+            </p>
           </div>
         </div>
 
@@ -83,7 +95,8 @@ export default function ComingSoonHero() {
                 <ArrowRight className="w-5 h-5" />
               </button>
               <p className="text-xs text-slate-400">
-                Seja um dos primeiros a descobrir como a IA pode revolucionar seu negócio
+                Seja um dos primeiros a descobrir como a IA pode revolucionar
+                seu negócio
               </p>
             </form>
           ) : (
@@ -93,7 +106,8 @@ export default function ComingSoonHero() {
                 <span className="font-semibold">Você está na lista VIP!</span>
               </div>
               <p className="text-sm text-emerald-200 mt-2">
-                Prepare-se para receber insights exclusivos sobre o futuro da gestão inteligente.
+                Prepare-se para receber insights exclusivos sobre o futuro da
+                gestão inteligente.
               </p>
             </div>
           )}
@@ -111,12 +125,14 @@ export default function ComingSoonHero() {
               <div className="text-slate-300">Recursos Revolucionários</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-emerald-400 mb-2">100%</div>
+              <div className="text-3xl font-bold text-emerald-400 mb-2">
+                100%
+              </div>
               <div className="text-slate-300">Focado no Seu Sucesso</div>
             </div>
           </div>
         </div>
       </div>
     </main>
-  )
+  );
 }

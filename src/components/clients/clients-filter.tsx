@@ -1,15 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, ArrowUp, ArrowDown, Loader } from "lucide-react";
+
+import { ArrowDown, ArrowUp, Loader, Search, UserPlus } from "lucide-react";
+
+import { Input } from "@/components/ui/Input";
 import {
   MultiSelectGroup,
   MultiSelectOption,
 } from "@/components/ui/MultiSelectGroup";
 import { Select, SelectOption } from "@/components/ui/Select";
-import { Input } from "@/components/ui/Input";
-import { PageDataModel } from "@/models/paginated-response";
+import { useModalContext } from "@/contexts/ModalContext";
 import useDebounce from "@/hooks/useDebounce";
+import { PageDataModel } from "@/models/paginated-response";
+
+import Button from "../ui/Button";
 
 // This is the type for the state that our hook will manage
 export type ClientsFiltersType = Omit<PageDataModel, "page">;
@@ -29,6 +34,7 @@ export const ClientsFilter: React.FC<ClientsFilterProps> = ({
   onFilterChange,
 }) => {
   const [search, setSearch] = useState(filters.search);
+  const { openModal } = useModalContext();
   const [isReady] = useDebounce(
     () => {
       onFilterChange({ ...filters, search });
@@ -36,13 +42,20 @@ export const ClientsFilter: React.FC<ClientsFilterProps> = ({
     500,
     [search]
   );
+
+  const handleClientPreSignModal = () => {
+    openModal(ClientPreSignModal);
+  };
   return (
     <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-4 w-full">
+      <Button onClick={handleClientPreSignModal}>
+        <UserPlus className="h-4 w-4 mr-3" />
+        Pré Cadastro
+      </Button>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="relative">
           <Input
             placeholder="Buscar clientes"
-            className="pl-10 "
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             leftIcon={

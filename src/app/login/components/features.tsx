@@ -1,6 +1,8 @@
 "use client";
-import { Building2, Shield, Sparkles } from "lucide-react";
 import React from "react";
+
+import { Building2, Shield, Sparkles } from "lucide-react";
+
 import Card from "@/components/ui/Card";
 
 // import { Container } from './styles';

@@ -1,5 +1,6 @@
-import { organizacao } from "../lib/mock-data";
 import { Bell, Settings, User } from "lucide-react";
+
+import { organizacao } from "../lib/mock-data";
 
 interface HeaderProps {
   title: string;

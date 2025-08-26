@@ -1,13 +1,15 @@
 "use client";
 
 import React from "react";
-import { Search, ArrowUp, ArrowDown } from "lucide-react";
+
+import { ArrowDown, ArrowUp, Search } from "lucide-react";
+
+import { Input } from "@/components/ui/Input";
 import {
   MultiSelectGroup,
   MultiSelectOption,
 } from "@/components/ui/MultiSelectGroup";
 import { Select, SelectOption } from "@/components/ui/Select";
-import { Input } from "@/components/ui/Input";
 import { PageDataModel } from "@/models/paginated-response";
 
 // This is the type for the state that our hook will manage

@@ -1,9 +1,11 @@
 "use client";
 import type React from "react";
+import { useState } from "react";
+
+import { ModalProvider } from "@/contexts/ModalContext";
+
 import Sidebar from "../../components/Sidebar";
 import QueryProvider from "../QueryProvider";
-import { ModalProvider } from "@/contexts/ModalContext";
-import { useState } from "react";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);

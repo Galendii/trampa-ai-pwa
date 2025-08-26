@@ -1,8 +1,10 @@
 "use client";
 
 import { Mail, Phone, User } from "lucide-react";
-import { Input } from "../ui/Input";
+
 import { useWizard } from "@/contexts/WizardContext";
+
+import { Input } from "../ui/Input";
 
 const PersonalInfoStep = () => {
   const { updateFormData, formData, errors, setErrors } = useWizard();

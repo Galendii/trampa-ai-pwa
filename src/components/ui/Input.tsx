@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { cn } from "../../lib/utils";
 import { useId } from "react";
+
+import { cn } from "../../lib/utils";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -49,7 +50,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             id={inputId}
             className={cn(
-              "w-full p-2  border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white",
+              "w-full px-3 py-2.5  border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white",
               leftIcon && "pl-10",
               rightIcon && "pr-10",
               error &&

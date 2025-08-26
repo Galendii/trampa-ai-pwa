@@ -1,72 +1,86 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
+import type React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 
-import { useState } from "react"
+import {
+  ArrowRight,
+  Bell,
+  Brain,
+  Building2,
+  CheckCircle,
+  Rocket,
+  Target,
+  TrendingUp,
+} from "lucide-react";
 
-import type React from "react"
-import ComingSoonHero from "../../components/coming-soon/Hero"
-import { ArrowRight, Target, TrendingUp, Bell, CheckCircle, Rocket, Brain, Building2 } from "lucide-react"
+import ComingSoonHero from "../../components/coming-soon/Hero";
 
 export default function ComingSoonPage() {
-  const [email, setEmail] = useState("")
-  const [isSubscribed, setIsSubscribed] = useState(false)
+  const [email, setEmail] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
-  })
+  });
 
   // Countdown timer (exemplo: 30 dias a partir de agora)
   useEffect(() => {
-    const targetDate = new Date()
-    targetDate.setDate(targetDate.getDate() + 30)
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + 30);
 
     const timer = setInterval(() => {
-      const now = new Date().getTime()
-      const distance = targetDate.getTime() - now
+      const now = new Date().getTime();
+      const distance = targetDate.getTime() - now;
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24))
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      setTimeLeft({ days, hours, minutes, seconds })
+      setTimeLeft({ days, hours, minutes, seconds });
 
       if (distance < 0) {
-        clearInterval(timer)
+        clearInterval(timer);
       }
-    }, 1000)
+    }, 1000);
 
-    return () => clearInterval(timer)
-  }, [])
+    return () => clearInterval(timer);
+  }, []);
 
   const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (email) {
-      setIsSubscribed(true)
-      setEmail("")
+      setIsSubscribed(true);
+      setEmail("");
     }
-  }
+  };
 
   const features = [
     {
       icon: Brain,
       title: "IA que Entende Seu Negócio",
-      description: "Inteligência artificial que aprende com seus dados e sugere as melhores decisões.",
+      description:
+        "Inteligência artificial que aprende com seus dados e sugere as melhores decisões.",
     },
     {
       icon: Target,
       title: "Foco no Que Importa",
-      description: "Automatize tarefas repetitivas e concentre-se em fazer seu negócio crescer.",
+      description:
+        "Automatize tarefas repetitivas e concentre-se em fazer seu negócio crescer.",
     },
     {
       icon: TrendingUp,
       title: "Crescimento Acelerado",
-      description: "Insights poderosos que revelam oportunidades ocultas no seu negócio.",
+      description:
+        "Insights poderosos que revelam oportunidades ocultas no seu negócio.",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white overflow-hidden">
@@ -114,9 +128,11 @@ export default function ComingSoonPage() {
             </h1>
 
             <p className="text-xl md:text-2xl text-slate-300 mb-12 leading-relaxed max-w-3xl mx-auto">
-              Prepare-se para uma revolução na forma como você gerencia seu negócio.
-              <strong className="text-white"> Trampa AI</strong> está prestes a transformar freelancers e pequenas
-              empresas em máquinas de crescimento.
+              Prepare-se para uma revolução na forma como você gerencia seu
+              negócio.
+              <strong className="text-white"> Trampa AI</strong> está prestes a
+              transformar freelancers e pequenas empresas em máquinas de
+              crescimento.
             </p>
 
             {/* Countdown Timer */}
@@ -127,11 +143,16 @@ export default function ComingSoonPage() {
                 { label: "Min", value: timeLeft.minutes },
                 { label: "Seg", value: timeLeft.seconds },
               ].map((item, index) => (
-                <div key={index} className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div
+                  key={index}
+                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
+                >
                   <div className="text-3xl md:text-4xl font-bold text-white mb-2">
                     {item.value.toString().padStart(2, "0")}
                   </div>
-                  <div className="text-sm text-slate-300 uppercase tracking-wider">{item.label}</div>
+                  <div className="text-sm text-slate-300 uppercase tracking-wider">
+                    {item.label}
+                  </div>
                 </div>
               ))}
             </div>
@@ -163,10 +184,13 @@ export default function ComingSoonPage() {
                 <div className="bg-emerald-500/20 border border-emerald-400/30 rounded-2xl p-6 backdrop-blur-sm">
                   <div className="flex items-center justify-center space-x-3 text-emerald-300">
                     <CheckCircle className="w-6 h-6" />
-                    <span className="font-semibold">Você está na lista VIP!</span>
+                    <span className="font-semibold">
+                      Você está na lista VIP!
+                    </span>
                   </div>
                   <p className="text-sm text-emerald-200 mt-2">
-                    Prepare-se para receber acesso exclusivo antes de todo mundo.
+                    Prepare-se para receber acesso exclusivo antes de todo
+                    mundo.
                   </p>
                 </div>
               )}
@@ -175,7 +199,7 @@ export default function ComingSoonPage() {
             {/* Features Preview */}
             <div className="grid md:grid-cols-3 gap-8 mb-16">
               {features.map((feature, index) => {
-                const Icon = feature.icon
+                const Icon = feature.icon;
                 return (
                   <div
                     key={index}
@@ -184,10 +208,14 @@ export default function ComingSoonPage() {
                     <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
                       <Icon className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-4">{feature.title}</h3>
-                    <p className="text-slate-300 leading-relaxed">{feature.description}</p>
+                    <h3 className="text-xl font-bold text-white mb-4">
+                      {feature.title}
+                    </h3>
+                    <p className="text-slate-300 leading-relaxed">
+                      {feature.description}
+                    </p>
                   </div>
-                )
+                );
               })}
             </div>
 
@@ -195,15 +223,21 @@ export default function ComingSoonPage() {
             <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
               <div className="grid md:grid-cols-3 gap-8 text-center">
                 <div>
-                  <div className="text-3xl font-bold text-blue-400 mb-2">500+</div>
+                  <div className="text-3xl font-bold text-blue-400 mb-2">
+                    500+
+                  </div>
                   <div className="text-slate-300">Profissionais na Lista</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-purple-400 mb-2">15+</div>
+                  <div className="text-3xl font-bold text-purple-400 mb-2">
+                    15+
+                  </div>
                   <div className="text-slate-300">Recursos Exclusivos</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-emerald-400 mb-2">100%</div>
+                  <div className="text-3xl font-bold text-emerald-400 mb-2">
+                    100%
+                  </div>
                   <div className="text-slate-300">Foco no Seu Sucesso</div>
                 </div>
               </div>
@@ -216,7 +250,10 @@ export default function ComingSoonPage() {
           <div className="max-w-4xl mx-auto">
             <p className="text-slate-400 mb-4">
               Quer saber mais sobre o que estamos construindo?
-              <a href="mailto:contato@trampaai.com" className="text-blue-400 hover:text-blue-300 ml-1 underline">
+              <a
+                href="mailto:contato@trampaai.com"
+                className="text-blue-400 hover:text-blue-300 ml-1 underline"
+              >
                 Entre em contato
               </a>
             </p>
@@ -235,5 +272,5 @@ export default function ComingSoonPage() {
         </footer>
       </div>
     </div>
-  )
+  );
 }

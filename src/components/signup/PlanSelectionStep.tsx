@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+
 // import { Product } from "@/models/subscriptions/product";
 import { useToast } from "@/contexts/ToastContext";
-import Card from "../ui/Card";
+
 import Button, { ButtonProps } from "../ui/Button";
+import Card from "../ui/Card";
 
 // import { Container } from './styles';
 
