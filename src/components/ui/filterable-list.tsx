@@ -7,6 +7,7 @@ import {
   PageDataModel,
   PaginatedResponseModel,
 } from "@/models/paginated-response";
+import Button from "./Button";
 
 type FilterableListProps<TData extends { id: string | number }, TFilters> = {
   baseQueryKey: string[];
@@ -62,11 +63,11 @@ const FilterableList = <TData extends { id: string | number }, TFilters>({
     },
   });
 
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  // useEffect(() => {
+  //   if (inView && hasNextPage && !isFetchingNextPage) {
+  //     fetchNextPage();
+  //   }
+  // }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   if (isLoading) {
     return (
@@ -89,7 +90,6 @@ const FilterableList = <TData extends { id: string | number }, TFilters>({
   }
 
   const allData = data?.pages.flatMap((page) => page.results) ?? [];
-
   return (
     <div className={className}>
       <div className="space-y-4">
@@ -105,10 +105,20 @@ const FilterableList = <TData extends { id: string | number }, TFilters>({
       </div>
 
       <div ref={ref} className="h-1" />
-
+      {/* 
       {isFetchingNextPage && (
         <div className="flex justify-center items-center py-6">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        </div>
+      )} */}
+      {hasNextPage && (
+        <div className="flex justify-center items-center py-6">
+          <Button
+            onClick={() => fetchNextPage()}
+            isLoading={isFetchingNextPage}
+          >
+            Carregar mais
+          </Button>
         </div>
       )}
 
