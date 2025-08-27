@@ -3,7 +3,7 @@
 import React, { Suspense, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
-import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 // Import the new Zustand store instead of the old context hook
@@ -265,7 +265,13 @@ export const WizardHost = () => {
 
   return createPortal(
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl h-[95vh] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl h-[95vh] flex flex-col relative">
+        <button
+          onClick={closeWizard}
+          className="absolute top-4 right-4 hover:bg-slate-100 rounded-full p-2 transition-all ease-in-out"
+        >
+          <X className="h-4 w-4" />
+        </button>
         <Wizard>
           <div className="p-6 border-b">
             <WizardHeader />
