@@ -1,13 +1,13 @@
 "use client";
 
-import { Check, Loader2, Sparkles } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 
 // Hooks & Context
-import { useWizard } from "@/contexts/WizardContext";
 import { useGetByClientId } from "@/hooks/api/professional/useClients";
+import { useWizardStore } from "@/stores/useWizardStore";
 
 const SuccessStep = () => {
-  const { formData } = useWizard();
+  const { formData } = useWizardStore();
   const { data: client, isLoading } = useGetByClientId(formData.clientId);
 
   const clientName = isLoading

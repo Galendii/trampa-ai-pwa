@@ -6,9 +6,9 @@ import { Loader, Search, UserPlus } from "lucide-react";
 
 import { Input } from "@/components/ui/Input";
 import { Select, SelectOption } from "@/components/ui/Select";
-import { useModalContext } from "@/contexts/ModalContext";
 import useDebounce from "@/hooks/useDebounce";
 import { PageDataModel } from "@/models/paginated-response";
+import { useModalStore } from "@/stores/useModalStore";
 
 import Button from "../ui/Button";
 
@@ -32,7 +32,7 @@ export const ClientsFilter: React.FC<ClientsFilterProps> = ({
   onFilterChange,
 }) => {
   const [search, setSearch] = useState(filters.search);
-  const { openModal, closeModal } = useModalContext();
+  const { openModal, closeModal } = useModalStore();
   const [isReady] = useDebounce(
     () => {
       onFilterChange({ ...filters, search });

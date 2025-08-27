@@ -8,10 +8,10 @@ import Button from "@/components/ui/Button";
 // Components
 import { Select, SelectOption } from "@/components/ui/Select";
 // Hooks & Context
-import { useWizard } from "@/contexts/WizardContext";
 import { useGetPlanById } from "@/hooks/api/professional/usePlans";
 // Models
 import { WeekdayTimeModel } from "@/models/service-contract";
+import { useWizardStore } from "@/stores/useWizardStore";
 
 const WEEKDAY_OPTIONS: SelectOption[] = [
   { value: "monday", label: "Segunda-feira" },
@@ -24,7 +24,7 @@ const WEEKDAY_OPTIONS: SelectOption[] = [
 ];
 
 const AttendanceStep = () => {
-  const { formData, updateFormData } = useWizard();
+  const { formData, updateFormData } = useWizardStore();
   const { service, plan } = formData;
 
   // Local state for the new slot being added

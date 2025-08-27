@@ -19,11 +19,10 @@ import Button from "@/components/ui/Button";
 import InfiniteScroll from "@/components/ui/infinite-scroll";
 import { Input } from "@/components/ui/Input";
 import { TextArea } from "@/components/ui/TextArea";
-import { useModalContext } from "@/contexts/ModalContext";
-import { useGetPlans } from "@/hooks/api/professional/usePlans";
 import { useUpdateService } from "@/hooks/api/professional/useService";
 import { PlanModel } from "@/models/plan";
-import { CreateServiceModel, ServiceModel } from "@/models/service";
+import { ServiceModel } from "@/models/service";
+import { useModalStore } from "@/stores/useModalStore";
 
 import PlanModal from "./modals/plan-modal";
 
@@ -42,15 +41,14 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
   type UpdateServiceFormData = z.infer<typeof UpdateServiceSchema>;
   const [selectedPlan, setSelectedPlan] = useState<PlanModel | null>(null);
   const [editionEnabled, setEditionEnabled] = useState<boolean>(false);
-  const { closeModal, openModal } = useModalContext();
+  const { closeModal, openModal } = useModalStore();
   const { mutate, isPending } = useUpdateService();
 
   const {
-    formState: { isDirty, isSubmitting, errors },
+    formState: { isDirty, errors },
     handleSubmit,
     reset,
     register,
-    setValue,
   } = useForm<UpdateServiceFormData>({
     resolver: zodResolver(UpdateServiceSchema),
     defaultValues: {
@@ -114,7 +112,7 @@ const ServiceDetails: React.FC<ServiceDetailsProps> = ({
         }
         mutate({
           serviceData: data,
-          serviceId: selectedService?.id!,
+          serviceId: selectedService?.id || "",
         });
       }
     },

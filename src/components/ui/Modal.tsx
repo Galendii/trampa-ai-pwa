@@ -2,8 +2,11 @@
 
 import type React from "react";
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 import { X } from "lucide-react";
+
+import { useModalStore } from "@/stores/useModalStore";
 
 import { cn } from "../../lib/utils";
 
@@ -86,6 +89,7 @@ export function Modal({
   return (
     <div
       ref={overlayRef}
+      tabIndex={-1}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-0"
       onClick={handleOverlayClick}
       role="dialog"
@@ -120,3 +124,21 @@ export function Modal({
   );
 }
 export default Modal;
+
+export const ModalHost = () => {
+  const { isModalOpen, closeModal, modalContent, modalSize } = useModalStore();
+
+  // On the server, we can't access the document, so we render nothing.
+  // On the client, this will re-render with the portal.
+  if (typeof document === "undefined") {
+    return null;
+  }
+
+  // Use createPortal to render the Modal at the end of the document body
+  return createPortal(
+    <Modal isOpen={isModalOpen} onClose={closeModal} size={modalSize}>
+      {modalContent}
+    </Modal>,
+    document.body
+  );
+};

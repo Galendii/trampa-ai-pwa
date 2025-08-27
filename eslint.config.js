@@ -22,6 +22,7 @@ export default tseslint.config(
       ...react.configs.recommended.rules,
       "react/react-in-jsx-scope": "off", // Not needed with Next.js
       "react/prop-types": "off", // Not needed with TypeScript
+      "@typescript-eslint/no-explicit-any": "warn",
     },
     settings: {
       react: {

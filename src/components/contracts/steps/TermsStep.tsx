@@ -7,10 +7,10 @@ import { FileText } from "lucide-react";
 // Components
 import { TextArea } from "@/components/ui/TextArea";
 // Hooks & Context
-import { useWizard } from "@/contexts/WizardContext";
+import { useWizardStore } from "@/stores/useWizardStore";
 
 const TermsStep = () => {
-  const { formData, updateFormData } = useWizard();
+  const { formData, updateFormData } = useWizardStore();
 
   return (
     <div className="space-y-4">

@@ -2,6 +2,7 @@
 import type React from "react";
 import { useState } from "react";
 
+import { ModalHost } from "@/components/ui/Modal";
 import { ModalProvider } from "@/contexts/ModalContext";
 
 import Sidebar from "../../components/Sidebar";
@@ -24,6 +25,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
         </QueryProvider>
       </ModalProvider>
+      <ModalHost />
     </div>
   );
 }

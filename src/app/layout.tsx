@@ -4,8 +4,9 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "sonner";
 
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { WizardHost } from "@/components/ui/Wizard";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { ToastProvider } from "@/contexts/ToastContext";
 import { cn } from "@/lib/utils";
 
 import QueryProvider from "./QueryProvider";
@@ -46,9 +47,12 @@ export default function RootLayout({
           disableTransitionOnChange
         > */}
 
-        <QueryProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </QueryProvider>
+        <ErrorBoundary>
+          <QueryProvider>
+            <AuthProvider>{children}</AuthProvider>
+            <WizardHost />
+          </QueryProvider>
+        </ErrorBoundary>
         {/* <Toaster /> */}
         {/* </ThemeProvider> */}
         <Toaster />

@@ -9,11 +9,11 @@ import { FileCheck, Loader2, Printer } from "lucide-react";
 // Components
 import Button from "@/components/ui/Button";
 // Hooks & Context
-import { useWizard } from "@/contexts/WizardContext";
-import { useGetPlanById } from "@/hooks/api/professional/usePlans";
 import { useGetByClientId } from "@/hooks/api/professional/useClients";
+import { useGetPlanById } from "@/hooks/api/professional/usePlans";
 import { useGetServiceById } from "@/hooks/api/professional/useService";
 import { useUser } from "@/hooks/api/useUsers";
+import { useWizardStore } from "@/stores/useWizardStore";
 
 import { PAYMENT_METHOD_OPTIONS } from "../create-contract-wizard";
 
@@ -29,7 +29,7 @@ const WEEKDAY_LABELS: { [key: string]: string } = {
 };
 
 const PreviewStep = () => {
-  const { formData } = useWizard();
+  const { formData } = useWizardStore();
   const { service, plan, client } = formData;
   const contractRef = useRef<HTMLDivElement>(null);
 

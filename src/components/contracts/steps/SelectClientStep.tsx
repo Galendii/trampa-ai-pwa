@@ -7,11 +7,11 @@ import { User } from "lucide-react";
 // Components
 import { AutocompleteSelect } from "@/components/ui/AutocompleteSelect";
 // Hooks & Context
-import { useWizard } from "@/contexts/WizardContext";
 import { useGetClients } from "@/hooks/api/professional/useClients";
+import { useWizardStore } from "@/stores/useWizardStore";
 
 const SelectClientStep = () => {
-  const { formData, updateFormData, errors } = useWizard();
+  const { formData, updateFormData } = useWizardStore();
   const { data: clientsData, isLoading } = useGetClients();
 
   // Map the fetched client data to the format required by AutocompleteSelect
@@ -46,7 +46,7 @@ const SelectClientStep = () => {
           isLoading ? "Carregando clientes..." : "Procure por nome ou CPF"
         }
         disabled={isLoading}
-        error={errors?.client}
+        // error={errors?.client}
         fullWidth
       />
     </div>

@@ -1,13 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { Check, ClipboardList, FileText, Lock, User, X } from "lucide-react";
+import { Check, ClipboardList, FileText, Lock, User } from "lucide-react";
 
-import LoginHeader from "@/app/login/components/login-header";
 import { useToast } from "@/contexts/ToastContext";
 import { useWizard } from "@/contexts/WizardContext";
 
-import Features from "./landing/Features";
 import {
   DocumentationStep,
   PersonalInfoStep,
@@ -21,12 +19,12 @@ import {
   WizardFooter,
   WizardHeader,
   WizardStep,
-} from "./Wizard";
+} from "./ui/Wizard";
 
-interface SignupWizardProps {
-  userType: "client" | "professional" | "organization";
-  onClose: () => void;
-}
+// interface SignupWizardProps {
+//   userType: "client" | "professional" | "organization";
+//   onClose: () => void;
+// }
 
 export const CLIENT_STEPS = [
   { id: "personal", title: "Dados Pessoais", icon: User },
@@ -51,7 +49,7 @@ export const ORGANIZATION_STEPS = [
   { id: "success", title: "Sucesso", icon: Check },
 ];
 
-const SignupWizard = ({ userType, onClose }: SignupWizardProps) => {
+const SignupWizard = () => {
   const { currentStepId, nextStep, prevStep, formData, isLastStep } =
     useWizard();
   const { addToast } = useToast();
@@ -119,7 +117,6 @@ const SignupWizard = ({ userType, onClose }: SignupWizardProps) => {
               <WizardFooter
                 onNext={handleNext}
                 onPrev={prevStep}
-                // nextDisabled={!canProceed()}
                 isLoading={isLoading}
                 finishLabel="Criar Conta"
               />

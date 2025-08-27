@@ -5,14 +5,14 @@ import React from "react";
 import { CheckCircle, ClipboardList, Loader2 } from "lucide-react";
 
 // Hooks & Context
-import { useWizard } from "@/contexts/WizardContext";
 import { useGetPlans } from "@/hooks/api/professional/usePlans";
 import { cn } from "@/lib/utils";
 // Models
 import { PlanModel } from "@/models/plan";
+import { useWizardStore } from "@/stores/useWizardStore";
 
 const SelectPlanStep = () => {
-  const { formData, updateFormData, errors } = useWizard();
+  const { formData, updateFormData } = useWizardStore();
   const serviceId = formData.service;
 
   const { data: plansData, isLoading, isError } = useGetPlans(serviceId); // Query is enabled only if a serviceId exists

@@ -9,11 +9,11 @@ import { Calendar, Loader2 } from "lucide-react";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { Input } from "@/components/ui/Input";
 // Hooks & Context
-import { useWizard } from "@/contexts/WizardContext";
 import { useGetPlanById } from "@/hooks/api/professional/usePlans";
+import { useWizardStore } from "@/stores/useWizardStore";
 
 const SelectDatesStep = () => {
-  const { formData, updateFormData, errors } = useWizard();
+  const { formData, updateFormData } = useWizardStore();
   const { service, plan, startingDate } = formData;
 
   // Fetch the full details of the selected plan to get its duration

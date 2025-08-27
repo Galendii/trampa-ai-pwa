@@ -2,13 +2,16 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { getClientById, getClients, registerClient } from "@/api/professional";
-import { PaginatedResponseModel } from "@/models/paginated-response";
+import {
+  PageDataModel,
+  PaginatedResponseModel,
+} from "@/models/paginated-response";
 import { ClientUserModel } from "@/models/user";
 
-export const useGetClients = () => {
+export const useGetClients = (pageData?: PageDataModel) => {
   return useQuery<PaginatedResponseModel<ClientUserModel>, Error>({
     queryKey: ["professional-clients"],
-    queryFn: () => getClients({ page: 1 }),
+    queryFn: () => getClients(pageData || { page: 1 }),
   });
 };
 

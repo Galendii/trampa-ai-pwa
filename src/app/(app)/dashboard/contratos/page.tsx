@@ -2,7 +2,6 @@
 
 import React, { Suspense, useCallback, useMemo, useState } from "react";
 
-import { useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import {
   MessageSquareWarningIcon,
@@ -13,23 +12,22 @@ import {
 
 // API & Models
 import { getServiceContracts } from "@/api/professional/services/contracts";
-import { CreateContractWizard } from "@/components/contracts";
 import {
   ContractFiltersType,
   ContractsFilter,
 } from "@/components/contracts/components/contracts-filter";
+import { CreateContractWizardConfig } from "@/components/contracts/create-contract-wizard";
 // Core Components
 import Header from "@/components/Header";
 import { ActionConfirmationModal } from "@/components/ui/ActionConfirmationModal";
 import Button from "@/components/ui/Button";
 import { Drawer } from "@/components/ui/Drawer";
 import FilterableList from "@/components/ui/filterable-list";
-import { useModalContext } from "@/contexts/ModalContext";
+// Hooks & Contexts
 import {
   useDeleteServiceContract,
   useGetServiceContractById,
 } from "@/hooks/api/professional/useServiceContracts";
-// Hooks & Contexts
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useUrlStateSync } from "@/hooks/useUrlStateSync";
 import {
@@ -37,9 +35,11 @@ import {
   ServiceContractStatus,
   ServiceContractStatusMap,
 } from "@/models/service-contract";
+import { useModalStore } from "@/stores/useModalStore";
+import { useWizardStore } from "@/stores/useWizardStore";
+// import { useWizardStore } from "@/stores/useWizardStore";
 
-// --- ContractDetails component is now leaner ---
-// It receives the delete function and loading state as props.
+// --- ContractDetails component ---
 const ContractDetails = ({
   selectedContractId,
   onDelete,
@@ -49,7 +49,7 @@ const ContractDetails = ({
   onDelete: (id: string) => void;
   isDeleting: boolean;
 }) => {
-  const { openModal, closeModal } = useModalContext();
+  const { openModal, closeModal } = useModalStore();
   const { data: contract, isPending } =
     useGetServiceContractById(selectedContractId);
 
@@ -69,6 +69,7 @@ const ContractDetails = ({
       "small"
     );
   };
+  if (!contract) return <ContractDetailsSkeleton />;
 
   return (
     <div className="bg-white h-full p-4 rounded-md shadow-md">
@@ -79,14 +80,7 @@ const ContractDetails = ({
           variant="danger"
           disabled={isDeleting}
         >
-          {isDeleting ? (
-            "Excluindo..."
-          ) : (
-            <>
-              <TrashIcon className="h-4 w-4 mr-2" />
-              Excluir
-            </>
-          )}
+          {isDeleting ? "Excluindo..." : <TrashIcon className="h-4 w-4" />}
         </Button>
       </div>
       <p>
@@ -103,7 +97,6 @@ const ContractDetails = ({
   );
 };
 
-// A simple skeleton loader for the details view
 const ContractDetailsSkeleton = () => (
   <div className="bg-white h-full p-4 rounded-md shadow-md animate-pulse">
     <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
@@ -118,16 +111,17 @@ const ContratosPage = () => {
   const [selectedContract, setSelectedContract] =
     useState<ServiceContractFullModel | null>(null);
   const [drawerOpened, setDrawerOpened] = useState<boolean>(false);
-  const { openModal, closeModal } = useModalContext();
+  const { closeModal } = useModalStore();
+
+  // --- ZUSTAND STORE FOR WIZARD ---
+  const { startWizard } = useWizardStore();
+
   const [filters, setFilters] = useUrlStateSync<ContractFiltersType>({
     search: "",
     status: [],
     ordering: "-created_at",
   });
-  const queryClient = useQueryClient();
 
-  // --- FIX 1: The mutation logic is moved to the parent component ---
-  // This component owns the state, so it should control the mutation's side effects.
   const { mutate: deleteContract, isPending: isDeletingContract } =
     useDeleteServiceContract();
 
@@ -136,9 +130,10 @@ const ContratosPage = () => {
     [drawerOpened, isMobile]
   );
 
-  const handleContractCreationModal = useCallback(() => {
-    openModal(<CreateContractWizard onClose={() => setDrawerOpened(false)} />);
-  }, [openModal]);
+  const handleContractCreation = useCallback(() => {
+    // --- TRIGGER WIZARD FROM THE STORE ---
+    startWizard(CreateContractWizardConfig);
+  }, [startWizard]);
 
   const handleContractSelection = useCallback(
     (contract: ServiceContractFullModel) => {
@@ -158,11 +153,11 @@ const ContratosPage = () => {
         [ServiceContractStatus.OVERDUE]: "orange",
       };
       return (
-        <div
+        <button
           key={contract?.id}
           onClick={() => handleContractSelection(contract)}
           className={clsx(
-            "hover:border-primary-500 border border-l-4 cursor-pointer p-4 rounded-lg transition-all duration-300 relative",
+            "w-full text-start hover:border-primary-500 border border-l-4 cursor-pointer p-4 rounded-lg transition-all duration-300 relative",
             {
               [`bg-${statusColorMap[contract.status]}-50 border-${
                 statusColorMap[contract.status]
@@ -182,10 +177,6 @@ const ContratosPage = () => {
               <p className="text-sm text-gray-600 mt-1">
                 Cliente: {contract.client.firstName} {contract.client.lastName}
               </p>
-              <p className="text-xs text-gray-500 mt-2">
-                Criado em:{" "}
-                {new Date(contract.createdAt).toLocaleDateString("pt-BR")}
-              </p>
               <span className="text-yellow-700">
                 {ServiceContractStatusMap[contract.status]}
               </span>
@@ -200,7 +191,7 @@ const ContratosPage = () => {
               })}
             />
           )}
-        </div>
+        </button>
       );
     },
     [selectedContract, handleContractSelection]
@@ -217,7 +208,7 @@ const ContratosPage = () => {
       closeModal();
       setDrawerOpened(false);
     }
-  }, [selectedContract, deleteContract]);
+  }, [selectedContract, deleteContract, closeModal]);
 
   const renderContractDetails = useCallback(() => {
     if (!selectedContract?.id) {
@@ -251,13 +242,18 @@ const ContratosPage = () => {
     <>
       <Header title="Contratos" />
       <div className="w-full">
-        <div className="p-4 h-full w-full flex flex-col md:flex-row justify-around items-start space-y-4 md:space-y-0 md:space-x-4">
-          <div className="bg-white p-4 rounded-md shadow-md w-full md:flex-1">
-            <Button onClick={handleContractCreationModal} variant="outline">
-              <PlusCircleIcon className="h-4 w-4 mr-2" />
-              <span className="text-sm">Criar Contrato</span>
-            </Button>
+        <div className="p-4 h-full w-full flex flex-col md:flex-row items-start gap-4">
+          <div className="bg-white p-4 rounded-md shadow-md flex-1 space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-lg font-semibold">Lista de Contratos</h2>
+              <Button onClick={handleContractCreation} variant="outline">
+                <PlusCircleIcon className="h-4 w-4 mr-2" />
+                <span>Criar Contrato</span>
+              </Button>
+            </div>
+
             <ContractsFilter filters={filters} onFilterChange={setFilters} />
+
             <FilterableList<ServiceContractFullModel, ContractFiltersType>
               baseQueryKey={["professional-service-contracts"]}
               className="mt-6"

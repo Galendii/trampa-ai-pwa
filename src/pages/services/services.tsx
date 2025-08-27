@@ -10,9 +10,9 @@ import Header from "@/components/Header";
 import Button from "@/components/ui/Button";
 import { Drawer } from "@/components/ui/Drawer";
 import InfiniteScroll from "@/components/ui/infinite-scroll";
-import { useModalContext } from "@/contexts/ModalContext";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { ServiceModel } from "@/models/service";
+import { useModalStore } from "@/stores/useModalStore";
 
 import CreateServiceModal from "./components/modals/create-service-modal";
 import ServiceDetails from "./components/service-details";
@@ -23,7 +23,7 @@ const ServicesPage = () => {
     null
   );
   const [drawerOpened, setDrawerOpened] = useState<boolean>(false);
-  const { openModal } = useModalContext();
+  const { openModal } = useModalStore();
   const isDrawerOpened = useMemo(
     () => drawerOpened && isMobile,
     [drawerOpened, isMobile]

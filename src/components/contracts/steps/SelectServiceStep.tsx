@@ -7,11 +7,11 @@ import { HandshakeIcon } from "lucide-react";
 // Components
 import { AutocompleteSelect } from "@/components/ui/AutocompleteSelect";
 // Hooks & Context
-import { useWizard } from "@/contexts/WizardContext";
 import { useGetServices } from "@/hooks/api/professional/useService";
+import { useWizardStore } from "@/stores/useWizardStore";
 
 const SelectServiceStep = () => {
-  const { formData, updateFormData, errors } = useWizard();
+  const { formData, updateFormData } = useWizardStore();
   // TODO: add param for fetching all
   const { data: servicesData, isLoading } = useGetServices(1);
 
@@ -58,7 +58,7 @@ const SelectServiceStep = () => {
           isLoading ? "Carregando serviços..." : "Procure pelo nome do serviço"
         }
         disabled={isLoading}
-        error={errors?.service}
+        // error={errors?.service}
         fullWidth
       />
     </div>
