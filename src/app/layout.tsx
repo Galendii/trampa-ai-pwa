@@ -5,8 +5,8 @@ const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "sonner";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
+import { ModalHost } from "@/components/ui/Modal";
 import { WizardHost } from "@/components/ui/Wizard";
-import { AuthProvider } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 
 import QueryProvider from "./QueryProvider";
@@ -40,22 +40,14 @@ export default function RootLayout({
           inter.className
         )}
       >
-        {/* <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        > */}
-
         <ErrorBoundary>
           <QueryProvider>
-            <AuthProvider>{children}</AuthProvider>
+            {children}
             <WizardHost />
           </QueryProvider>
         </ErrorBoundary>
-        {/* <Toaster /> */}
-        {/* </ThemeProvider> */}
         <Toaster />
+        <ModalHost />
       </body>
     </html>
   );

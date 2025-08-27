@@ -285,7 +285,7 @@ export const WizardHost = () => {
                 onNext={handleNext}
                 onPrev={prevStep}
                 isLoading={isSubmitting}
-                finishLabel="Criar Contrato"
+                finishLabel="Finalizar"
               />
             </div>
           )}

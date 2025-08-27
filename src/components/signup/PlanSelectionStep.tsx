@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 // import { Product } from "@/models/subscriptions/product";
-import { useToast } from "@/contexts/ToastContext";
-
 import Button, { ButtonProps } from "../ui/Button";
 import Card from "../ui/Card";
 
@@ -13,8 +11,8 @@ import Card from "../ui/Card";
 const PlanSelectionStep: React.FC = () => {
   //   const products = useTracker(() => Meteor.subscribe("products.active"));
   // const { formData, updateFormData } = useWizard();
-  const [products, setProducts] = useState<Record<string, any>>([]);
-  const { addToast } = useToast();
+  // const [products, setProducts] = useState<Record<string, any>>([]);
+  const products: any[] = [];
   const borderColors = ["border-primary", "border-secondary"];
   const textColors = ["text-primary", "text-secondary"];
   const buttonVariants: ButtonProps["variant"][] = ["default", "secondary"];
@@ -35,7 +33,7 @@ const PlanSelectionStep: React.FC = () => {
       <h1>Planos</h1>
       <div className="flex justify-around items-center p-8 md:p-4">
         {products.map((product: any, index: number) => (
-          <button className="hover:scale-105">
+          <button key={product?.id} className="hover:scale-105">
             <Card.Root
               borderColor={borderColors[index]}
               hoverColor={borderColors[index]}

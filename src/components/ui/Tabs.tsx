@@ -1,11 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { createContext, useContext, useMemo, useState } from "react";
 
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-
-import { useTabs } from "@/contexts/TabsContext";
 
 import { cn } from "../../lib/utils";
 
@@ -16,16 +13,6 @@ interface TabsProps
 }
 
 const Root = ({ defaultValue, children, ...props }: TabsProps) => {
-  const [currentTab, setCurrentTab] = useState(defaultValue);
-
-  const contextValue = useMemo(
-    () => ({
-      currentTab,
-      setCurrentTab,
-    }),
-    [currentTab]
-  );
-
   return (
     <TabsPrimitive.Root defaultValue={defaultValue} {...props}>
       {children}

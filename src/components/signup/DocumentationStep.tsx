@@ -1,31 +1,34 @@
 "use client";
 
-import { Building2, FileText } from "lucide-react";
+import { FileText } from "lucide-react";
 
-import { useWizard } from "@/contexts/WizardContext";
+import { useWizardStore } from "@/stores/useWizardStore";
 
-import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 
-const DocumentationStep = () => {
-  const { updateFormData, formData, errors, setErrors } = useWizard();
-  const formatDocument = (value: string, type: "cpf" | "cnpj") => {
+const DocumentationStep: React.FC = () => {
+  const { updateFormData, formData } = useWizardStore();
+  const formatCpf = (value: string) => {
+    if (!value) return value;
     const numbers = value.replace(/\D/g, "");
 
-    if (type === "cpf") {
-      return numbers
-        .replace(/(\d{3})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d{1,2})/, "$1-$2")
-        .replace(/(-\d{2})\d+?$/, "$1");
-    } else {
-      return numbers
-        .replace(/(\d{2})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d)/, "$1/$2")
-        .replace(/(\d{4})(\d{1,2})/, "$1-$2")
-        .replace(/(-\d{2})\d+?$/, "$1");
-    }
+    return numbers
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d{1,2})/, "$1-$2")
+      .replace(/(-\d{2})\d+?$/, "$1");
+  };
+
+  const formatCnpj = (value: string) => {
+    if (!value) return value;
+    const numbers = value.replace(/\D/g, "");
+
+    return numbers
+      .replace(/(\d{2})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1/$2")
+      .replace(/(\d{4})(\d{1,2})/, "$1-$2")
+      .replace(/(-\d{2})\d+?$/, "$1");
   };
 
   return (
@@ -40,8 +43,11 @@ const DocumentationStep = () => {
         <p className="text-slate-600">Precisamos validar sua identidade</p>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-slate-700 mb-3">
+      {/* <div>
+        <label
+          htmlFor="tipoDocumento"
+          className="block text-sm font-medium text-slate-700 mb-3"
+        >
           Tipo de Documento
         </label>
         <div className="grid grid-cols-2 gap-4">
@@ -62,32 +68,37 @@ const DocumentationStep = () => {
             CNPJ
           </Button>
         </div>
-      </div>
+      </div> */}
 
       <Input
-        label={formData.tipoDocumento === "cpf" ? "CPF" : "CNPJ"}
-        value={formatDocument(formData.documento, formData.tipoDocumento)}
-        onChange={(e) => updateFormData("documento", e.target.value)}
-        placeholder={
-          formData.tipoDocumento === "cpf"
-            ? "000.000.000-00"
-            : "00.000.000/0000-00"
-        }
-        error={errors?.documento}
+        label="CPF"
+        value={formatCpf(formData.cpf)}
+        onChange={(e) => updateFormData("cpf", e.target.value)}
+        placeholder={"000.000.000-00"}
+        // error={errors?.documento}
         required
       />
 
-      {formData.tipoDocumento === "cnpj" && (
+      <Input
+        label="CNPJ"
+        value={formatCnpj(formData.cnpj)}
+        onChange={(e) => updateFormData("cnpj", e.target.value)}
+        placeholder={"00.000.000/0000-00"}
+        // error={errors?.documento}
+        required
+      />
+
+      {/* {formData.tipoDocumento === "cnpj" && (
         <Input
           label="Nome da Empresa"
           value={formData.nomeEmpresa || ""}
           onChange={(e) => updateFormData("nomeEmpresa", e.target.value)}
           placeholder="Nome da sua empresa"
           leftIcon={<Building2 size={18} />}
-          error={errors?.nomeEmpresa}
+          // error={errors?.nomeEmpresa}
           required
         />
-      )}
+      )} */}
     </div>
   );
 };

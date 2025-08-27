@@ -2,12 +2,12 @@
 
 import { Mail, Phone, User } from "lucide-react";
 
-import { useWizard } from "@/contexts/WizardContext";
+import { useWizardStore } from "@/stores/useWizardStore";
 
 import { Input } from "../ui/Input";
 
-const PersonalInfoStep = () => {
-  const { updateFormData, formData, errors, setErrors } = useWizard();
+const PersonalInfoStep: React.FC = () => {
+  const { updateFormData, formData } = useWizardStore();
   return (
     <div className="space-y-4">
       <div className="text-center mb-6">
@@ -28,7 +28,7 @@ const PersonalInfoStep = () => {
           value={formData.firstName}
           onChange={(e) => updateFormData("firstName", e.target.value)}
           placeholder="João"
-          error={errors?.firstName}
+          // error={errors?.firstName}
           required
         />
         <Input
@@ -36,7 +36,7 @@ const PersonalInfoStep = () => {
           value={formData.lastName}
           onChange={(e) => updateFormData("lastName", e.target.value)}
           placeholder="Silva"
-          error={errors?.lastName}
+          // error={errors?.lastName}
           required
         />
       </div>
@@ -48,7 +48,7 @@ const PersonalInfoStep = () => {
         onChange={(e) => updateFormData("email", e.target.value)}
         placeholder="joao@email.com"
         leftIcon={<Mail size={18} />}
-        error={errors?.email}
+        // error={errors?.email}
         required
       />
 
@@ -59,7 +59,7 @@ const PersonalInfoStep = () => {
         onChange={(e) => updateFormData("phone", e.target.value)}
         placeholder="(11) 99999-9999"
         leftIcon={<Phone size={18} />}
-        error={errors?.phone}
+        // error={errors?.phone}
         required
       />
     </div>

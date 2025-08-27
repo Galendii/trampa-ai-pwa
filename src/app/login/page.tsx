@@ -2,88 +2,48 @@
 
 import React, { useMemo, useState } from "react";
 
-import { ArrowRight, Building2, User, UserCheck } from "lucide-react";
+import { ArrowRight, User, UserCheck } from "lucide-react";
 
+// Import the new wizard configurations and the Zustand store
+import {
+  ClientSignupWizardConfig,
+  ProfessionalSignupWizardConfig,
+} from "@/components/signup/SignupWizard";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
-import { WizardProvider } from "@/contexts/WizardContext";
+import { WizardHost } from "@/components/ui/Wizard";
+import { useWizardStore } from "@/stores/useWizardStore";
 
 import LoginModal from "../../components/LoginModal";
-import SignupWizard, {
-  CLIENT_STEPS,
-  ORGANIZATION_STEPS,
-  PROFESSIONAL_STEPS,
-} from "../../components/SignupWizard";
 
-import Features from "./components/features";
 import LoginHeader from "./components/login-header";
 
-type UserType = "client" | "professional" | "organization" | null;
+type UserType = "client" | "professional" | null;
 
 const LoginPage = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showSignupWizard, setShowSignupWizard] = useState(false);
-  const [selectedUserType, setSelectedUserType] = useState<UserType>("client");
-  // const [windowWidth, setWindowWidth] = useState(0);
+  const [selectedUserType, setSelectedUserType] = useState<UserType>(null);
 
-  const initialFormData = useMemo(
-    () => ({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      password: "",
-      passwordConfirmation: "",
-      cpf: "",
-      cnpj: "",
-      companyName: "",
-      productId: null,
-      role: selectedUserType ?? "client",
-    }),
-    [selectedUserType]
-  );
-  const SIGNUP_STEPS = useMemo(() => {
-    if (selectedUserType === "client") {
-      return CLIENT_STEPS;
-    }
-    if (selectedUserType === "professional") {
-      return PROFESSIONAL_STEPS;
-    }
-    if (selectedUserType === "organization") {
-      return ORGANIZATION_STEPS;
-    }
-    return CLIENT_STEPS;
-  }, [selectedUserType]);
-
-  // Handle window resize
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     setWindowWidth(window.innerWidth);
-  //   };
-
-  //   if (typeof window !== "undefined") {
-  //     setWindowWidth(window.innerWidth);
-  //     window.addEventListener("resize", handleResize);
-  //   }
-
-  //   return () => {
-  //     if (typeof window !== "undefined") {
-  //       window.removeEventListener("resize", handleResize);
-  //     }
-  //   };
-  // }, []);
+  // Get the startWizard function from the store
+  const startWizard = useWizardStore((state) => state.startWizard);
 
   const handleUserTypeSelect = (
-    userType: UserType,
+    userType: "client" | "professional",
     action: "login" | "signup"
   ) => {
     setSelectedUserType(userType);
     if (action === "login") {
       setShowLoginModal(true);
     } else {
-      setShowSignupWizard(true);
+      // Start the correct wizard based on the user type
+      if (userType === "client") {
+        startWizard(ClientSignupWizardConfig);
+      } else if (userType === "professional") {
+        startWizard(ProfessionalSignupWizardConfig);
+      }
     }
   };
+
   const userTypes = useMemo(
     () => [
       {
@@ -109,17 +69,6 @@ const LoginPage = () => {
         hoverColor: "hover:border-emerald-300",
         iconColor: "text-emerald",
       },
-      // {
-      //   id: "organization" as const,
-      //   title: "Organização",
-      //   description: "Administre sua equipe, profissionais e operação completa",
-      //   icon: Building2,
-      //   color: "from-purple-500 to-purple-600",
-      //   bgColor: "bg-purple-50",
-      //   borderColor: "border-purple-200",
-      //   hoverColor: "hover:border-purple-300",
-      //   iconColor: "text-purple",
-      // },
     ],
     []
   );
@@ -127,10 +76,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 flex items-center justify-center p-4">
       <div className="w-full max-w-4xl">
-        {/* Header */}
         <LoginHeader />
-
-        {/* User Type Cards */}
         <div className="grid md:grid-cols-2 gap-6 mb-6 sm:mb-8">
           {userTypes.map((type) => {
             const Icon = type.icon;
@@ -145,23 +91,18 @@ const LoginPage = () => {
                   Icon={Icon}
                   iconClassName={type.iconColor}
                 />
-
                 <Card.Header
                   title={type.title}
                   description={type.description}
                 />
-
                 <Card.Footer>
                   <Button
                     onClick={() => handleUserTypeSelect(type.id, "login")}
-                    className={`
-                        w-full bg-gradient-to-r ${type.color} text-white 
-                      `}
+                    className={`w-full bg-gradient-to-r ${type.color} text-white`}
                   >
                     <span>Fazer Login</span>
                     <ArrowRight size={14} />
                   </Button>
-
                   <Button
                     onClick={() => handleUserTypeSelect(type.id, "signup")}
                     variant="outline"
@@ -176,7 +117,6 @@ const LoginPage = () => {
         </div>
       </div>
 
-      {/* Modals */}
       {showLoginModal && selectedUserType && (
         <LoginModal
           userType={selectedUserType}
@@ -186,18 +126,7 @@ const LoginPage = () => {
           }}
         />
       )}
-
-      {showSignupWizard && selectedUserType && (
-        <WizardProvider initialFormData={initialFormData} steps={SIGNUP_STEPS}>
-          <SignupWizard
-            userType={selectedUserType}
-            onClose={() => {
-              setShowSignupWizard(false);
-              setSelectedUserType(null);
-            }}
-          />
-        </WizardProvider>
-      )}
+      <WizardHost />
     </div>
   );
 };

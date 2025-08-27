@@ -7,9 +7,9 @@ import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Lock, Mail, X } from "lucide-react";
 import { toast } from "sonner";
 
-import { useAuthContext } from "@/contexts/AuthContext";
 import { useLogin } from "@/hooks/api/useAuth";
 import { UserLoginType } from "@/models/authentication";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 import PWAInstallBanner from "./PWAInstallBanner";
 
@@ -25,7 +25,7 @@ export default function LoginModal({ userType, onClose }: LoginModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { mutate: login } = useLogin();
-  const { login: contextLogin } = useAuthContext();
+  const { login: loginStore } = useAuthStore();
 
   const userTypeLabels = {
     client: "Cliente",
@@ -49,7 +49,7 @@ export default function LoginModal({ userType, onClose }: LoginModalProps) {
       { email, password, userType: userTypePaths[userType] },
       {
         onSuccess: (response) => {
-          contextLogin(response);
+          loginStore(response);
           toast.success(`Bem-vindo, ${response.firstName}!`);
           router.push("/dashboard");
         },
