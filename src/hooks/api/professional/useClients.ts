@@ -1,11 +1,22 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { getClientById, getClients, registerClient } from "@/api/professional";
+import {
+  getClientById,
+  getClientContracts,
+  getClients,
+  registerClient,
+} from "@/api/professional";
 import {
   PageDataModel,
   PaginatedResponseModel,
 } from "@/models/paginated-response";
+import { ServiceContractFullModel } from "@/models/service-contract";
 import { ClientUserModel } from "@/models/user";
 
 export const useGetClients = (pageData?: PageDataModel) => {
@@ -44,5 +55,12 @@ export const useClientRegister = () => {
       // Provide clear feedback on failure
       toast.error(`Erro ao cadastrar cliente: ${error.message}`);
     },
+  });
+};
+
+export const useGetClientContracts = (id: string) => {
+  return useSuspenseQuery<ServiceContractFullModel[], Error>({
+    queryKey: ["professional-client-contracts", id],
+    queryFn: () => getClientContracts(id),
   });
 };

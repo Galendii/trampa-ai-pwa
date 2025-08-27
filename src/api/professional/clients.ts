@@ -3,11 +3,9 @@ import {
   PageDataModel,
   PaginatedResponseModel,
 } from "@/models/paginated-response";
+import { ServiceContractFullModel } from "@/models/service-contract";
 import { ClientUserModel } from "@/models/user";
 
-// ... (existing functions like getProfessionalDetails, getClients, etc.)
-
-// --- ADD THIS NEW FUNCTION ---
 export const registerClient = async (clientData: {
   firstName: string;
   lastName: string;
@@ -15,13 +13,12 @@ export const registerClient = async (clientData: {
   phone: string;
   cpf: string;
 }) => {
-  // Clean the data before sending it to the backend
   const payload = {
     first_name: clientData.firstName,
     last_name: clientData.lastName,
     email: clientData.email,
-    phone: clientData.phone.replace(/\D/g, ""), // Remove non-digit characters
-    cpf: clientData.cpf.replace(/\D/g, ""), // Remove non-digit characters
+    phone: clientData.phone.replace(/\D/g, ""),
+    cpf: clientData.cpf.replace(/\D/g, ""),
   };
 
   const { data } = await api.post<ClientUserModel>(
@@ -43,6 +40,13 @@ export const getClients = async (pageData: PageDataModel) => {
 export const getClientById = async (id: string) => {
   const { data } = await api.get<ClientUserModel>(
     `/professionals/management/clients/${id}`
+  );
+  return data;
+};
+
+export const getClientContracts = async (id: string) => {
+  const { data } = await api.get<ServiceContractFullModel[]>(
+    `/professionals/management/clients/${id}/contracts/`
   );
   return data;
 };

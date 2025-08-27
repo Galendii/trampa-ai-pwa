@@ -22,6 +22,8 @@ import {
   Users,
 } from "lucide-react";
 
+import { useProfessionalStore } from "@/stores/useProfessionalStore";
+
 type SidebarLinkProps = {
   icon: ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
@@ -74,6 +76,7 @@ type SidebarProps = {
 // --- Main Sidebar Component ---
 const Sidebar = ({ isMobileOpen, setMobileOpen }: SidebarProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { professional } = useProfessionalStore();
   const pathname = usePathname();
   const toggleDesktopSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -146,6 +149,7 @@ const Sidebar = ({ isMobileOpen, setMobileOpen }: SidebarProps) => {
               const isActive = pathname === item.href;
               return (
                 <li
+                  key={`${index}-${item.href}`}
                   className={clsx(
                     "relative flex items-center py-3 px-4 my-1 font-medium rounded-md cursor-pointer transition-colors group",
                     isActive
@@ -186,8 +190,12 @@ const Sidebar = ({ isMobileOpen, setMobileOpen }: SidebarProps) => {
             )}
           >
             <div className="leading-4 whitespace-nowrap">
-              <h4 className="font-semibold">Seu Nome</h4>
-              <span className="text-xs text-gray-600">seuemail@email.com</span>
+              <h4 className="font-semibold">
+                {professional?.firstName} {professional?.lastName}
+              </h4>
+              <span className="text-xs text-gray-600">
+                {professional?.email}
+              </span>
             </div>
           </div>
           {/* Desktop collapse button */}

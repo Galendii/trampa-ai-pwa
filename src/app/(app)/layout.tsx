@@ -1,15 +1,22 @@
 "use client";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ModalHost } from "@/components/ui/Modal";
 import { ModalProvider } from "@/contexts/ModalContext";
+import { useProfessionalStore } from "@/stores/useProfessionalStore";
 
 import Sidebar from "../../components/Sidebar";
 import QueryProvider from "../QueryProvider";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const { fetchProfessional } = useProfessionalStore();
+
+  useEffect(() => {
+    fetchProfessional();
+  }, [fetchProfessional]);
+
   return (
     <div className="flex h-screen bg-slate-50">
       <ModalProvider>

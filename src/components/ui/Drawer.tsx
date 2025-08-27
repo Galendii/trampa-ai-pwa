@@ -19,7 +19,7 @@ export const Drawer: React.FC<DrawerProps> = ({
       <div
         onClick={handleCloseDrawer}
         className={clsx(
-          "bg-neutral-500 opacity-45 h-dvh w-dvw fixed top-0 right-0 transition-all duration-500 ease-in-out",
+          "bg-neutral-500 opacity-45 h-dvh w-dvw fixed top-0 right-0 transition-all duration-500 ease-in-out z-50",
           {
             "hidden opacity-0": !opened,
           }
@@ -27,10 +27,10 @@ export const Drawer: React.FC<DrawerProps> = ({
       ></div>
       <div
         className={clsx(
-          "transition-all duration-500 ease-in-out h-dvh bg-white fixed top-0 right-0 p-2 overflow-auto",
+          "transition-all duration-500 ease-in-out h-dvh bg-white fixed top-0 right-0 p-2 overflow-auto z-50",
           className,
           {
-            "w-[85%]": opened,
+            "w-[85%] lg:w-[80%]": opened,
             "w-0 translate-x-[100%]": !opened,
           }
         )}

@@ -9,7 +9,7 @@ export type UserModel = {
   phone: string;
   createdAt: string;
   lastLogin: string;
-  status?: "active" | "account-pending-creation" | "user-deactivated";
+  status?: "active" | "pending-account-creation" | "user-deactivated";
   role: "client" | "professional";
 };
 
