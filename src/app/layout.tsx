@@ -2,6 +2,7 @@ import type React from "react";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Toaster } from "sonner";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -41,10 +42,12 @@ export default function RootLayout({
         )}
       >
         <ErrorBoundary>
-          <QueryProvider>
-            {children}
-            <WizardHost />
-          </QueryProvider>
+          <GoogleOAuthProvider clientId={String(process.env.GOOGLE_CLIENT_ID)}>
+            <QueryProvider>
+              {children}
+              <WizardHost />
+            </QueryProvider>
+          </GoogleOAuthProvider>
         </ErrorBoundary>
         <Toaster />
         <ModalHost />

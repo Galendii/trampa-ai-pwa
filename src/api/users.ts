@@ -12,9 +12,9 @@ export const getUserById = async (id: string): Promise<UserModel> => {
   return response.data;
 };
 
-export const createUser = async (
+export const updateUser = async (
   userData: Partial<UserModel>
 ): Promise<UserModel> => {
-  const response = await api.post("/users", userData);
+  const response = await api.post("/users/me/", userData);
   return response.data;
 };

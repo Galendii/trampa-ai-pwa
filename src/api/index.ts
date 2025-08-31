@@ -3,7 +3,7 @@ import { deleteCookie, getCookie } from "cookies-next";
 import humps from "humps";
 
 const api = axios.create({
-  baseURL: "http://192.168.0.234:8000/api/v1",
+  baseURL: String(process.env.NEXT_PUBLIC_API_URL),
   headers: {
     "Content-Type": "application/json",
   },

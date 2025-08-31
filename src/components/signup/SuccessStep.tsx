@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/router";
 
+// import { useRouter } from "next/router";
 import { Check, Sparkles } from "lucide-react";
 
 interface SuccessStepProps {
@@ -10,10 +10,10 @@ interface SuccessStepProps {
 }
 
 const SuccessStep: React.FC<SuccessStepProps> = ({ userName }) => {
-  const router = useRouter();
+  // const router = useRouter();
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push("/dashboard");
+      // router.push("/dashboard");
     }, 3000);
     return () => clearTimeout(timer);
   }, []);

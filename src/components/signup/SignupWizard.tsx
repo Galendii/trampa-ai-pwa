@@ -1,4 +1,4 @@
-import { Check, FileText, Lock, User } from "lucide-react";
+import { Check, Lock, User } from "lucide-react";
 import { toast } from "sonner";
 
 // Import API, Models, and Step Components
@@ -6,12 +6,7 @@ import { createUser } from "@/api/users";
 import { UserModel } from "@/models/user";
 import { WizardConfig } from "@/stores/useWizardStore";
 
-import {
-  DocumentationStep,
-  PersonalInfoStep,
-  SecurityStep,
-  SuccessStep,
-} from "./";
+import { PersonalInfoStep, SecurityStep, SuccessStep } from "./";
 
 // --- Base onSubmit Logic ---
 const handleSignupSubmit = async (formData: Record<string, any>) => {
@@ -39,18 +34,13 @@ export const ClientSignupWizardConfig: WizardConfig = {
   },
   steps: [
     {
-      id: "personal",
+      id: "personal-information",
       title: "Dados Pessoais",
       icon: User,
       component: PersonalInfoStep,
     },
-    { id: "security", title: "Segurança", icon: Lock, component: SecurityStep },
-    {
-      id: "documentation",
-      title: "Documentos",
-      icon: FileText,
-      component: DocumentationStep,
-    },
+    { id: "password", title: "Segurança", icon: Lock, component: SecurityStep },
+
     {
       id: "success",
       title: "Sucesso",
@@ -81,18 +71,18 @@ export const ProfessionalSignupWizardConfig: WizardConfig = {
     //   component: PlanSelectionStep,
     // },
     {
-      id: "personal",
+      id: "personal-information",
       title: "Dados Pessoais",
       icon: User,
       component: PersonalInfoStep,
     },
-    { id: "security", title: "Segurança", icon: Lock, component: SecurityStep },
-    {
-      id: "documentation",
-      title: "Documentos",
-      icon: FileText,
-      component: DocumentationStep,
-    },
+    { id: "password", title: "Segurança", icon: Lock, component: SecurityStep },
+    // {
+    //   id: "documentation",
+    //   title: "Documentos",
+    //   icon: FileText,
+    //   component: DocumentationStep,
+    // },
     {
       id: "success",
       title: "Sucesso",

@@ -1,4 +1,8 @@
-import { AuthenticationModel, UserLoginType } from "@/models/authentication";
+import {
+  AuthenticationModel,
+  GoogleAuthenticationModel,
+  UserLoginType,
+} from "@/models/authentication";
 
 import api from ".";
 
@@ -18,5 +22,21 @@ export const login = async (
     return data;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const googleLogin = async (payload: {
+  idToken: string;
+  role: string;
+}): Promise<GoogleAuthenticationModel> => {
+  try {
+    const { data } = await api.post<GoogleAuthenticationModel>(
+      `/google/auth/account/`,
+      payload
+    );
+    return data;
+  } catch (error: any) {
+    console.log(error);
+    throw error as Error;
   }
 };

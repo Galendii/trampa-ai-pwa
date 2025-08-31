@@ -1,12 +1,13 @@
 "use client";
 
-import React, { Suspense, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
-import { Check, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
-// Import the new Zustand store instead of the old context hook
+// Import the new Zustand store
 import { useWizardStore } from "@/stores/useWizardStore";
 
 // --- The main Wizard container remains simple ---
@@ -35,12 +36,10 @@ export const WizardHeader = ({
   className,
   showProgress = true,
 }: WizardHeaderProps) => {
-  // Get state directly from the Zustand store
   const { config, currentStep } = useWizardStore();
   const activeStepRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Effect to scroll the active step into the center of the view
   useEffect(() => {
     if (activeStepRef.current && scrollContainerRef.current) {
       const scrollContainer = scrollContainerRef.current;
@@ -53,7 +52,7 @@ export const WizardHeader = ({
     }
   }, [currentStep]);
 
-  if (!config) return null; // Don't render if the wizard isn't active
+  if (!config) return null;
 
   const { steps } = config;
   const totalSteps = steps.length;
@@ -69,7 +68,6 @@ export const WizardHeader = ({
               <span className="text-blue-600">{steps[currentStep]?.title}</span>
             </p>
           </div>
-
           <div
             ref={scrollContainerRef}
             className="hidden sm:flex items-center justify-start mb-4 overflow-x-auto pb-2 -mx-4 sm:mx-0 px-4 sm:px-0"
@@ -120,7 +118,6 @@ export const WizardHeader = ({
               })}
             </div>
           </div>
-
           <div className="w-full bg-slate-200 rounded-full h-2">
             <div
               className="bg-blue-600 h-2 rounded-full transition-all duration-300"
@@ -174,6 +171,7 @@ export interface WizardFooterProps {
   onNext?: () => void;
   onPrev?: () => void;
   isLoading?: boolean;
+  isLastStep?: boolean;
 }
 
 export const WizardFooter = ({
@@ -184,12 +182,10 @@ export const WizardFooter = ({
   onNext,
   onPrev,
   isLoading = false,
+  isLastStep = false,
 }: WizardFooterProps) => {
   const { currentStep, prevStep, config } = useWizardStore();
-
   if (!config) return null;
-
-  const isLastInputStep = currentStep === config.steps.length - 2; // e.g., Preview is the last step before Success
   const canGoPrev = currentStep > 0;
 
   return (
@@ -206,7 +202,6 @@ export const WizardFooter = ({
         <ChevronLeft size={16} />
         <span>{prevLabel}</span>
       </button>
-
       <button
         type="button"
         onClick={onNext}
@@ -214,19 +209,16 @@ export const WizardFooter = ({
         className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <span>
-          {isLoading
-            ? "Processando..."
-            : isLastInputStep
-              ? finishLabel
-              : nextLabel}
+          {isLoading ? "Processando..." : isLastStep ? finishLabel : nextLabel}
         </span>
         {!isLoading &&
-          (isLastInputStep ? <Check size={16} /> : <ChevronRight size={16} />)}
+          (isLastStep ? <Check size={16} /> : <ChevronRight size={16} />)}
       </button>
     </div>
   );
 };
 
+// --- WizardHost is now separate and uses portals ---
 export const WizardHost = () => {
   const {
     isWizardOpen,
@@ -234,9 +226,10 @@ export const WizardHost = () => {
     config,
     currentStep,
     isSubmitting,
-    submit,
+    setIsSubmitting,
     nextStep,
     prevStep,
+    formData,
   } = useWizardStore();
 
   useEffect(() => {
@@ -247,57 +240,75 @@ export const WizardHost = () => {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [closeWizard]);
 
-  // Render nothing if the wizard isn't open or configured
-  if (typeof document === "undefined" || !isWizardOpen || !config) {
+  // --- FIX: Added safety checks for config and steps array ---
+  if (
+    typeof document === "undefined" ||
+    !isWizardOpen ||
+    !config ||
+    !config.steps ||
+    config.steps.length === 0
+  ) {
+    if (isWizardOpen) {
+      console.error("Wizard started with no steps or invalid config.");
+      // closeWizard(); // Close wizard if it's open but has no steps
+    }
     return null;
   }
 
-  const isLastInputStep = currentStep === config.steps.length - 2; // e.g., Preview is the last step before Success
+  const currentStepConfig = config.steps[currentStep];
+  const isLastInputStep = currentStep === config.steps.length - 2;
   const isSuccessStep = currentStep === config.steps.length - 1;
 
-  const handleNext = () => {
-    if (isLastInputStep) {
-      submit(); // This will trigger onSubmit and then nextStep on success
-    } else {
-      nextStep();
+  const handleNext = async () => {
+    if (currentStepConfig?.onStepChange) {
+      try {
+        setIsSubmitting(true);
+        const isValid = await currentStepConfig.onStepChange(formData);
+        if (!isValid) return;
+      } catch (error: any) {
+        toast.error(error.message);
+        return;
+      } finally {
+        setIsSubmitting(false);
+      }
     }
+    nextStep();
   };
 
-  return createPortal(
+  // useEffect(() => {
+  //   if (isSuccessStep) {
+  //     const timer = setTimeout(() => closeWizard(), 4000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [isSuccessStep, closeWizard]);
+
+  return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl h-[95vh] flex flex-col relative">
-        <button
-          onClick={closeWizard}
-          className="absolute top-4 right-4 hover:bg-slate-100 rounded-full p-2 transition-all ease-in-out"
-        >
-          <X className="h-4 w-4" />
-        </button>
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl h-[95vh] flex flex-col">
         <Wizard>
           <div className="p-6 border-b">
             <WizardHeader />
           </div>
-          <WizardContent className="h-full overflow-y-auto p-6">
+          <WizardContent className="flex-1 overflow-y-auto p-6">
             {config.steps.map((step) => (
               <WizardStep key={step.id} stepId={step.id}>
-                <Suspense fallback={<div>Carregando...</div>}>
-                  <step.component />
-                </Suspense>
+                <step.component />
               </WizardStep>
             ))}
           </WizardContent>
           {!isSuccessStep && (
-            <div className="p-6 border-t mt-auto h-[100px]">
+            <div className="p-6 border-t mt-auto">
               <WizardFooter
                 onNext={handleNext}
                 onPrev={prevStep}
                 isLoading={isSubmitting}
                 finishLabel="Finalizar"
+                isLastStep={isLastInputStep}
               />
             </div>
           )}
         </Wizard>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 };

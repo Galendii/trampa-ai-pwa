@@ -1,6 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
-import { createUser, getLoggedUser } from "@/api/users";
+import { getLoggedUser, updateUser } from "@/api/users";
 import { UserModel } from "@/models/user";
 
 // export const useUsers = () => {
@@ -11,18 +15,18 @@ import { UserModel } from "@/models/user";
 // };
 
 export const useUser = () => {
-  return useQuery<UserModel, Error>({
+  return useSuspenseQuery<UserModel, Error>({
     queryKey: ["me"],
     queryFn: getLoggedUser,
   });
 };
 
-export const useCreateUser = () => {
+export const useUpdateUser = () => {
   const queryClient = useQueryClient();
   return useMutation<UserModel, Error, Partial<UserModel>>({
-    mutationFn: createUser,
+    mutationFn: updateUser,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalida o cache de usuários após criação
+      queryClient.invalidateQueries({ queryKey: ["me"] }); // Invalida o cache de usuários após criação
     },
   });
 };

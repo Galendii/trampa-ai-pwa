@@ -4,14 +4,25 @@ export interface WizardStep {
   id: string;
   title: string;
   icon?: React.ComponentType<{ className?: string }>;
-  // The actual component to render for this step
   component: React.ComponentType;
+
+  /**
+   * This function is called to validate the step's data before proceeding.
+   * It should return `true` if the step is valid, or throw an error with a
+   * user-friendly message if it's invalid.
+   */
+  onStepChange?: (formData: Record<string, any>) => Promise<boolean> | boolean;
+
+  /**
+   * This function defines a special action to take when submitting from this step,
+   * typically used for the final submission before a success screen.
+   */
+  onStepSubmit?: (formData: Record<string, any>) => Promise<void>;
 }
 
 export type WizardConfig = {
   steps: WizardStep[];
   initialFormData: Record<string, any>;
-  onSubmit: (formData: Record<string, any>) => Promise<any>;
 };
 
 type WizardState = {
@@ -19,6 +30,7 @@ type WizardState = {
   currentStep: number;
   config: WizardConfig | null;
   formData: Record<string, any>;
+  errors: Record<string, string>;
   isSubmitting: boolean;
 };
 
@@ -29,7 +41,8 @@ type WizardActions = {
   nextStep: () => void;
   prevStep: () => void;
   updateFormData: (field: string, value: any) => void;
-  submit: () => void;
+  setErrors: (errors: Record<string, string>) => void;
+  setIsSubmitting: (isSubmitting: boolean) => void;
 };
 
 const initialState: WizardState = {
@@ -37,20 +50,23 @@ const initialState: WizardState = {
   currentStep: 0,
   config: null,
   formData: {},
+  errors: {},
   isSubmitting: false,
 };
 
 export const useWizardStore = create<WizardState & WizardActions>(
   (set, get) => ({
     ...initialState,
-    startWizard: (config) =>
-      set({
+    startWizard: (config) => {
+      console.log("start", config);
+      return set({
         isWizardOpen: true,
         config,
         formData: config.initialFormData,
         currentStep: 0,
-        isSubmitting: false,
-      }),
+        errors: {},
+      });
+    },
     closeWizard: () => set(initialState),
     goToStep: (step) => {
       const totalSteps = get().config?.steps.length ?? 0;
@@ -58,25 +74,13 @@ export const useWizardStore = create<WizardState & WizardActions>(
         set({ currentStep: step });
       }
     },
-    nextStep: () => get().goToStep(get().currentStep + 1),
-    prevStep: () => get().goToStep(get().currentStep - 1),
+    nextStep: () => set((state) => ({ currentStep: state.currentStep + 1 })),
+    prevStep: () => set((state) => ({ currentStep: state.currentStep - 1 })),
     updateFormData: (field, value) =>
       set((state) => ({
         formData: { ...state.formData, [field]: value },
       })),
-    submit: async () => {
-      const { config, formData, nextStep } = get();
-      if (config?.onSubmit) {
-        set({ isSubmitting: true });
-        try {
-          await config.onSubmit(formData);
-          nextStep(); // Move to success step
-        } catch (error) {
-          console.error("Wizard submission failed:", error);
-        } finally {
-          set({ isSubmitting: false });
-        }
-      }
-    },
+    setErrors: (errors) => set({ errors }),
+    setIsSubmitting: (isSubmitting) => set({ isSubmitting }),
   })
 );
